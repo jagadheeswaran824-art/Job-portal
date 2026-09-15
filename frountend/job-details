@@ -1,0 +1,1660 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Job Details | Job Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            width: 100%;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            width: 92%;
+            max-width: 1200px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo span {
+            color: #6366f1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #6366f1;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .login-btn,
+        .register-btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .login-btn {
+            color: #4f46e5;
+        }
+
+        .register-btn {
+            background: #6366f1;
+            color: #ffffff;
+        }
+
+        .mobile-menu {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #ffffff,
+                #eef2ff
+            );
+
+            border-bottom: 1px solid #e5e7eb;
+            padding: 45px 20px;
+        }
+
+        .hero-container {
+            width: 92%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .breadcrumb {
+            margin-bottom: 28px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #6366f1;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 25px;
+        }
+
+        .job-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .company-logo {
+            width: 75px;
+            height: 75px;
+
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+            font-weight: 800;
+            color: #6366f1;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .job-info h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .company-name {
+            color: #6366f1;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 43px;
+            height: 43px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+
+            background: #ffffff;
+            color: #64748b;
+
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .icon-btn:hover {
+            color: #6366f1;
+            border-color: #c7d2fe;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main-container {
+            width: 92%;
+            max-width: 1200px;
+
+            margin: 40px auto 70px;
+
+            display: grid;
+            grid-template-columns: 1fr 340px;
+
+            gap: 25px;
+        }
+
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 18px;
+            color: #111827;
+        }
+
+        .card p {
+            color: #64748b;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        /* ================= AI MATCH ================= */
+
+        .ai-card {
+            background: linear-gradient(
+                135deg,
+                #eef2ff,
+                #f5f3ff
+            );
+
+            border: 1px solid #ddd6fe;
+            border-radius: 16px;
+
+            padding: 25px;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .ai-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 12px;
+            background: #6366f1;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+        }
+
+        .ai-header h3 {
+            font-size: 16px;
+            color: #312e81;
+        }
+
+        .ai-header p {
+            font-size: 12px;
+            color: #6366f1;
+            margin-top: 4px;
+        }
+
+        .ai-content {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .match-score {
+            width: 105px;
+            height: 105px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+            border: 8px solid #c7d2fe;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+        .match-score strong {
+            color: #4f46e5;
+            font-size: 25px;
+        }
+
+        .match-score span {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .match-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .match-item {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .match-item::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* ================= OVERVIEW ================= */
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .overview-item {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .overview-item small {
+            display: block;
+            color: #94a3b8;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .overview-item strong {
+            color: #334155;
+            font-size: 14px;
+        }
+
+        /* ================= LIST ================= */
+
+        .details-list {
+            padding-left: 20px;
+            color: #64748b;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .details-list li::marker {
+            color: #6366f1;
+        }
+
+        /* ================= SKILLS ================= */
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .skill {
+            padding: 9px 13px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+
+            position: sticky;
+            top: 90px;
+
+            height: fit-content;
+        }
+
+        .apply-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .salary-label {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .salary {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 6px 0 20px;
+            color: #111827;
+        }
+
+        .apply-button {
+            width: 100%;
+            padding: 14px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #6366f1;
+            color: #ffffff;
+
+            font-weight: 700;
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .apply-button:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+        }
+
+        .secure-text {
+            text-align: center;
+            margin-top: 12px;
+            color: #10b981;
+            font-size: 11px;
+        }
+
+        /* ================= COMPANY ================= */
+
+        .company-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .company-card h3 {
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .company-card p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .company-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 9px;
+        }
+
+        .stat small {
+            display: block;
+            color: #94a3b8;
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .stat strong {
+            font-size: 12px;
+        }
+
+        .company-link {
+            display: block;
+            text-align: center;
+
+            margin-top: 17px;
+
+            color: #6366f1;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ================= SAFETY ================= */
+
+        .safety-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .safety-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .safety-card p {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.7;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            background: rgba(15, 23, 42, 0.6);
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 550px;
+
+            max-height: 90vh;
+            overflow-y: auto;
+
+            background: #ffffff;
+            border-radius: 18px;
+
+            padding: 28px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 22px;
+        }
+
+        .modal-header h2 {
+            font-size: 21px;
+        }
+
+        .close-btn {
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 9px;
+
+            outline: none;
+            font-size: 13px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #6366f1;
+        }
+
+        .submit-button {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #6366f1;
+            color: #ffffff;
+
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .nav-links,
+            .nav-actions {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .hero {
+                padding: 30px 15px;
+            }
+
+            .main-container {
+                width: 94%;
+                margin-top: 25px;
+            }
+
+            .job-info {
+                flex-direction: column;
+            }
+
+            .job-info h1 {
+                font-size: 28px;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card,
+            .ai-card,
+            .apply-card,
+            .company-card {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                Job<span>AI</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="jobs.html" class="active">
+                    Jobs
+                </a>
+
+                <a href="companies.html">
+                    Companies
+                </a>
+
+                <a href="career.html">
+                    Career AI
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <a href="login.html" class="login-btn">
+                    Login
+                </a>
+
+                <a href="register.html" class="register-btn">
+                    Get Started
+                </a>
+
+            </div>
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu">
+
+                ☰
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-container">
+
+            <div class="breadcrumb">
+
+                <a href="jobs.html">
+                    Jobs
+                </a>
+
+                &nbsp; / &nbsp;
+
+                Job Details
+
+            </div>
+
+
+            <div class="job-header">
+
+                <div class="job-info">
+
+                    <div class="company-logo">
+                        M
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Senior Frontend Developer
+                        </h1>
+
+                        <div class="company-name">
+                            Microsoft
+                        </div>
+
+                        <div class="job-meta">
+
+                            <span>
+                                📍 Chennai, India
+                            </span>
+
+                            <span>
+                                💼 Full Time
+                            </span>
+
+                            <span>
+                                🕒 Posted 2 hours ago
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="job-actions">
+
+                    <button
+                        class="icon-btn"
+                        id="saveButton"
+                        title="Save Job">
+
+                        ♡
+
+                    </button>
+
+                    <button
+                        class="icon-btn"
+                        id="shareButton"
+                        title="Share Job">
+
+                        ↗
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-container">
+
+
+        <!-- ================= LEFT ================= -->
+
+        <section class="left-content">
+
+
+            <!-- AI MATCH -->
+
+            <div class="ai-card">
+
+                <div class="ai-header">
+
+                    <div class="ai-icon">
+                        AI
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            AI Compatibility Analysis
+                        </h3>
+
+                        <p>
+                            Based on your profile and skills
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-content">
+
+                    <div class="match-score">
+
+                        <strong>
+                            96%
+                        </strong>
+
+                        <span>
+                            Match
+                        </span>
+
+                    </div>
+
+
+                    <div class="match-list">
+
+                        <div class="match-item">
+                            Strong React experience
+                        </div>
+
+                        <div class="match-item">
+                            JavaScript skills match
+                        </div>
+
+                        <div class="match-item">
+                            Experience level matches
+                        </div>
+
+                        <div class="match-item">
+                            Location preference matches
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- JOB OVERVIEW -->
+
+            <div class="card">
+
+                <h2>
+                    Job Overview
+                </h2>
+
+                <div class="overview-grid">
+
+                    <div class="overview-item">
+
+                        <small>
+                            Salary
+                        </small>
+
+                        <strong>
+                            ₹10 - ₹15 LPA
+                        </strong>
+
+                    </div>
+
+                    <div class="overview-item">
+
+                        <small>
+                            Experience
+                        </small>
+
+                        <strong>
+                            3 - 5 Years
+                        </strong>
+
+                    </div>
+
+                    <div class="overview-item">
+
+                        <small>
+                            Work Mode
+                        </small>
+
+                        <strong>
+                            Hybrid
+                        </strong>
+
+                    </div>
+
+                    <div class="overview-item">
+
+                        <small>
+                            Job Type
+                        </small>
+
+                        <strong>
+                            Full Time
+                        </strong>
+
+                    </div>
+
+                    <div class="overview-item">
+
+                        <small>
+                            Education
+                        </small>
+
+                        <strong>
+                            Bachelor's Degree
+                        </strong>
+
+                    </div>
+
+                    <div class="overview-item">
+
+                        <small>
+                            Openings
+                        </small>
+
+                        <strong>
+                            4 Positions
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="card">
+
+                <h2>
+                    Job Description
+                </h2>
+
+                <p>
+
+                    We are looking for a talented Senior Frontend
+                    Developer to join our engineering team.
+
+                    You will build scalable, high-performance and
+                    user-friendly web applications using modern
+                    frontend technologies.
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    You will collaborate with designers, backend
+                    engineers and product managers to create
+                    high-quality digital experiences.
+
+                </p>
+
+            </div>
+
+
+            <!-- RESPONSIBILITIES -->
+
+            <div class="card">
+
+                <h2>
+                    Responsibilities
+                </h2>
+
+                <ul class="details-list">
+
+                    <li>
+                        Build modern responsive web applications.
+                    </li>
+
+                    <li>
+                        Develop reusable React components.
+                    </li>
+
+                    <li>
+                        Work with UI/UX designers.
+                    </li>
+
+                    <li>
+                        Improve application performance.
+                    </li>
+
+                    <li>
+                        Write clean and maintainable code.
+                    </li>
+
+                    <li>
+                        Participate in code reviews.
+                    </li>
+
+                    <li>
+                        Fix bugs and production issues.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- REQUIREMENTS -->
+
+            <div class="card">
+
+                <h2>
+                    Requirements
+                </h2>
+
+                <ul class="details-list">
+
+                    <li>
+                        3+ years of frontend development experience.
+                    </li>
+
+                    <li>
+                        Strong knowledge of JavaScript and React.
+                    </li>
+
+                    <li>
+                        Experience with HTML5 and CSS3.
+                    </li>
+
+                    <li>
+                        Understanding of REST APIs.
+                    </li>
+
+                    <li>
+                        Experience with Git.
+                    </li>
+
+                    <li>
+                        Strong problem-solving skills.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="card">
+
+                <h2>
+                    Required Skills
+                </h2>
+
+                <div class="skills">
+
+                    <span class="skill">
+                        React
+                    </span>
+
+                    <span class="skill">
+                        JavaScript
+                    </span>
+
+                    <span class="skill">
+                        TypeScript
+                    </span>
+
+                    <span class="skill">
+                        HTML
+                    </span>
+
+                    <span class="skill">
+                        CSS
+                    </span>
+
+                    <span class="skill">
+                        REST API
+                    </span>
+
+                    <span class="skill">
+                        Git
+                    </span>
+
+                    <span class="skill">
+                        UI/UX
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- AI SKILL GAP -->
+
+            <div class="ai-card">
+
+                <div class="ai-header">
+
+                    <div class="ai-icon">
+                        AI
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            AI Skill Gap Analysis
+                        </h3>
+
+                        <p>
+                            Improve your chances before applying
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-list">
+
+                    <div class="match-item">
+                        React — Strong
+                    </div>
+
+                    <div class="match-item">
+                        JavaScript — Strong
+                    </div>
+
+                    <div class="match-item">
+                        Git — Good
+                    </div>
+
+                    <div class="match-item">
+                        TypeScript — Improve
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+
+            <!-- APPLY CARD -->
+
+            <div class="apply-card">
+
+                <div class="salary-label">
+                    Estimated Salary
+                </div>
+
+                <div class="salary">
+                    ₹10 - ₹15 LPA
+                </div>
+
+                <button
+                    class="apply-button"
+                    id="applyButton">
+
+                    Apply Now →
+
+                </button>
+
+                <div class="secure-text">
+                    ✓ Secure application
+                </div>
+
+            </div>
+
+
+            <!-- COMPANY CARD -->
+
+            <div class="company-card">
+
+                <h3>
+                    Microsoft
+                </h3>
+
+                <p>
+
+                    Microsoft is a global technology company
+                    developing software, cloud services and
+                    digital products.
+
+                </p>
+
+
+                <div class="company-stats">
+
+                    <div class="stat">
+
+                        <small>
+                            Employees
+                        </small>
+
+                        <strong>
+                            200K+
+                        </strong>
+
+                    </div>
+
+                    <div class="stat">
+
+                        <small>
+                            Founded
+                        </small>
+
+                        <strong>
+                            1975
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="company-details.html"
+                    class="company-link">
+
+                    View Company Profile →
+
+                </a>
+
+            </div>
+
+
+            <!-- SAFETY -->
+
+            <div class="safety-card">
+
+                <h3>
+                    🛡 Stay Safe
+                </h3>
+
+                <p>
+
+                    Never share passwords, banking information
+                    or pay money to apply for a job.
+
+                </p>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+
+    <!-- ================= APPLICATION MODAL ================= -->
+
+    <div
+        class="modal"
+        id="applicationModal">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2>
+                    Apply for Job
+                </h2>
+
+                <button
+                    class="close-btn"
+                    id="closeModal">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <form id="applicationForm">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        placeholder="Enter your name"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        placeholder="Enter phone number"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Resume
+                    </label>
+
+                    <input
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Cover Letter
+                    </label>
+
+                    <textarea
+                        placeholder="Write your message to the recruiter...">
+                    </textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-button">
+
+                    Submit Application
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ================= SAVE JOB ================= */
+
+        const saveButton =
+            document.getElementById("saveButton");
+
+        let saved = false;
+
+        saveButton.addEventListener("click", function () {
+
+            saved = !saved;
+
+            if (saved) {
+
+                saveButton.textContent = "♥";
+                saveButton.style.color = "#6366f1";
+
+            } else {
+
+                saveButton.textContent = "♡";
+                saveButton.style.color = "#64748b";
+
+            }
+
+        });
+
+
+        /* ================= SHARE JOB ================= */
+
+        const shareButton =
+            document.getElementById("shareButton");
+
+        shareButton.addEventListener("click", async function () {
+
+            const shareData = {
+
+                title: "Senior Frontend Developer",
+
+                text:
+                    "Check out this Senior Frontend Developer job.",
+
+                url: window.location.href
+
+            };
+
+
+            if (navigator.share) {
+
+                try {
+
+                    await navigator.share(shareData);
+
+                } catch (error) {
+
+                    console.log("Share cancelled.");
+
+                }
+
+            } else {
+
+                try {
+
+                    await navigator.clipboard.writeText(
+                        window.location.href
+                    );
+
+                    alert(
+                        "Job link copied successfully!"
+                    );
+
+                } catch (error) {
+
+                    alert(
+                        "Unable to copy the job link."
+                    );
+
+                }
+
+            }
+
+        });
+
+
+        /* ================= APPLICATION MODAL ================= */
+
+        const applyButton =
+            document.getElementById("applyButton");
+
+        const modal =
+            document.getElementById("applicationModal");
+
+        const closeModal =
+            document.getElementById("closeModal");
+
+
+        applyButton.addEventListener("click", function () {
+
+            modal.classList.add("show");
+
+        });
+
+
+        closeModal.addEventListener("click", function () {
+
+            modal.classList.remove("show");
+
+        });
+
+
+        modal.addEventListener("click", function (event) {
+
+            if (event.target === modal) {
+
+                modal.classList.remove("show");
+
+            }
+
+        });
+
+
+        /* ================= APPLICATION SUBMIT ================= */
+
+        const applicationForm =
+            document.getElementById("applicationForm");
+
+
+        applicationForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                alert(
+                    "Application submitted successfully!"
+                );
+
+                applicationForm.reset();
+
+                modal.classList.remove("show");
+
+            }
+        );
+
+
+        /* ================= ESC KEY ================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    modal.classList.remove("show");
+
+                }
+
+            }
+        );
+
+
+        /* ================= MOBILE MENU ================= */
+
+        const mobileMenu =
+            document.getElementById("mobileMenu");
+
+        const navLinks =
+            document.querySelector(".nav-links");
+
+
+        mobileMenu.addEventListener(
+            "click",
+            function () {
+
+                if (navLinks.style.display === "flex") {
+
+                    navLinks.style.display = "none";
+
+                } else {
+
+                    navLinks.style.display = "flex";
+                    navLinks.style.flexDirection = "column";
+                    navLinks.style.position = "absolute";
+                    navLinks.style.top = "70px";
+                    navLinks.style.left = "0";
+                    navLinks.style.width = "100%";
+                    navLinks.style.padding = "20px";
+                    navLinks.style.background = "#ffffff";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
+```

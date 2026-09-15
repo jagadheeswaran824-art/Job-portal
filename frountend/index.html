@@ -1,0 +1,440 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JobPortal — Find jobs that match your skills. Browse thousands of verified opportunities from top companies.">
+    <title>JobPortal — Find Your Next Job</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Get Started</a>
+        </div>
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-background"></div>
+    <div class="hero-container container">
+        <div class="hero-content">
+            <div class="ai-badge"><i class="fa-solid fa-bolt"></i> Smart Job Matching</div>
+            <h1>Find the right job <span>for you.</span></h1>
+            <p>Discover thousands of verified opportunities from top companies. Search, apply and track your job hunt — all in one place.</p>
+
+            <div class="smart-search">
+                <div class="search-field">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="jobSearch" placeholder="Job title, skills or keywords" autocomplete="off">
+                </div>
+                <div class="search-field location-field">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <input type="text" id="locationSearch" placeholder="City or remote" autocomplete="off">
+                </div>
+                <button id="searchJobs" class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search Jobs
+                </button>
+            </div>
+
+            <div class="popular-searches">
+                <span>Popular:</span>
+                <a href="jobs.html?q=python">Python</a>
+                <a href="jobs.html?q=react">React</a>
+                <a href="jobs.html?q=java">Java</a>
+                <a href="jobs.html?q=data">Data Science</a>
+                <a href="jobs.html?q=nodejs">Node.js</a>
+            </div>
+        </div>
+
+        <!-- Floating card — populated from real DB -->
+        <div class="hero-ai-card">
+            <div class="ai-card-header">
+                <div class="ai-icon-sm"><i class="fa-solid fa-star"></i></div>
+                <div>
+                    <strong>Featured Opening</strong>
+                    <small>Live from the platform</small>
+                </div>
+                <span class="online-dot"></span>
+            </div>
+            <div id="heroFeaturedJob" style="min-height:120px;">
+                <div style="display:flex;gap:14px;margin-bottom:16px;">
+                    <div class="skeleton" style="width:52px;height:52px;border-radius:13px;flex-shrink:0;"></div>
+                    <div style="flex:1;">
+                        <div class="skeleton" style="height:16px;width:70%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:12px;width:45%;"></div>
+                    </div>
+                </div>
+                <div class="skeleton" style="height:12px;width:90%;margin-bottom:8px;"></div>
+                <div class="skeleton" style="height:12px;width:60%;"></div>
+            </div>
+            <a href="jobs.html" id="heroJobLink" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px;padding:12px;border-radius:11px;background:#4f46e5;color:white;font-size:13px;font-weight:700;text-decoration:none;transition:.2s;" onmouseover="this.style.background='#4338ca'" onmouseout="this.style.background='#4f46e5'">
+                View All Jobs <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+    <div class="container stats-grid">
+        <div class="stat-card">
+            <i class="fa-solid fa-briefcase"></i>
+            <div><h2 id="statJobs">—</h2><p>Active Jobs</p></div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-building"></i>
+            <div><h2 id="statCompanies">—</h2><p>Companies Hiring</p></div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-users"></i>
+            <div><h2>50K+</h2><p>Job Seekers</p></div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-circle-check"></i>
+            <div><h2>98%</h2><p>Verified Listings</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED JOBS -->
+<section class="jobs-section">
+    <div class="container">
+        <div class="section-header">
+            <div>
+                <div class="section-badge"><i class="fa-solid fa-fire"></i> Live Opportunities</div>
+                <h2>Featured Jobs</h2>
+                <p>Hand-picked openings from top companies — updated in real time.</p>
+            </div>
+            <a href="jobs.html" class="view-all">View All Jobs <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="jobs-grid" id="featuredJobs">
+            <!-- Skeleton -->
+            <div class="job-card"><div class="skeleton" style="height:200px;border-radius:12px;"></div></div>
+            <div class="job-card"><div class="skeleton" style="height:200px;border-radius:12px;"></div></div>
+            <div class="job-card"><div class="skeleton" style="height:200px;border-radius:12px;"></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-badge"><i class="fa-solid fa-layer-group"></i> Everything You Need</div>
+            <h2>Your career, <span>simplified.</span></h2>
+            <p>All the tools you need to find better opportunities and grow your career.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon purple"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <h3>Smart Job Search</h3>
+                <p>Filter by role, location, salary, experience level and job type. Find exactly what you're looking for.</p>
+                <a href="jobs.html">Search Jobs <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon blue"><i class="fa-solid fa-paper-plane"></i></div>
+                <h3>One-Click Apply</h3>
+                <p>Apply to jobs in seconds using your saved profile. Track every application in your dashboard.</p>
+                <a href="register.html">Create Profile <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon green"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Application Tracking</h3>
+                <p>See real-time status updates on every application — from pending to interview to offer.</p>
+                <a href="dashboard.html">View Dashboard <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon orange"><i class="fa-solid fa-building"></i></div>
+                <h3>Company Profiles</h3>
+                <p>Explore hiring companies, view open roles and find the right culture fit before you apply.</p>
+                <a href="companies.html">Explore Companies <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-badge"><i class="fa-solid fa-circle-nodes"></i> Simple Process</div>
+            <h2>Get hired in <span>3 easy steps.</span></h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <i class="fa-solid fa-user-plus"></i>
+                <h3>Create Your Profile</h3>
+                <p>Add your skills, experience and preferences. Takes under 5 minutes.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>Find & Apply</h3>
+                <p>Browse jobs that match your profile. Apply with one click.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <i class="fa-solid fa-rocket"></i>
+                <h3>Track & Get Hired</h3>
+                <p>Monitor your applications and get notified on every status update.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container cta-container">
+        <div>
+            <div class="section-badge"><i class="fa-solid fa-sparkles"></i> Start Today</div>
+            <h2>Your next opportunity is waiting.</h2>
+            <p>Create a free account and start applying to top jobs right now.</p>
+        </div>
+        <div class="cta-actions">
+            <a href="register.html" class="cta-primary">Create Free Account <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="jobs.html" class="cta-secondary">Browse Jobs</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo" style="color:white;margin-bottom:14px;display:inline-flex;">
+                <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+                Job<span>Portal</span>
+            </a>
+            <p>Connecting talent with opportunity. Find your next role at top companies across India.</p>
+            <div class="social-links">
+                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h4>For Job Seekers</h4>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="profile.html">My Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="footer-column">
+            <h4>For Employers</h4>
+            <a href="post-job.html">Post a Job</a>
+            <a href="dashboard.html">Employer Dashboard</a>
+            <a href="register.html">Create Account</a>
+        </div>
+        <div class="footer-column">
+            <h4>Company</h4>
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Companies</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2026 JobPortal. All rights reserved.</p>
+            <p>Connecting talent with opportunity.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+// ── Featured jobs ──────────────────────────────────────────────────────────────
+async function loadFeaturedJobs() {
+    const grid = document.getElementById('featuredJobs');
+    try {
+        const res  = await JobsAPI.featured(6);
+        const jobs = res.data || [];
+
+        if (!jobs.length) {
+            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#6b7280;">
+                <i class="fa-solid fa-briefcase" style="font-size:40px;color:#c7d2fe;display:block;margin-bottom:14px;"></i>
+                <h3>Jobs loading soon</h3><p>Check back shortly for new opportunities.</p>
+            </div>`;
+            return;
+        }
+
+        grid.innerHTML = jobs.slice(0, 6).map(job => jobCardHTML(job)).join('');
+        attachSaveHandlers(grid);
+
+        // Populate hero card with first job
+        populateHeroCard(jobs[0]);
+
+    } catch {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:#6b7280;">
+            <p>Unable to load jobs. Please refresh the page.</p>
+        </div>`;
+    }
+}
+
+function jobCardHTML(job) {
+    const skills  = Array.isArray(job.skills) ? job.skills.slice(0, 4) : [];
+    const salary  = formatSalary(job.salary_min, job.salary_max);
+    const logoBg  = brandColor(job.company_name);
+    const initial = job.company_name ? job.company_name[0].toUpperCase() : '?';
+    return `
+    <article class="job-card">
+        <div class="job-top">
+            <div class="company-logo" style="background:${logoBg.bg};color:${logoBg.text};font-size:16px;font-weight:800;">
+                ${initial}
+            </div>
+            <button class="save-job" data-id="${job.id}" aria-label="Save job" title="Save job">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+        </div>
+        <span class="job-type">${escHtml(job.job_type || 'full-time')}</span>
+        <h3>${escHtml(job.title)}</h3>
+        <p class="company-name">${escHtml(job.company_name)}</p>
+        <div class="job-details">
+            <span><i class="fa-solid fa-location-dot"></i>${escHtml(job.location)}</span>
+            <span><i class="fa-solid fa-indian-rupee-sign"></i>${escHtml(salary)}</span>
+        </div>
+        <div class="job-skills">${skills.map(s => `<span>${escHtml(s)}</span>`).join('')}</div>
+        <div class="job-footer">
+            <small>${timeAgo(job.created_at)}</small>
+            <a href="job-details.html?id=${job.id}">Apply</a>
+        </div>
+    </article>`;
+}
+
+function populateHeroCard(job) {
+    if (!job) return;
+    const el      = document.getElementById('heroFeaturedJob');
+    const link    = document.getElementById('heroJobLink');
+    const logoBg  = brandColor(job.company_name);
+    const initial = job.company_name ? job.company_name[0].toUpperCase() : '?';
+    const salary  = formatSalary(job.salary_min, job.salary_max);
+
+    el.innerHTML = `
+        <div style="display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;">
+            <div style="width:52px;height:52px;border-radius:13px;background:${logoBg.bg};color:${logoBg.text};display:grid;place-items:center;font-size:18px;font-weight:800;flex-shrink:0;">${escHtml(initial)}</div>
+            <div>
+                <h3 style="font-size:15px;font-weight:700;color:#111827;margin:0 0 4px;">${escHtml(job.title)}</h3>
+                <p style="font-size:12px;color:#6b7280;margin:0;">${escHtml(job.company_name)}</p>
+            </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#64748b;margin-bottom:14px;">
+            <span><i class="fa-solid fa-location-dot" style="color:#4f46e5;margin-right:4px;"></i>${escHtml(job.location)}</span>
+            <span><i class="fa-solid fa-indian-rupee-sign" style="color:#4f46e5;margin-right:4px;"></i>${escHtml(salary)}</span>
+        </div>
+        <a href="job-details.html?id=${job.id}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:#eef2ff;color:#4f46e5;font-size:12px;font-weight:700;text-decoration:none;transition:.2s;" onmouseover="this.style.background='#c7d2fe'" onmouseout="this.style.background='#eef2ff'">
+            View Job <i class="fa-solid fa-arrow-right"></i>
+        </a>`;
+
+    link.href = 'job-details.html?id=' + job.id;
+    link.textContent = '';
+    link.innerHTML   = 'View All Jobs <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i>';
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+async function loadStats() {
+    try {
+        const res  = await JobsAPI.list({ per_page: 1 });
+        const total = res.pagination?.total || 0;
+        document.getElementById('statJobs').textContent =
+            total >= 1000 ? (total / 1000).toFixed(1) + 'K+' : total + '+';
+
+        const compRes = await JobsAPI.companies();
+        document.getElementById('statCompanies').textContent =
+            (compRes.data?.length || 0) + '+';
+    } catch { /* stats are cosmetic — ignore errors */ }
+}
+
+// ── Save buttons ──────────────────────────────────────────────────────────────
+function attachSaveHandlers(container) {
+    container.querySelectorAll('.save-job').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (!Auth.isLoggedIn()) {
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+                return;
+            }
+            const id   = btn.dataset.id;
+            const icon = btn.querySelector('i');
+            const saving = icon.classList.contains('fa-regular');
+            try {
+                if (saving) {
+                    await SavedJobsAPI.save(id);
+                    icon.className = 'fa-solid fa-bookmark';
+                    btn.classList.add('saved');
+                    showToast('Job saved!', 'success');
+                } else {
+                    await SavedJobsAPI.remove(id);
+                    icon.className = 'fa-regular fa-bookmark';
+                    btn.classList.remove('saved');
+                    showToast('Job removed from saved', 'info');
+                }
+            } catch (err) {
+                showToast(err.message || 'Action failed', 'error');
+            }
+        });
+    });
+}
+
+// ── Brand color helper ────────────────────────────────────────────────────────
+function brandColor(name) {
+    const palettes = [
+        { bg: '#eef2ff', text: '#4f46e5' },
+        { bg: '#fef3c7', text: '#d97706' },
+        { bg: '#dcfce7', text: '#16a34a' },
+        { bg: '#dbeafe', text: '#2563eb' },
+        { bg: '#ede9fe', text: '#7c3aed' },
+        { bg: '#fce7f3', text: '#be185d' },
+        { bg: '#f0fdf4', text: '#15803d' },
+        { bg: '#fef9c3', text: '#a16207' },
+    ];
+    if (!name) return palettes[0];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return palettes[Math.abs(hash) % palettes.length];
+}
+
+// ── Search ────────────────────────────────────────────────────────────────────
+document.getElementById('searchJobs').addEventListener('click', () => {
+    const q        = document.getElementById('jobSearch').value.trim();
+    const location = document.getElementById('locationSearch').value.trim();
+    const params   = new URLSearchParams();
+    if (q)        params.set('q', q);
+    if (location) params.set('location', location);
+    window.location.href = 'jobs.html' + (params.toString() ? '?' + params.toString() : '');
+});
+document.getElementById('jobSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('searchJobs').click();
+});
+document.getElementById('locationSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('searchJobs').click();
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadFeaturedJobs();
+loadStats();
+</script>
+</body>
+</html>

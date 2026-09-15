@@ -287,4 +287,5 @@ To deploy to Vercel:
 For cloud databases, set `DB_SSL_MODE=REQUIRED` in your environment variables.
 #   J o b - p o r t a l  
  #   J o b - p o r t a l  
+ #   J O B - - P O R T A L  
  

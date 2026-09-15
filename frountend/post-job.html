@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background:#f6f8fc; }
+        .page-hero {
+            background:linear-gradient(135deg,#fff,#f5f7ff);
+            border-bottom:1px solid #e5e7eb;
+            padding:50px 20px 36px; text-align:center;
+        }
+        .page-hero h1 { font-size:clamp(24px,4vw,38px); font-weight:900; margin-bottom:8px; }
+        .page-hero p  { color:#6b7280; font-size:14px; }
+        .post-layout {
+            max-width:860px; margin:0 auto; padding:36px 20px 70px;
+        }
+        .form-card {
+            background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+            padding:28px; margin-bottom:22px;
+        }
+        .form-card h2 {
+            font-size:16px; font-weight:700; margin-bottom:22px;
+            display:flex; align-items:center; gap:9px; color:#111827;
+        }
+        .form-card h2 i { color:#4f46e5; }
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .form-grid .full { grid-column:1/-1; }
+        .fg { display:flex; flex-direction:column; gap:6px; }
+        .fg label { font-size:12px; font-weight:700; color:#374151; }
+        .fg input, .fg select, .fg textarea {
+            border:1.5px solid #e5e7eb; border-radius:10px; padding:11px 14px;
+            font-size:13px; font-family:inherit; outline:none; transition:.2s; color:#111827;
+        }
+        .fg input:focus, .fg select:focus, .fg textarea:focus {
+            border-color:#4f46e5; box-shadow:0 0 0 3px rgba(79,70,229,.1);
+        }
+        .fg textarea { resize:vertical; min-height:110px; }
+        .fg input.is-error, .fg select.is-error, .fg textarea.is-error { border-color:#dc2626; }
+        .fg .err-msg { font-size:11px; color:#dc2626; display:none; }
+        .fg .err-msg.show { display:block; }
+        /* Skills tag input */
+        .skill-input-wrap {
+            border:1.5px solid #e5e7eb; border-radius:10px; padding:8px 12px;
+            display:flex; flex-wrap:wrap; gap:6px; min-height:48px;
+            cursor:text; transition:.2s;
+        }
+        .skill-input-wrap:focus-within { border-color:#4f46e5; box-shadow:0 0 0 3px rgba(79,70,229,.1); }
+        .skill-tag {
+            display:inline-flex; align-items:center; gap:5px;
+            padding:4px 10px; border-radius:50px;
+            background:#eef2ff; color:#4f46e5; font-size:12px; font-weight:700;
+        }
+        .skill-tag button { border:none; background:none; color:#818cf8; cursor:pointer; font-size:14px; line-height:1; padding:0; }
+        .skill-tag button:hover { color:#dc2626; }
+        .skill-input-wrap input {
+            border:none; outline:none; font-size:13px;
+            min-width:120px; flex:1; padding:4px 0; background:transparent;
+        }
+        /* Submit */
+        .submit-bar {
+            display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+            background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+            padding:20px 28px;
+        }
+        .btn-post {
+            border:none; border-radius:11px; padding:13px 28px;
+            background:#4f46e5; color:#fff; font-size:14px; font-weight:700;
+            cursor:pointer; transition:.2s; display:flex; align-items:center; gap:9px;
+        }
+        .btn-post:hover { background:#4338ca; transform:translateY(-1px); }
+        .btn-post:disabled { opacity:.65; cursor:not-allowed; transform:none; }
+        .btn-cancel {
+            border:1.5px solid #e5e7eb; border-radius:11px; padding:13px 22px;
+            background:#fff; color:#6b7280; font-size:14px; font-weight:600;
+            cursor:pointer; transition:.2s;
+        }
+        .btn-cancel:hover { border-color:#6b7280; color:#111827; }
+        /* Character counters */
+        .char-count { font-size:11px; color:#9ca3af; text-align:right; }
+        @media (max-width:640px) {
+            .form-grid { grid-template-columns:1fr; }
+            .form-grid .full { grid-column:1; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="dashboard.html" class="login-btn"><i class="fa-solid fa-gauge" style="margin-right:5px;"></i>Dashboard</a>
+            <button onclick="AuthAPI.logout()" class="register-btn" style="border:none;cursor:pointer;">Logout</button>
+        </div>
+        <button class="mobile-menu" id="mobileMenu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="section-badge"><i class="fa-solid fa-plus-circle"></i> Employer</div>
+    <h1>Post a New Job</h1>
+    <p>Fill in the details below to publish your job listing and start receiving applications.</p>
+</section>
+
+<div class="post-layout">
+
+    <!-- ACCESS CHECK -->
+    <div id="accessDenied" style="display:none;" class="form-card" style="text-align:center;padding:50px;">
+        <i class="fa-solid fa-lock" style="font-size:40px;color:#c7d2fe;display:block;margin-bottom:14px;"></i>
+        <h3>Employer Access Required</h3>
+        <p style="color:#6b7280;margin:10px 0 20px;">Only employers can post jobs. Please login with an employer account.</p>
+        <a href="login.html" class="btn-primary">Login as Employer</a>
+    </div>
+
+    <form id="postJobForm" style="display:none;" novalidate>
+
+        <!-- Basic Details -->
+        <div class="form-card">
+            <h2><i class="fa-solid fa-file-lines"></i> Job Details</h2>
+            <div class="form-grid">
+                <div class="fg full">
+                    <label>Job Title *</label>
+                    <input type="text" id="jobTitle" placeholder="e.g. Senior Frontend Developer" maxlength="200" required>
+                    <span class="err-msg" id="titleErr">Job title is required.</span>
+                </div>
+                <div class="fg">
+                    <label>Company Name *</label>
+                    <input type="text" id="companyName" placeholder="Your company name" maxlength="150" required>
+                    <span class="err-msg" id="companyErr">Company name is required.</span>
+                </div>
+                <div class="fg">
+                    <label>Location *</label>
+                    <input type="text" id="jobLocation" placeholder="e.g. Chennai, Bangalore or Remote" required>
+                    <span class="err-msg" id="locationErr">Location is required.</span>
+                </div>
+                <div class="fg">
+                    <label>Job Type</label>
+                    <select id="jobType">
+                        <option value="full-time">Full Time</option>
+                        <option value="part-time">Part Time</option>
+                        <option value="contract">Contract</option>
+                        <option value="internship">Internship</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="remote">Remote</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>Category</label>
+                    <select id="jobCategory">
+                        <option value="general">General</option>
+                        <option value="frontend">Frontend</option>
+                        <option value="backend">Backend</option>
+                        <option value="fullstack">Full Stack</option>
+                        <option value="ai-ml">AI / ML</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="design">Design / UI-UX</option>
+                        <option value="devops">DevOps</option>
+                        <option value="data">Data</option>
+                        <option value="qa">QA / Testing</option>
+                        <option value="management">Product / Management</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>Experience Level</label>
+                    <select id="experienceLevel">
+                        <option value="entry">Entry Level</option>
+                        <option value="junior">Junior (1-2 years)</option>
+                        <option value="mid" selected>Mid Level (2-5 years)</option>
+                        <option value="senior">Senior (5+ years)</option>
+                        <option value="lead">Lead / Principal</option>
+                        <option value="manager">Manager / Director</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Salary -->
+        <div class="form-card">
+            <h2><i class="fa-solid fa-indian-rupee-sign"></i> Salary & Deadline</h2>
+            <div class="form-grid">
+                <div class="fg">
+                    <label>Minimum Salary (₹/year)</label>
+                    <input type="number" id="salaryMin" placeholder="e.g. 500000" min="0">
+                </div>
+                <div class="fg">
+                    <label>Maximum Salary (₹/year)</label>
+                    <input type="number" id="salaryMax" placeholder="e.g. 1200000" min="0">
+                </div>
+                <div class="fg">
+                    <label>Application Deadline</label>
+                    <input type="date" id="appDeadline">
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-card">
+            <h2><i class="fa-solid fa-align-left"></i> Job Description *</h2>
+            <div class="fg">
+                <textarea id="jobDescription" placeholder="Describe the role, team and what you're looking for…" maxlength="5000" required style="min-height:160px;"></textarea>
+                <div class="char-count"><span id="descCount">0</span> / 5000</div>
+                <span class="err-msg" id="descErr">Job description is required.</span>
+            </div>
+        </div>
+
+        <!-- Requirements & Benefits -->
+        <div class="form-card">
+            <h2><i class="fa-solid fa-list-check"></i> Requirements & Benefits</h2>
+            <div class="form-grid">
+                <div class="fg full">
+                    <label>Requirements <span style="color:#9ca3af;font-weight:400;">(one per line)</span></label>
+                    <textarea id="jobRequirements" placeholder="Bachelor's degree in CS&#10;3+ years React experience&#10;Strong communication skills" style="min-height:130px;"></textarea>
+                </div>
+                <div class="fg full">
+                    <label>Benefits <span style="color:#9ca3af;font-weight:400;">(one per line)</span></label>
+                    <textarea id="jobBenefits" placeholder="Health insurance&#10;Flexible hours&#10;Work from home options&#10;Learning budget" style="min-height:110px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="form-card">
+            <h2><i class="fa-solid fa-code"></i> Required Skills</h2>
+            <p style="font-size:13px;color:#6b7280;margin-bottom:14px;">Type a skill and press <kbd style="background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;">Enter</kbd> or comma to add.</p>
+            <div class="skill-input-wrap" id="skillsWrap">
+                <input type="text" id="skillInput" placeholder="e.g. React, Python, Node.js…" autocomplete="off">
+            </div>
+            <small style="color:#9ca3af;font-size:11px;margin-top:6px;display:block;">0 skills added</small>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-bar">
+            <button type="submit" class="btn-post" id="postBtn">
+                <i class="fa-solid fa-paper-plane"></i> Publish Job
+            </button>
+            <button type="button" class="btn-cancel" onclick="window.location.href='dashboard.html'">
+                Cancel
+            </button>
+            <span id="postStatus" style="font-size:13px;color:#16a34a;display:none;margin-left:6px;">
+                <i class="fa-solid fa-circle-check"></i> Job posted!
+            </span>
+        </div>
+
+    </form>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+Auth.redirectIfGuest();
+const user = Auth.getUser();
+
+// ── Access control ────────────────────────────────────────────────────────────
+if (!user || !['employer','admin'].includes(user.role)) {
+    document.getElementById('accessDenied').style.display = 'block';
+} else {
+    document.getElementById('postJobForm').style.display = 'block';
+    // Pre-fill company name from user data (best-effort)
+}
+
+// ── Skills tag input ──────────────────────────────────────────────────────────
+let skills = [];
+
+function updateSkillCount() {
+    document.querySelector('#skillsWrap + small').textContent = `${skills.length} skill${skills.length !== 1 ? 's' : ''} added`;
+}
+
+function addSkill(raw) {
+    const name = raw.trim().replace(/[,;]+$/, '').trim();
+    if (!name || skills.includes(name)) return;
+    skills.push(name);
+
+    const tag = document.createElement('span');
+    tag.className = 'skill-tag';
+    tag.innerHTML = `${escHtml(name)} <button type="button" onclick="removeSkillTag(this,'${escHtml(name)}')">×</button>`;
+    document.getElementById('skillsWrap').insertBefore(tag, document.getElementById('skillInput'));
+    updateSkillCount();
+}
+
+function removeSkillTag(btn, name) {
+    skills = skills.filter(s => s !== name);
+    btn.parentElement.remove();
+    updateSkillCount();
+}
+
+document.getElementById('skillInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        addSkill(e.target.value);
+        e.target.value = '';
+    }
+    if (e.key === 'Backspace' && !e.target.value && skills.length) {
+        const last = document.querySelectorAll('.skill-tag');
+        if (last.length) {
+            const name = skills[skills.length - 1];
+            skills.pop();
+            last[last.length - 1].remove();
+            updateSkillCount();
+        }
+    }
+});
+
+// Click wrap to focus input
+document.getElementById('skillsWrap').addEventListener('click', () => {
+    document.getElementById('skillInput').focus();
+});
+
+// ── Character counter ─────────────────────────────────────────────────────────
+document.getElementById('jobDescription').addEventListener('input', function() {
+    document.getElementById('descCount').textContent = this.value.length;
+});
+
+// ── Validation ────────────────────────────────────────────────────────────────
+function validate() {
+    let ok = true;
+    const checks = [
+        ['jobTitle',       'titleErr',   v => v.trim().length >= 3, 'Job title must be at least 3 characters.'],
+        ['companyName',    'companyErr', v => v.trim().length >= 2, 'Company name is required.'],
+        ['jobLocation',    'locationErr',v => v.trim().length >= 2, 'Location is required.'],
+        ['jobDescription', 'descErr',    v => v.trim().length >= 50,'Description must be at least 50 characters.'],
+    ];
+    checks.forEach(([fieldId, errId, test, msg]) => {
+        const field = document.getElementById(fieldId);
+        const err   = document.getElementById(errId);
+        if (!test(field.value)) {
+            field.classList.add('is-error');
+            err.textContent = msg;
+            err.classList.add('show');
+            ok = false;
+        } else {
+            field.classList.remove('is-error');
+            err.classList.remove('show');
+        }
+    });
+
+    const min = parseFloat(document.getElementById('salaryMin').value);
+    const max = parseFloat(document.getElementById('salaryMax').value);
+    if (min && max && min > max) {
+        showToast('Minimum salary cannot exceed maximum salary', 'warning');
+        ok = false;
+    }
+    return ok;
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+document.getElementById('postJobForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const btn = document.getElementById('postBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Publishing…';
+
+    const payload = {
+        title:                document.getElementById('jobTitle').value.trim(),
+        company_name:         document.getElementById('companyName').value.trim(),
+        location:             document.getElementById('jobLocation').value.trim(),
+        job_type:             document.getElementById('jobType').value,
+        category:             document.getElementById('jobCategory').value,
+        experience_level:     document.getElementById('experienceLevel').value,
+        salary_min:           parseFloat(document.getElementById('salaryMin').value) || null,
+        salary_max:           parseFloat(document.getElementById('salaryMax').value) || null,
+        application_deadline: document.getElementById('appDeadline').value || null,
+        description:          document.getElementById('jobDescription').value.trim(),
+        requirements:         document.getElementById('jobRequirements').value.trim(),
+        benefits:             document.getElementById('jobBenefits').value.trim(),
+        skills,
+    };
+
+    try {
+        const res = await JobsAPI.create(payload);
+        const newId = res.data?.id;
+
+        const status = document.getElementById('postStatus');
+        status.style.display = 'inline-flex';
+        showToast('Job posted successfully!', 'success');
+
+        setTimeout(() => {
+            window.location.href = newId ? `job-details.html?id=${newId}` : 'dashboard.html';
+        }, 1200);
+    } catch (err) {
+        showToast(err.message || 'Failed to post job', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publish Job';
+    }
+});
+</script>
+</body>
+</html>

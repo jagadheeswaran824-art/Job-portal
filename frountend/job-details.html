@@ -1,0 +1,567 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #f6f8fc; }
+        .job-hero {
+            background: linear-gradient(135deg,#fff 0%,#f5f7ff 100%);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 50px 20px 40px;
+        }
+        .breadcrumb {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 12px; color: #6b7280; margin-bottom: 24px;
+        }
+        .breadcrumb a { color: #4f46e5; }
+        .breadcrumb i { font-size: 10px; }
+        .job-hero-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;
+        }
+        .job-co-section { display: flex; gap: 20px; align-items: flex-start; }
+        .job-big-logo {
+            width: 78px; height: 78px; border-radius: 18px;
+            display: grid; place-items: center;
+            font-size: 26px; font-weight: 800;
+            border: 1px solid #e5e7eb;
+            flex-shrink: 0; background: #eef2ff; color: #4f46e5;
+        }
+        .job-hero-info h1 { font-size: clamp(22px,4vw,36px); font-weight: 800; margin-bottom: 6px; }
+        .job-co-name { color: #4f46e5; font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+        .job-tags { display: flex; flex-wrap: wrap; gap: 12px; color: #64748b; font-size: 12px; }
+        .job-tags span { display: flex; align-items: center; gap: 6px; }
+        .job-tags i { color: #4f46e5; }
+        .hero-actions { display: flex; gap: 10px; flex-shrink: 0; }
+        .icon-btn {
+            width: 44px; height: 44px; border-radius: 11px;
+            border: 1px solid #e5e7eb; background: #fff;
+            cursor: pointer; color: #64748b; font-size: 16px;
+            transition: .2s; display: grid; place-items: center;
+        }
+        .icon-btn:hover { color: #4f46e5; border-color: #c7d2fe; background: #eef2ff; }
+        .icon-btn.saved { color: #4f46e5; background: #eef2ff; border-color: #c7d2fe; }
+
+        /* Layout */
+        .jd-layout {
+            max-width: 1200px; margin: 0 auto; padding: 36px 20px 70px;
+            display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 26px;
+        }
+        /* Cards */
+        .card {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
+            padding: 26px; margin-bottom: 20px;
+        }
+        .card:last-child { margin-bottom: 0; }
+        .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: #111827; }
+        .card p  { font-size: 14px; line-height: 1.8; color: #6b7280; }
+        /* Overview grid */
+        .ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .ov-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px; border-radius: 12px; background: #f8fafc;
+        }
+        .ov-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: #eef2ff; color: #4f46e5;
+            display: grid; place-items: center; font-size: 15px; flex-shrink: 0;
+        }
+        .ov-item small { display: block; color: #94a3b8; font-size: 10px; }
+        .ov-item strong { color: #334155; font-size: 13px; font-weight: 600; }
+        /* Skills */
+        .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-chip {
+            padding: 8px 13px; border-radius: 8px; background: #eef2ff;
+            color: #4f46e5; font-size: 12px; font-weight: 700;
+        }
+        /* Sidebar */
+        .sidebar { position: sticky; top: 80px; height: fit-content; display: grid; gap: 18px; }
+        .apply-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 24px; }
+        .salary-label { font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
+        .salary-val { font-size: 26px; font-weight: 800; color: #111827; margin-bottom: 18px; }
+        .apply-now {
+            width: 100%; border: none; border-radius: 11px; padding: 14px;
+            background: #4f46e5; color: #fff; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: .2s; display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+        }
+        .apply-now:hover { background: #4338ca; transform: translateY(-1px); }
+        .apply-now:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+        .apply-hint { text-align: center; color: #10b981; font-size: 11px; margin-top: 10px; }
+        /* Similar jobs */
+        .similar-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+        .sim-card {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
+            padding: 18px; transition: .22s;
+        }
+        .sim-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(15,23,42,.07); border-color: #c7d2fe; }
+        .sim-logo {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: grid; place-items: center;
+            font-size: 13px; font-weight: 800; margin-bottom: 12px;
+        }
+        .sim-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+        .sim-card p  { font-size: 11px; color: #6b7280; margin-bottom: 10px; }
+        .sim-meta { font-size: 11px; color: #94a3b8; margin-bottom: 12px; }
+        .sim-card a {
+            font-size: 12px; color: #4f46e5; font-weight: 700;
+            text-decoration: none; display: flex; align-items: center; gap: 5px;
+        }
+        /* Modal */
+        .modal-backdrop {
+            display: none; position: fixed; inset: 0; z-index: 200;
+            background: rgba(15,23,42,.55);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-backdrop.open { display: flex; }
+        .modal {
+            background: #fff; border-radius: 20px; padding: 30px;
+            max-width: 540px; width: 100%; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+        .modal-hd h2 { font-size: 20px; }
+        .modal-close { border: none; background: none; font-size: 22px; cursor: pointer; color: #6b7280; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; color: #374151; margin-bottom: 7px; }
+        .form-group textarea {
+            width: 100%; border: 1.5px solid #e5e7eb; border-radius: 10px;
+            padding: 12px; font-family: inherit; font-size: 13px;
+            resize: vertical; min-height: 120px; outline: none; transition: .2s;
+        }
+        .form-group textarea:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+        .modal-submit {
+            width: 100%; border: none; border-radius: 10px; padding: 13px;
+            background: #4f46e5; color: #fff; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: .2s; display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+        }
+        .modal-submit:hover { background: #4338ca; }
+        .modal-submit:disabled { opacity: .7; cursor: not-allowed; }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .jd-layout { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .similar-grid { grid-template-columns: 1fr 1fr; }
+            .job-hero-inner { flex-direction: column; }
+        }
+        @media (max-width: 600px) {
+            .job-co-section { flex-direction: column; }
+            .ov-grid { grid-template-columns: 1fr; }
+            .similar-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html" class="active">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Get Started</a>
+        </div>
+        <button class="mobile-menu" id="mobileMenu" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="job-hero" id="jobHero">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="jobs.html">Find Jobs</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span id="breadcrumbTitle">Job Details</span>
+        </div>
+        <!-- Populated by JS -->
+        <div class="job-hero-inner" id="heroContent">
+            <div class="job-co-section">
+                <div class="skeleton" style="width:78px;height:78px;border-radius:18px;flex-shrink:0;"></div>
+                <div>
+                    <div class="skeleton" style="height:28px;width:260px;margin-bottom:10px;"></div>
+                    <div class="skeleton" style="height:14px;width:150px;margin-bottom:14px;"></div>
+                    <div class="skeleton" style="height:12px;width:320px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN -->
+<div class="jd-layout container">
+    <!-- LEFT -->
+    <div id="mainContent">
+        <div class="skeleton" style="height:300px;border-radius:18px;margin-bottom:20px;"></div>
+        <div class="skeleton" style="height:200px;border-radius:18px;"></div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebarContent">
+        <div class="skeleton" style="height:220px;border-radius:18px;"></div>
+        <div class="skeleton" style="height:160px;border-radius:18px;"></div>
+    </aside>
+</div>
+
+<!-- SIMILAR JOBS -->
+<section style="max-width:1200px;margin:0 auto;padding:0 20px 70px;" id="similarSection" hidden>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 style="font-size:22px;font-weight:800;">Similar Jobs</h2>
+        <a href="jobs.html" style="color:#4f46e5;font-size:12px;font-weight:700;">View all</a>
+    </div>
+    <div class="similar-grid" id="similarGrid"></div>
+</section>
+
+<!-- APPLY MODAL -->
+<div class="modal-backdrop" id="applyModal" role="dialog" aria-modal="true">
+    <div class="modal">
+        <div class="modal-hd">
+            <h2>Apply for <span id="modalJobTitle">this job</span></h2>
+            <button class="modal-close" id="closeModal" aria-label="Close">&times;</button>
+        </div>
+        <form id="applyForm">
+            <div class="form-group">
+                <label for="coverLetter">Cover Letter <span style="color:#9ca3af;font-weight:400;">(optional)</span></label>
+                <textarea id="coverLetter" placeholder="Briefly describe why you're a great fit for this role…" maxlength="2000"></textarea>
+                <small style="color:#9ca3af;font-size:11px;" id="charCount">0 / 2000</small>
+            </div>
+            <button type="submit" class="modal-submit" id="submitApp">
+                <i class="fa-solid fa-paper-plane"></i> Submit Application
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+const jobId   = new URLSearchParams(window.location.search).get('id');
+let   jobData = null;
+
+// ── Brand color ───────────────────────────────────────────────────────────────
+function brandColor(name) {
+    const p = [
+        {bg:'#eef2ff',text:'#4f46e5'},{bg:'#fef3c7',text:'#d97706'},
+        {bg:'#dcfce7',text:'#16a34a'},{bg:'#dbeafe',text:'#2563eb'},
+        {bg:'#ede9fe',text:'#7c3aed'},{bg:'#fce7f3',text:'#be185d'},
+    ];
+    if (!name) return p[0];
+    let h = 0;
+    for (let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h);
+    return p[Math.abs(h)%p.length];
+}
+
+// ── Load job ──────────────────────────────────────────────────────────────────
+async function loadJob() {
+    if (!jobId) {
+        showError('No job ID provided. <a href="jobs.html" style="color:#4f46e5">Back to jobs</a>');
+        return;
+    }
+
+    try {
+        const res = await JobsAPI.get(jobId);
+        jobData   = res.data;
+
+        document.title = `${jobData.title} at ${jobData.company_name} | JobPortal`;
+        document.getElementById('breadcrumbTitle').textContent = jobData.title;
+
+        renderHero(jobData);
+        renderMain(jobData);
+        renderSidebar(jobData);
+        loadSimilar(jobData.category, jobData.id);
+
+        // Check if already saved
+        if (Auth.isLoggedIn()) {
+            const saved = await SavedJobsAPI.check(jobId).catch(() => ({ data: { is_saved: false } }));
+            if (saved.data?.is_saved) {
+                const btn = document.getElementById('saveBtn');
+                if (btn) { btn.classList.add('saved'); btn.querySelector('i').className = 'fa-solid fa-bookmark'; }
+            }
+        }
+
+    } catch (err) {
+        showError(err.status === 404
+            ? 'Job not found. It may have been removed. <a href="jobs.html" style="color:#4f46e5">Browse other jobs</a>'
+            : 'Failed to load job. Please try again.');
+    }
+}
+
+function showError(msg) {
+    document.getElementById('heroContent').innerHTML = `<p style="color:#6b7280;">${msg}</p>`;
+    document.getElementById('mainContent').innerHTML  = '';
+    document.getElementById('sidebarContent').innerHTML = '';
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+function renderHero(job) {
+    const color   = brandColor(job.company_name);
+    const initial = job.company_name ? job.company_name[0].toUpperCase() : '?';
+    document.getElementById('heroContent').innerHTML = `
+        <div class="job-co-section">
+            <div class="job-big-logo" style="background:${color.bg};color:${color.text};">${escHtml(initial)}</div>
+            <div class="job-hero-info">
+                <h1>${escHtml(job.title)}</h1>
+                <p class="job-co-name">${escHtml(job.company_name)}</p>
+                <div class="job-tags">
+                    <span><i class="fa-solid fa-location-dot"></i>${escHtml(job.location)}</span>
+                    <span><i class="fa-solid fa-briefcase"></i>${escHtml(job.job_type)}</span>
+                    <span><i class="fa-solid fa-clock"></i>${timeAgo(job.created_at)}</span>
+                    ${job.views ? `<span><i class="fa-solid fa-eye"></i>${job.views} views</span>` : ''}
+                    ${job.applications_count ? `<span><i class="fa-solid fa-users"></i>${job.applications_count} applied</span>` : ''}
+                </div>
+            </div>
+        </div>
+        <div class="hero-actions">
+            <button class="icon-btn" id="saveBtn" title="Save job" aria-label="Save job">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+            <button class="icon-btn" id="shareBtn" title="Share job" aria-label="Share job">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+        </div>`;
+
+    document.getElementById('saveBtn').addEventListener('click', toggleSave);
+    document.getElementById('shareBtn').addEventListener('click', shareJob);
+}
+
+// ── Main content ──────────────────────────────────────────────────────────────
+function renderMain(job) {
+    const skills = Array.isArray(job.skills) ? job.skills : [];
+
+    const requirements = job.requirements
+        ? job.requirements.split('\n').filter(Boolean).map(l => `<li>${escHtml(l)}</li>`).join('')
+        : '<li>Please contact the employer for requirements.</li>';
+
+    const benefits = job.benefits
+        ? job.benefits.split('\n').filter(Boolean).map(l => `<li>${escHtml(l)}</li>`).join('')
+        : '';
+
+    document.getElementById('mainContent').innerHTML = `
+        <!-- Overview -->
+        <div class="card">
+            <h2><i class="fa-solid fa-clipboard-list" style="color:#4f46e5;margin-right:8px;"></i>Job Overview</h2>
+            <div class="ov-grid">
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    <div><small>Salary</small><strong>${escHtml(formatSalary(job.salary_min, job.salary_max))}</strong></div>
+                </div>
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <div><small>Job Type</small><strong style="text-transform:capitalize;">${escHtml(job.job_type)}</strong></div>
+                </div>
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-chart-bar"></i></div>
+                    <div><small>Experience</small><strong style="text-transform:capitalize;">${escHtml(job.experience_level || 'Not specified')}</strong></div>
+                </div>
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-tag"></i></div>
+                    <div><small>Category</small><strong style="text-transform:capitalize;">${escHtml(job.category || 'General')}</strong></div>
+                </div>
+                ${job.application_deadline ? `
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+                    <div><small>Apply By</small><strong>${new Date(job.application_deadline).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</strong></div>
+                </div>` : ''}
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-building"></i></div>
+                    <div><small>Company</small><strong>${escHtml(job.company_name)}</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="card">
+            <h2><i class="fa-solid fa-file-text" style="color:#4f46e5;margin-right:8px;"></i>Job Description</h2>
+            <p>${escHtml(job.description).replace(/\n/g, '<br>')}</p>
+        </div>
+
+        <!-- Requirements -->
+        <div class="card">
+            <h2><i class="fa-solid fa-list-check" style="color:#4f46e5;margin-right:8px;"></i>Requirements</h2>
+            <ul style="padding-left:20px;color:#6b7280;font-size:14px;line-height:2.1;">
+                ${requirements}
+            </ul>
+        </div>
+
+        ${benefits ? `
+        <!-- Benefits -->
+        <div class="card">
+            <h2><i class="fa-solid fa-heart" style="color:#4f46e5;margin-right:8px;"></i>Benefits</h2>
+            <ul style="padding-left:20px;color:#6b7280;font-size:14px;line-height:2.1;">
+                ${benefits}
+            </ul>
+        </div>` : ''}
+
+        ${skills.length ? `
+        <!-- Skills -->
+        <div class="card">
+            <h2><i class="fa-solid fa-code" style="color:#4f46e5;margin-right:8px;"></i>Required Skills</h2>
+            <div class="skill-chips">
+                ${skills.map(s => `<span class="skill-chip">${escHtml(s)}</span>`).join('')}
+            </div>
+        </div>` : ''}`;
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+function renderSidebar(job) {
+    const salary = formatSalary(job.salary_min, job.salary_max);
+    document.getElementById('sidebarContent').innerHTML = `
+        <!-- Apply card -->
+        <div class="apply-card">
+            <p class="salary-label">Salary Package</p>
+            <p class="salary-val">${escHtml(salary)}</p>
+            <button class="apply-now" id="applyNowBtn">
+                <i class="fa-solid fa-paper-plane"></i> Apply Now
+            </button>
+            <p class="apply-hint"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>Quick apply with your profile</p>
+        </div>
+
+        <!-- Company mini card -->
+        <div class="card" style="margin-bottom:0;">
+            <h2 style="font-size:15px;"><i class="fa-solid fa-building" style="color:#4f46e5;margin-right:8px;"></i>About the Company</h2>
+            <p style="font-size:13px;margin-bottom:12px;">${escHtml(job.company_name)} is actively hiring for this position.</p>
+            <a href="companies.html?q=${encodeURIComponent(job.company_name)}" style="color:#4f46e5;font-size:12px;font-weight:700;text-decoration:none;">
+                View all jobs from ${escHtml(job.company_name)} <i class="fa-solid fa-arrow-right" style="margin-left:4px;"></i>
+            </a>
+        </div>
+
+        <!-- Safety notice -->
+        <div class="card" style="margin-bottom:0;background:#f8fafc;">
+            <p style="font-size:12px;color:#94a3b8;line-height:1.7;">
+                <i class="fa-solid fa-shield-halved" style="color:#4f46e5;margin-right:6px;"></i>
+                <strong style="color:#374151;">Safety tip:</strong> Never pay to apply for a job. Legitimate employers will never ask for money.
+            </p>
+        </div>`;
+
+    document.getElementById('applyNowBtn').addEventListener('click', openApplyModal);
+}
+
+// ── Similar jobs ──────────────────────────────────────────────────────────────
+async function loadSimilar(category, excludeId) {
+    try {
+        const res  = await JobsAPI.list({ category, per_page: 4 });
+        const jobs = (res.data || []).filter(j => j.id != excludeId).slice(0, 3);
+        if (!jobs.length) return;
+
+        const grid    = document.getElementById('similarGrid');
+        const section = document.getElementById('similarSection');
+        grid.innerHTML = jobs.map(j => {
+            const c = brandColor(j.company_name);
+            return `
+            <div class="sim-card">
+                <div class="sim-logo" style="background:${c.bg};color:${c.text};">${j.company_name[0].toUpperCase()}</div>
+                <h3>${escHtml(j.title)}</h3>
+                <p>${escHtml(j.company_name)}</p>
+                <div class="sim-meta">${escHtml(j.location)} · ${escHtml(j.job_type)}</div>
+                <a href="job-details.html?id=${j.id}">View Job <i class="fa-solid fa-arrow-right"></i></a>
+            </div>`;
+        }).join('');
+        section.hidden = false;
+    } catch { /* silent */ }
+}
+
+// ── Save toggle ───────────────────────────────────────────────────────────────
+async function toggleSave() {
+    if (!Auth.isLoggedIn()) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+        return;
+    }
+    const btn  = document.getElementById('saveBtn');
+    const icon = btn.querySelector('i');
+    const saving = icon.classList.contains('fa-regular');
+    try {
+        if (saving) {
+            await SavedJobsAPI.save(jobId);
+            icon.className = 'fa-solid fa-bookmark';
+            btn.classList.add('saved');
+            showToast('Job saved!', 'success');
+        } else {
+            await SavedJobsAPI.remove(jobId);
+            icon.className = 'fa-regular fa-bookmark';
+            btn.classList.remove('saved');
+            showToast('Removed from saved', 'info');
+        }
+    } catch (err) { showToast(err.message || 'Action failed', 'error'); }
+}
+
+// ── Share ─────────────────────────────────────────────────────────────────────
+function shareJob() {
+    if (navigator.share && jobData) {
+        navigator.share({ title: jobData.title, text: `${jobData.title} at ${jobData.company_name}`, url: window.location.href }).catch(() => {});
+    } else {
+        navigator.clipboard?.writeText(window.location.href)
+            .then(() => showToast('Link copied!', 'success'))
+            .catch(() => showToast('Copy the URL from your browser', 'info'));
+    }
+}
+
+// ── Apply modal ───────────────────────────────────────────────────────────────
+function openApplyModal() {
+    if (!Auth.isLoggedIn()) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+        return;
+    }
+    if (jobData) document.getElementById('modalJobTitle').textContent = jobData.title;
+    document.getElementById('applyModal').classList.add('open');
+    document.getElementById('coverLetter').focus();
+}
+document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('applyModal').classList.remove('open');
+});
+document.getElementById('applyModal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+document.getElementById('coverLetter').addEventListener('input', function() {
+    document.getElementById('charCount').textContent = `${this.value.length} / 2000`;
+});
+
+document.getElementById('applyForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitApp');
+    const cl  = document.getElementById('coverLetter').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Submitting…';
+
+    try {
+        await ApplicationsAPI.apply(jobId, cl);
+        document.getElementById('applyModal').classList.remove('open');
+        showToast('Application submitted! Good luck! 🎉', 'success');
+
+        // Update apply button to show applied
+        const applyBtn = document.getElementById('applyNowBtn');
+        if (applyBtn) {
+            applyBtn.disabled = true;
+            applyBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Applied';
+            applyBtn.style.background = '#16a34a';
+        }
+    } catch (err) {
+        showToast(err.message || 'Application failed', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Application';
+    }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadJob();
+</script>
+</body>
+</html>

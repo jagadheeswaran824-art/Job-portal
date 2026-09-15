@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse companies hiring on JobPortal. Discover open roles at top employers.">
+    <title>Companies | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background:#f6f8fc; }
+        .page-hero {
+            background:linear-gradient(135deg,#fff,#f5f7ff);
+            border-bottom:1px solid #e5e7eb;
+            padding:60px 20px 40px; text-align:center;
+        }
+        .page-hero h1 { font-size:clamp(28px,5vw,48px); font-weight:900; margin-bottom:10px; }
+        .page-hero h1 span { color:#4f46e5; }
+        .page-hero p { color:#6b7280; font-size:15px; max-width:520px; margin:0 auto 28px; }
+        .search-wrap {
+            max-width:520px; margin:0 auto;
+            display:flex; gap:10px;
+        }
+        .search-wrap input {
+            flex:1; border:1.5px solid #e5e7eb; border-radius:11px; padding:12px 16px;
+            font-size:14px; font-family:inherit; outline:none; transition:.2s; background:#fff;
+        }
+        .search-wrap input:focus { border-color:#4f46e5; box-shadow:0 0 0 3px rgba(79,70,229,.1); }
+        .search-wrap button {
+            border:none; border-radius:11px; padding:0 22px;
+            background:#4f46e5; color:#fff; font-weight:700; font-size:13px;
+            cursor:pointer; transition:.2s;
+        }
+        .search-wrap button:hover { background:#4338ca; }
+        .companies-layout {
+            max-width:1200px; margin:0 auto; padding:40px 20px 70px;
+        }
+        .layout-header {
+            display:flex; justify-content:space-between; align-items:center;
+            margin-bottom:24px; flex-wrap:wrap; gap:12px;
+        }
+        .layout-header h2 { font-size:20px; font-weight:800; }
+        .layout-header p { color:#6b7280; font-size:13px; margin-top:4px; }
+        .companies-grid {
+            display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px;
+        }
+        .company-card {
+            background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+            padding:24px; text-decoration:none; color:inherit;
+            display:flex; flex-direction:column; gap:14px;
+            transition:.22s;
+        }
+        .company-card:hover { transform:translateY(-3px); box-shadow:0 14px 36px rgba(15,23,42,.08); border-color:#c7d2fe; }
+        .co-logo {
+            width:56px; height:56px; border-radius:14px;
+            display:grid; place-items:center;
+            font-size:20px; font-weight:800; flex-shrink:0;
+        }
+        .co-name { font-size:16px; font-weight:700; color:#111827; }
+        .co-location { font-size:12px; color:#6b7280; display:flex; align-items:center; gap:5px; margin-top:3px; }
+        .co-jobs {
+            display:inline-flex; align-items:center; gap:6px;
+            padding:6px 12px; border-radius:50px;
+            background:#eef2ff; color:#4f46e5;
+            font-size:12px; font-weight:700; align-self:flex-start;
+        }
+        .empty-state {
+            text-align:center; padding:70px 20px; color:#9ca3af;
+            background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+        }
+        .empty-state i { font-size:44px; color:#c7d2fe; margin-bottom:14px; display:block; }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="companies.html" class="active">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Get Started</a>
+        </div>
+        <button class="mobile-menu" id="mobileMenu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="section-badge"><i class="fa-solid fa-building"></i> Top Employers</div>
+    <h1>Companies <span>Hiring Now</span></h1>
+    <p>Explore companies with active job listings and find your perfect workplace.</p>
+    <div class="search-wrap">
+        <input type="text" id="coSearch" placeholder="Search companies…" autocomplete="off">
+        <button id="coSearchBtn"><i class="fa-solid fa-search"></i></button>
+    </div>
+</section>
+
+<div class="companies-layout">
+    <div class="layout-header">
+        <div>
+            <h2>All Companies</h2>
+            <p id="coCount">Loading…</p>
+        </div>
+    </div>
+
+    <div class="companies-grid" id="companiesGrid">
+        <!-- Skeleton -->
+        ${Array(8).fill(0).map(() => `
+        <div class="company-card" style="cursor:default;">
+            <div class="skeleton" style="width:56px;height:56px;border-radius:14px;"></div>
+            <div>
+                <div class="skeleton" style="height:16px;width:65%;margin-bottom:8px;"></div>
+                <div class="skeleton" style="height:12px;width:40%;"></div>
+            </div>
+            <div class="skeleton" style="height:28px;width:120px;border-radius:50px;"></div>
+        </div>`).join('')}
+    </div>
+
+    <div class="empty-state" id="coEmpty" style="display:none;">
+        <i class="fa-solid fa-building"></i>
+        <h3>No companies found</h3>
+        <p>Try a different search term.</p>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo" style="color:white;margin-bottom:14px;display:inline-flex;">
+                <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+                Job<span>Portal</span>
+            </a>
+            <p>Connecting talent with opportunity across India.</p>
+            <div class="social-links">
+                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h4>For Job Seekers</h4>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="profile.html">My Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="footer-column">
+            <h4>For Employers</h4>
+            <a href="post-job.html">Post a Job</a>
+            <a href="dashboard.html">Employer Dashboard</a>
+        </div>
+        <div class="footer-column">
+            <h4>Company</h4>
+            <a href="about.html">About Us</a>
+            <a href="companies.html">Companies</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p>&copy; 2026 JobPortal. All rights reserved.</p>
+            <p>Connecting talent with opportunity.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+let allCompanies = [];
+
+function brandColor(name) {
+    const p = [
+        {bg:'#eef2ff',text:'#4f46e5'},{bg:'#fef3c7',text:'#d97706'},
+        {bg:'#dcfce7',text:'#16a34a'},{bg:'#dbeafe',text:'#2563eb'},
+        {bg:'#ede9fe',text:'#7c3aed'},{bg:'#fce7f3',text:'#be185d'},
+        {bg:'#f0fdf4',text:'#15803d'},{bg:'#fff7ed',text:'#c2410c'},
+    ];
+    if (!name) return p[0];
+    let h = 0;
+    for (let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h);
+    return p[Math.abs(h)%p.length];
+}
+
+async function loadCompanies() {
+    try {
+        const res = await JobsAPI.companies();
+        allCompanies = res.data || [];
+        renderCompanies(allCompanies);
+    } catch (err) {
+        document.getElementById('companiesGrid').innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:60px;color:#6b7280;">
+                <p>Failed to load companies. Please refresh the page.</p>
+            </div>`;
+    }
+}
+
+function renderCompanies(list) {
+    const grid  = document.getElementById('companiesGrid');
+    const empty = document.getElementById('coEmpty');
+    const count = document.getElementById('coCount');
+
+    count.textContent = `${list.length} compan${list.length !== 1 ? 'ies' : 'y'} found`;
+
+    if (!list.length) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+
+    grid.innerHTML = list.map(co => {
+        const c       = brandColor(co.company_name);
+        const initial = co.company_name ? co.company_name[0].toUpperCase() : '?';
+        return `
+        <a href="jobs.html?q=${encodeURIComponent(co.company_name)}" class="company-card">
+            <div class="co-logo" style="background:${c.bg};color:${c.text};">${escHtml(initial)}</div>
+            <div>
+                <div class="co-name">${escHtml(co.company_name)}</div>
+                ${co.location ? `<div class="co-location"><i class="fa-solid fa-location-dot" style="color:#4f46e5;"></i>${escHtml(co.location)}</div>` : ''}
+            </div>
+            <span class="co-jobs">
+                <i class="fa-solid fa-briefcase"></i>
+                ${co.job_count} open ${co.job_count === 1 ? 'role' : 'roles'}
+            </span>
+        </a>`;
+    }).join('');
+}
+
+// Search
+document.getElementById('coSearchBtn').addEventListener('click', filterCompanies);
+document.getElementById('coSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') filterCompanies();
+});
+document.getElementById('coSearch').addEventListener('input', filterCompanies);
+
+function filterCompanies() {
+    const q = document.getElementById('coSearch').value.toLowerCase().trim();
+    const filtered = q
+        ? allCompanies.filter(co => co.company_name.toLowerCase().includes(q))
+        : allCompanies;
+    renderCompanies(filtered);
+}
+
+loadCompanies();
+</script>
+</body>
+</html>

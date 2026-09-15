@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background:#f6f8fc; }
+        .profile-layout {
+            max-width:1100px; margin:0 auto; padding:36px 20px 70px;
+            display:grid; grid-template-columns:280px 1fr; gap:26px;
+        }
+        /* Sidebar */
+        .profile-sidebar { height:fit-content; position:sticky; top:80px; }
+        .profile-card {
+            background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+            padding:28px; text-align:center; margin-bottom:16px;
+        }
+        .avatar-circle {
+            width:76px; height:76px; border-radius:50%;
+            background:linear-gradient(135deg,#4f46e5,#7c3aed);
+            color:#fff; font-size:26px; font-weight:800;
+            display:grid; place-items:center; margin:0 auto 14px;
+        }
+        .profile-card h2 { font-size:17px; font-weight:700; margin-bottom:4px; }
+        .profile-card .headline { font-size:13px; color:#6b7280; margin-bottom:14px; min-height:20px; }
+        .profile-card .role-badge {
+            display:inline-block; padding:4px 12px; border-radius:50px;
+            background:#eef2ff; color:#4f46e5; font-size:11px; font-weight:700; text-transform:capitalize;
+        }
+        .sidebar-nav { background:#fff; border:1px solid #e5e7eb; border-radius:18px; padding:10px; overflow:hidden; }
+        .sidebar-nav a {
+            display:flex; align-items:center; gap:10px; padding:11px 14px;
+            border-radius:10px; font-size:13px; font-weight:600; color:#6b7280;
+            text-decoration:none; transition:.18s; cursor:pointer;
+        }
+        .sidebar-nav a i { width:15px; text-align:center; color:#9ca3af; }
+        .sidebar-nav a:hover { background:#f9fafb; color:#111827; }
+        .sidebar-nav a.active { background:#eef2ff; color:#4f46e5; }
+        .sidebar-nav a.active i { color:#4f46e5; }
+        .nav-div { height:1px; background:#f3f4f6; margin:6px 0; }
+        /* Section cards */
+        .section-card {
+            background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+            padding:26px; margin-bottom:22px;
+        }
+        .section-card:last-child { margin-bottom:0; }
+        .sc-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
+        .sc-head h2 { font-size:17px; font-weight:700; display:flex; align-items:center; gap:9px; }
+        .sc-head h2 i { color:#4f46e5; font-size:15px; }
+        /* Forms */
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .form-grid .full { grid-column:1/-1; }
+        .fg { display:flex; flex-direction:column; gap:6px; }
+        .fg label { font-size:12px; font-weight:700; color:#374151; }
+        .fg input, .fg select, .fg textarea {
+            border:1.5px solid #e5e7eb; border-radius:10px; padding:10px 13px;
+            font-size:13px; font-family:inherit; outline:none; transition:.2s;
+            color:#111827; background:#fff;
+        }
+        .fg input:focus, .fg select:focus, .fg textarea:focus {
+            border-color:#4f46e5; box-shadow:0 0 0 3px rgba(79,70,229,.1);
+        }
+        .fg textarea { resize:vertical; min-height:90px; }
+        .btn-save {
+            border:none; border-radius:10px; padding:11px 22px;
+            background:#4f46e5; color:#fff; font-size:13px; font-weight:700;
+            cursor:pointer; transition:.2s; display:inline-flex; align-items:center; gap:8px;
+        }
+        .btn-save:hover { background:#4338ca; }
+        .btn-save:disabled { opacity:.65; cursor:not-allowed; }
+        .btn-outline {
+            border:1.5px solid #e5e7eb; border-radius:10px; padding:9px 18px;
+            background:#fff; color:#374151; font-size:13px; font-weight:600;
+            cursor:pointer; transition:.2s; display:inline-flex; align-items:center; gap:7px;
+        }
+        .btn-outline:hover { border-color:#4f46e5; color:#4f46e5; }
+        .btn-danger-sm {
+            border:none; background:none; color:#dc2626; font-size:12px;
+            cursor:pointer; padding:4px 8px; border-radius:6px; transition:.15s;
+        }
+        .btn-danger-sm:hover { background:#fee2e2; }
+        /* Tag chips */
+        .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+        .chip {
+            display:inline-flex; align-items:center; gap:6px;
+            padding:6px 12px; border-radius:50px;
+            background:#eef2ff; color:#4f46e5; font-size:12px; font-weight:700;
+        }
+        .chip button { border:none; background:none; color:#818cf8; cursor:pointer; font-size:13px; line-height:1; padding:0; }
+        .chip button:hover { color:#dc2626; }
+        /* Timeline entries */
+        .timeline-item {
+            border-left:2px solid #e5e7eb; padding:0 0 22px 20px; position:relative;
+        }
+        .timeline-item:last-child { padding-bottom:0; }
+        .timeline-item::before {
+            content:''; position:absolute; left:-6px; top:4px;
+            width:10px; height:10px; border-radius:50%;
+            background:#4f46e5; border:2px solid #fff;
+        }
+        .ti-head { display:flex; justify-content:space-between; align-items:flex-start; }
+        .ti-head h4 { font-size:14px; font-weight:700; }
+        .ti-head p { font-size:12px; color:#6b7280; margin-top:2px; }
+        .ti-date { font-size:11px; color:#94a3b8; white-space:nowrap; margin-left:10px; }
+        .ti-desc { font-size:13px; color:#6b7280; margin-top:6px; line-height:1.6; }
+        /* Add form toggle */
+        .add-form {
+            background:#f8fafc; border:1.5px dashed #c7d2fe; border-radius:14px;
+            padding:20px; margin-top:16px; display:none;
+        }
+        .add-form.open { display:block; }
+        /* Proficiency badge */
+        .prof-badge {
+            font-size:10px; font-weight:700; padding:2px 7px; border-radius:50px;
+        }
+        @media (max-width:900px) {
+            .profile-layout { grid-template-columns:1fr; }
+            .profile-sidebar { position:static; }
+        }
+        @media (max-width:600px) {
+            .form-grid { grid-template-columns:1fr; }
+            .form-grid .full { grid-column:1; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="dashboard.html" class="login-btn"><i class="fa-solid fa-gauge" style="margin-right:5px;"></i>Dashboard</a>
+            <button onclick="AuthAPI.logout()" class="register-btn" style="border:none;cursor:pointer;">Logout</button>
+        </div>
+        <button class="mobile-menu" id="mobileMenu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+</header>
+
+<div class="profile-layout">
+    <!-- SIDEBAR -->
+    <aside class="profile-sidebar">
+        <div class="profile-card">
+            <div class="avatar-circle" id="avatarCircle">?</div>
+            <h2 id="sidebarName">Loading…</h2>
+            <p class="headline" id="sidebarHeadline"></p>
+            <span class="role-badge" id="sidebarRole">—</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="active" onclick="showSection('basicInfo')"><i class="fa-solid fa-user"></i> Basic Info</a>
+            <a onclick="showSection('skills')"><i class="fa-solid fa-code"></i> Skills</a>
+            <a onclick="showSection('experience')"><i class="fa-solid fa-briefcase"></i> Experience</a>
+            <a onclick="showSection('education')"><i class="fa-solid fa-graduation-cap"></i> Education</a>
+            <div class="nav-div"></div>
+            <a href="dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="#" onclick="AuthAPI.logout();return false;" style="color:#dc2626;"><i class="fa-solid fa-right-from-bracket" style="color:#dc2626;"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+        <!-- Loading -->
+        <div id="profileLoading" class="section-card" style="text-align:center;padding:60px;">
+            <span class="spinner spinner-dark"></span><br><br>
+            <p style="color:#6b7280;margin-top:10px;">Loading your profile…</p>
+        </div>
+
+        <!-- BASIC INFO -->
+        <div id="secBasicInfo" class="section-card" style="display:none;">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-user"></i> Basic Information</h2>
+            </div>
+            <form id="basicInfoForm">
+                <div class="form-grid">
+                    <div class="fg full">
+                        <label>Full Name *</label>
+                        <input type="text" id="fullName" required placeholder="Your full name">
+                    </div>
+                    <div class="fg">
+                        <label>Email Address</label>
+                        <input type="email" id="emailField" disabled style="background:#f9fafb;color:#9ca3af;">
+                    </div>
+                    <div class="fg">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="fg full">
+                        <label>Professional Headline</label>
+                        <input type="text" id="headline" placeholder="e.g. Senior Frontend Developer at TechCorp">
+                    </div>
+                    <div class="fg full">
+                        <label>Bio</label>
+                        <textarea id="bio" placeholder="A short bio about yourself…"></textarea>
+                    </div>
+                    <div class="fg">
+                        <label>Location</label>
+                        <input type="text" id="location" placeholder="Chennai, Tamil Nadu">
+                    </div>
+                    <div class="fg">
+                        <label>Years of Experience</label>
+                        <input type="number" id="experienceYears" min="0" max="50" placeholder="3">
+                    </div>
+                    <div class="fg">
+                        <label>Expected Salary (₹/year)</label>
+                        <input type="number" id="expectedSalary" min="0" placeholder="800000">
+                    </div>
+                    <div class="fg">
+                        <label>LinkedIn URL</label>
+                        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourname">
+                    </div>
+                    <div class="fg">
+                        <label>GitHub URL</label>
+                        <input type="url" id="github" placeholder="https://github.com/yourname">
+                    </div>
+                    <div class="fg">
+                        <label>Portfolio / Website</label>
+                        <input type="url" id="website" placeholder="https://yoursite.com">
+                    </div>
+                </div>
+                <div style="margin-top:20px;display:flex;align-items:center;gap:12px;">
+                    <button type="submit" class="btn-save" id="saveBasicBtn">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                    </button>
+                    <span id="basicSaveStatus" style="font-size:13px;color:#16a34a;display:none;">
+                        <i class="fa-solid fa-circle-check"></i> Saved!
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <!-- SKILLS -->
+        <div id="secSkills" class="section-card" style="display:none;">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-code"></i> Skills</h2>
+                <button class="btn-outline" id="toggleAddSkill">
+                    <i class="fa-solid fa-plus"></i> Add Skill
+                </button>
+            </div>
+            <div class="chips" id="skillChips">
+                <span style="color:#9ca3af;font-size:13px;">No skills added yet.</span>
+            </div>
+            <div class="add-form" id="addSkillForm">
+                <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;">
+                    <div class="fg">
+                        <label>Skill Name *</label>
+                        <input type="text" id="newSkillName" placeholder="e.g. React, Python…">
+                    </div>
+                    <div class="fg">
+                        <label>Proficiency</label>
+                        <select id="newSkillLevel">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate" selected>Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+                    <button class="btn-save" id="saveSkillBtn" type="button">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div id="secExperience" class="section-card" style="display:none;">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-briefcase"></i> Work Experience</h2>
+                <button class="btn-outline" id="toggleAddExp">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div id="expList"></div>
+            <div class="add-form" id="addExpForm">
+                <div class="form-grid">
+                    <div class="fg">
+                        <label>Company *</label>
+                        <input type="text" id="expCompany" placeholder="Company name">
+                    </div>
+                    <div class="fg">
+                        <label>Position / Title *</label>
+                        <input type="text" id="expPosition" placeholder="e.g. Senior Developer">
+                    </div>
+                    <div class="fg">
+                        <label>Start Date *</label>
+                        <input type="date" id="expStart">
+                    </div>
+                    <div class="fg">
+                        <label>End Date</label>
+                        <input type="date" id="expEnd">
+                    </div>
+                    <div class="fg full" style="display:flex;align-items:center;gap:8px;">
+                        <input type="checkbox" id="expCurrent" style="accent-color:#4f46e5;">
+                        <label for="expCurrent" style="margin:0;cursor:pointer;">I currently work here</label>
+                    </div>
+                    <div class="fg full">
+                        <label>Description</label>
+                        <textarea id="expDesc" placeholder="Describe your role and responsibilities…"></textarea>
+                    </div>
+                </div>
+                <button class="btn-save" id="saveExpBtn" type="button" style="margin-top:14px;">
+                    <i class="fa-solid fa-plus"></i> Add Experience
+                </button>
+            </div>
+        </div>
+
+        <!-- EDUCATION -->
+        <div id="secEducation" class="section-card" style="display:none;">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+                <button class="btn-outline" id="toggleAddEdu">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div id="eduList"></div>
+            <div class="add-form" id="addEduForm">
+                <div class="form-grid">
+                    <div class="fg full">
+                        <label>Institution *</label>
+                        <input type="text" id="eduInstitution" placeholder="University / College name">
+                    </div>
+                    <div class="fg">
+                        <label>Degree *</label>
+                        <input type="text" id="eduDegree" placeholder="e.g. B.Tech, MBA">
+                    </div>
+                    <div class="fg">
+                        <label>Field of Study</label>
+                        <input type="text" id="eduField" placeholder="e.g. Computer Science">
+                    </div>
+                    <div class="fg">
+                        <label>Start Year</label>
+                        <input type="date" id="eduStart">
+                    </div>
+                    <div class="fg">
+                        <label>End Year</label>
+                        <input type="date" id="eduEnd">
+                    </div>
+                </div>
+                <button class="btn-save" id="saveEduBtn" type="button" style="margin-top:14px;">
+                    <i class="fa-solid fa-plus"></i> Add Education
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+Auth.redirectIfGuest();
+let profileData = null;
+const user = Auth.getUser();
+
+// ── Section navigation ────────────────────────────────────────────────────────
+function showSection(name) {
+    ['secBasicInfo','secSkills','secExperience','secEducation'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+    });
+    document.getElementById('sec' + name.charAt(0).toUpperCase() + name.slice(1)).style.display = 'block';
+
+    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+    const map = { basicInfo:0, skills:1, experience:2, education:3 };
+    const links = document.querySelectorAll('.sidebar-nav a');
+    if (links[map[name]]) links[map[name]].classList.add('active');
+
+    // scroll to top on mobile
+    if (window.innerWidth < 900) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Load profile ──────────────────────────────────────────────────────────────
+async function loadProfile() {
+    try {
+        const res = await ProfileAPI.get();
+        profileData = res.data;
+        populateBasicInfo(profileData);
+        renderSkills(profileData.skills || []);
+        renderExperience(profileData.experience || []);
+        renderEducation(profileData.education || []);
+
+        // Update sidebar
+        const initials = (profileData.full_name || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+        document.getElementById('avatarCircle').textContent = initials;
+        document.getElementById('sidebarName').textContent  = profileData.full_name || '';
+        document.getElementById('sidebarHeadline').textContent = profileData.profile?.headline || '';
+        document.getElementById('sidebarRole').textContent  = (profileData.role || '').replace('_',' ');
+
+        document.getElementById('profileLoading').style.display = 'none';
+        showSection('basicInfo');
+    } catch (err) {
+        document.getElementById('profileLoading').innerHTML = `
+            <i class="fa-solid fa-triangle-exclamation" style="font-size:36px;color:#fbbf24;display:block;margin-bottom:12px;"></i>
+            <p style="color:#6b7280;">${escHtml(err.message || 'Failed to load profile')}</p>
+            <button onclick="location.reload()" style="margin-top:14px;" class="btn-save">Retry</button>`;
+    }
+}
+
+// ── Basic Info ────────────────────────────────────────────────────────────────
+function populateBasicInfo(d) {
+    const p = d.profile || {};
+    document.getElementById('fullName').value       = d.full_name    || '';
+    document.getElementById('emailField').value     = d.email        || '';
+    document.getElementById('phone').value          = d.phone        || '';
+    document.getElementById('headline').value       = p.headline     || '';
+    document.getElementById('bio').value            = p.bio          || '';
+    document.getElementById('location').value       = p.location     || '';
+    document.getElementById('experienceYears').value= p.experience_years || '';
+    document.getElementById('expectedSalary').value = p.expected_salary  || '';
+    document.getElementById('linkedin').value       = p.linkedin     || '';
+    document.getElementById('github').value         = p.github       || '';
+    document.getElementById('website').value        = p.website      || '';
+}
+
+document.getElementById('basicInfoForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('saveBasicBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Saving…';
+
+    const payload = {
+        full_name:        document.getElementById('fullName').value.trim(),
+        phone:            document.getElementById('phone').value.trim(),
+        headline:         document.getElementById('headline').value.trim(),
+        bio:              document.getElementById('bio').value.trim(),
+        location:         document.getElementById('location').value.trim(),
+        experience_years: parseInt(document.getElementById('experienceYears').value) || 0,
+        expected_salary:  parseFloat(document.getElementById('expectedSalary').value) || null,
+        linkedin:         document.getElementById('linkedin').value.trim(),
+        github:           document.getElementById('github').value.trim(),
+        website:          document.getElementById('website').value.trim(),
+    };
+
+    try {
+        await ProfileAPI.update(payload);
+        // Update sidebar headline
+        document.getElementById('sidebarName').textContent     = payload.full_name;
+        document.getElementById('sidebarHeadline').textContent = payload.headline;
+        // Update localStorage user
+        const u = Auth.getUser() || {};
+        Auth.setSession({ token: Auth.getToken(), user: { ...u, full_name: payload.full_name } });
+
+        const status = document.getElementById('basicSaveStatus');
+        status.style.display = 'inline-flex';
+        setTimeout(() => { status.style.display = 'none'; }, 3000);
+        showToast('Profile updated!', 'success');
+    } catch (err) {
+        showToast(err.message || 'Save failed', 'error');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Changes';
+});
+
+// ── Skills ────────────────────────────────────────────────────────────────────
+function profColor(level) {
+    return { beginner:'#dcfce7:#166534', intermediate:'#dbeafe:#1e40af',
+             advanced:'#ede9fe:#5b21b6', expert:'#fef3c7:#92400e' }[level] || '#f3f4f6:#374151';
+}
+
+function renderSkills(skills) {
+    const container = document.getElementById('skillChips');
+    if (!skills.length) {
+        container.innerHTML = '<span style="color:#9ca3af;font-size:13px;">No skills added yet.</span>';
+        return;
+    }
+    container.innerHTML = skills.map(s => {
+        const [bg,color] = profColor(s.proficiency_level).split(':');
+        return `
+        <span class="chip" style="background:${bg};color:${color};">
+            ${escHtml(s.skill_name)}
+            <span class="prof-badge" style="background:rgba(0,0,0,.08);color:inherit;">${escHtml(s.proficiency_level)}</span>
+            <button onclick="removeSkill(${s.id})" title="Remove skill">×</button>
+        </span>`;
+    }).join('');
+}
+
+document.getElementById('toggleAddSkill').addEventListener('click', () => {
+    document.getElementById('addSkillForm').classList.toggle('open');
+    document.getElementById('newSkillName').focus();
+});
+
+document.getElementById('saveSkillBtn').addEventListener('click', async () => {
+    const name  = document.getElementById('newSkillName').value.trim();
+    const level = document.getElementById('newSkillLevel').value;
+    if (!name) { showToast('Enter a skill name', 'warning'); return; }
+
+    const btn = document.getElementById('saveSkillBtn');
+    btn.disabled = true;
+    try {
+        const res = await ProfileAPI.addSkill(name, level);
+        // Re-fetch to get updated list
+        const pRes = await ProfileAPI.get();
+        renderSkills(pRes.data.skills || []);
+        document.getElementById('newSkillName').value = '';
+        document.getElementById('addSkillForm').classList.remove('open');
+        showToast('Skill added!', 'success');
+    } catch (err) { showToast(err.message || 'Failed to add skill', 'error'); }
+    btn.disabled = false;
+});
+
+async function removeSkill(id) {
+    try {
+        await ProfileAPI.removeSkill(id);
+        const res = await ProfileAPI.get();
+        renderSkills(res.data.skills || []);
+        showToast('Skill removed', 'success');
+    } catch (err) { showToast(err.message || 'Failed', 'error'); }
+}
+
+// ── Experience ────────────────────────────────────────────────────────────────
+function fmtDate(d) {
+    if (!d) return 'Present';
+    return new Date(d).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+}
+
+function renderExperience(list) {
+    const container = document.getElementById('expList');
+    if (!list.length) {
+        container.innerHTML = '<p style="color:#9ca3af;font-size:13px;padding:8px 0;">No experience added yet.</p>';
+        return;
+    }
+    container.innerHTML = list.map(e => `
+    <div class="timeline-item">
+        <div class="ti-head">
+            <div>
+                <h4>${escHtml(e.position)}</h4>
+                <p>${escHtml(e.company)}</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span class="ti-date">${fmtDate(e.start_date)} – ${e.is_current ? 'Present' : fmtDate(e.end_date)}</span>
+                <button class="btn-danger-sm" onclick="removeExp(${e.id})" title="Remove"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+        ${e.description ? `<p class="ti-desc">${escHtml(e.description)}</p>` : ''}
+    </div>`).join('');
+}
+
+document.getElementById('toggleAddExp').addEventListener('click', () => {
+    document.getElementById('addExpForm').classList.toggle('open');
+});
+
+document.getElementById('expCurrent').addEventListener('change', function() {
+    document.getElementById('expEnd').disabled = this.checked;
+    if (this.checked) document.getElementById('expEnd').value = '';
+});
+
+document.getElementById('saveExpBtn').addEventListener('click', async () => {
+    const company  = document.getElementById('expCompany').value.trim();
+    const position = document.getElementById('expPosition').value.trim();
+    const start    = document.getElementById('expStart').value;
+    if (!company || !position || !start) { showToast('Company, position and start date are required', 'warning'); return; }
+
+    const btn = document.getElementById('saveExpBtn');
+    btn.disabled = true;
+    try {
+        await ProfileAPI.addExperience({
+            company, position,
+            description: document.getElementById('expDesc').value.trim(),
+            start_date:  start,
+            end_date:    document.getElementById('expEnd').value || null,
+            is_current:  document.getElementById('expCurrent').checked,
+        });
+        const res = await ProfileAPI.get();
+        renderExperience(res.data.experience || []);
+        document.getElementById('addExpForm').classList.remove('open');
+        ['expCompany','expPosition','expStart','expEnd','expDesc'].forEach(id => document.getElementById(id).value='');
+        document.getElementById('expCurrent').checked = false;
+        showToast('Experience added!', 'success');
+    } catch (err) { showToast(err.message || 'Failed', 'error'); }
+    btn.disabled = false;
+});
+
+async function removeExp(id) {
+    try {
+        await ProfileAPI.removeExperience(id);
+        const res = await ProfileAPI.get();
+        renderExperience(res.data.experience || []);
+        showToast('Experience removed', 'success');
+    } catch (err) { showToast(err.message || 'Failed', 'error'); }
+}
+
+// ── Education ─────────────────────────────────────────────────────────────────
+function renderEducation(list) {
+    const container = document.getElementById('eduList');
+    if (!list.length) {
+        container.innerHTML = '<p style="color:#9ca3af;font-size:13px;padding:8px 0;">No education added yet.</p>';
+        return;
+    }
+    container.innerHTML = list.map(e => `
+    <div class="timeline-item">
+        <div class="ti-head">
+            <div>
+                <h4>${escHtml(e.institution)}</h4>
+                <p>${escHtml(e.degree)}${e.field_of_study ? ' · ' + escHtml(e.field_of_study) : ''}</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                ${e.start_date || e.end_date ? `<span class="ti-date">${fmtDate(e.start_date)} – ${fmtDate(e.end_date)}</span>` : ''}
+                <button class="btn-danger-sm" onclick="removeEdu(${e.id})" title="Remove"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+    </div>`).join('');
+}
+
+document.getElementById('toggleAddEdu').addEventListener('click', () => {
+    document.getElementById('addEduForm').classList.toggle('open');
+});
+
+document.getElementById('saveEduBtn').addEventListener('click', async () => {
+    const institution = document.getElementById('eduInstitution').value.trim();
+    const degree      = document.getElementById('eduDegree').value.trim();
+    if (!institution || !degree) { showToast('Institution and degree are required', 'warning'); return; }
+
+    const btn = document.getElementById('saveEduBtn');
+    btn.disabled = true;
+    try {
+        await ProfileAPI.addEducation({
+            institution, degree,
+            field_of_study: document.getElementById('eduField').value.trim(),
+            start_date:     document.getElementById('eduStart').value || null,
+            end_date:       document.getElementById('eduEnd').value   || null,
+        });
+        const res = await ProfileAPI.get();
+        renderEducation(res.data.education || []);
+        document.getElementById('addEduForm').classList.remove('open');
+        ['eduInstitution','eduDegree','eduField','eduStart','eduEnd'].forEach(id => document.getElementById(id).value='');
+        showToast('Education added!', 'success');
+    } catch (err) { showToast(err.message || 'Failed', 'error'); }
+    btn.disabled = false;
+});
+
+async function removeEdu(id) {
+    try {
+        await ProfileAPI.removeEducation(id);
+        const res = await ProfileAPI.get();
+        renderEducation(res.data.education || []);
+        showToast('Education removed', 'success');
+    } catch (err) { showToast(err.message || 'Failed', 'error'); }
+}
+
+loadProfile();
+</script>
+</body>
+</html>

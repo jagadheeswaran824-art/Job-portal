@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #f6f8fc; }
+
+        /* ── Layout ── */
+        .dash-layout {
+            max-width: 1240px; margin: 0 auto; padding: 36px 20px 70px;
+            display: grid; grid-template-columns: 240px 1fr; gap: 28px;
+        }
+
+        /* ── Sidebar ── */
+        .dash-sidebar {
+            height: fit-content; position: sticky; top: 80px;
+        }
+        .user-card {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
+            padding: 22px; text-align: center; margin-bottom: 16px;
+        }
+        .user-avatar {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: linear-gradient(135deg,#4f46e5,#7c3aed);
+            color: #fff; font-size: 22px; font-weight: 800;
+            display: grid; place-items: center; margin: 0 auto 12px;
+        }
+        .user-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .user-card p  { font-size: 12px; color: #6b7280; }
+        .user-role {
+            display: inline-block; margin-top: 8px;
+            padding: 4px 10px; border-radius: 50px;
+            background: #eef2ff; color: #4f46e5;
+            font-size: 11px; font-weight: 700; text-transform: capitalize;
+        }
+        .dash-nav {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
+            padding: 10px; overflow: hidden;
+        }
+        .dash-nav a {
+            display: flex; align-items: center; gap: 11px;
+            padding: 11px 14px; border-radius: 10px;
+            font-size: 13px; font-weight: 600; color: #6b7280;
+            text-decoration: none; transition: .18s;
+        }
+        .dash-nav a i { width: 16px; text-align: center; color: #9ca3af; }
+        .dash-nav a:hover { background: #f9fafb; color: #111827; }
+        .dash-nav a.active { background: #eef2ff; color: #4f46e5; }
+        .dash-nav a.active i { color: #4f46e5; }
+        .nav-divider { height: 1px; background: #f3f4f6; margin: 6px 0; }
+
+        /* ── Main ── */
+        .dash-main {}
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 26px;
+        }
+        .page-header h1 { font-size: 24px; font-weight: 800; }
+        .page-header p  { color: #6b7280; font-size: 13px; margin-top: 4px; }
+
+        /* ── Stat cards ── */
+        .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 26px; }
+        .stat-tile {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+            padding: 20px; transition: .22s;
+        }
+        .stat-tile:hover { box-shadow: 0 8px 24px rgba(15,23,42,.07); }
+        .st-icon {
+            width: 42px; height: 42px; border-radius: 11px;
+            display: grid; place-items: center; font-size: 18px;
+            margin-bottom: 14px;
+        }
+        .st-val { font-size: 28px; font-weight: 800; color: #111827; line-height: 1; }
+        .st-label { font-size: 12px; color: #6b7280; margin-top: 5px; }
+
+        /* ── Section card ── */
+        .section-card {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
+            padding: 24px; margin-bottom: 22px;
+        }
+        .section-card:last-child { margin-bottom: 0; }
+        .sc-head {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+        .sc-head h2 { font-size: 17px; font-weight: 700; }
+        .sc-head a  { font-size: 12px; color: #4f46e5; font-weight: 700; text-decoration: none; }
+        .sc-head a:hover { text-decoration: underline; }
+
+        /* ── Application rows ── */
+        .app-row {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
+        }
+        .app-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .app-logo {
+            width: 42px; height: 42px; border-radius: 10px;
+            display: grid; place-items: center;
+            font-size: 13px; font-weight: 800; flex-shrink: 0;
+        }
+        .app-info { flex: 1; min-width: 0; }
+        .app-info h4 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .app-info p  { font-size: 11px; color: #6b7280; margin-top: 2px; }
+        .app-meta { font-size: 11px; color: #94a3b8; white-space: nowrap; }
+        .status-badge {
+            padding: 4px 9px; border-radius: 50px;
+            font-size: 11px; font-weight: 700; text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        /* ── Job rows (employer) ── */
+        .job-row {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
+        }
+        .job-row:last-child { border-bottom: none; }
+        .jr-info { flex: 1; min-width: 0; }
+        .jr-info h4 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .jr-info p  { font-size: 11px; color: #6b7280; margin-top: 2px; }
+        .jr-stat { font-size: 12px; color: #6b7280; text-align: right; }
+        .jr-stat strong { display: block; font-size: 16px; font-weight: 800; color: #111827; }
+
+        /* ── Saved job rows ── */
+        .saved-row {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
+        }
+        .saved-row:last-child { border-bottom: none; }
+        .saved-info { flex: 1; min-width: 0; }
+        .saved-info h4 { font-size: 13px; font-weight: 700; }
+        .saved-info p  { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+        /* ── Empty state ── */
+        .dash-empty {
+            text-align: center; padding: 40px 20px; color: #9ca3af;
+        }
+        .dash-empty i { font-size: 32px; margin-bottom: 10px; display: block; }
+        .dash-empty p { font-size: 13px; }
+
+        /* ── Quick actions ── */
+        .quick-actions {
+            display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-bottom: 22px;
+        }
+        .qa-btn {
+            display: flex; align-items: center; gap: 12px;
+            padding: 16px; border-radius: 14px;
+            background: #fff; border: 1px solid #e5e7eb;
+            text-decoration: none; color: #374151;
+            font-size: 13px; font-weight: 600; transition: .2s;
+        }
+        .qa-btn i {
+            width: 36px; height: 36px; border-radius: 9px;
+            display: grid; place-items: center; font-size: 15px; flex-shrink: 0;
+        }
+        .qa-btn:hover { border-color: #c7d2fe; background: #fafbff; color: #4f46e5; }
+        .qa-btn:hover i { background: #eef2ff !important; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .dash-layout { grid-template-columns: 1fr; }
+            .dash-sidebar { position: static; }
+            .stats-row { grid-template-columns: repeat(2,1fr); }
+        }
+        @media (max-width: 500px) {
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .quick-actions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Get Started</a>
+        </div>
+        <button class="mobile-menu" id="mobileMenu" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<div class="dash-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+        <div class="user-card">
+            <div class="user-avatar" id="userAvatar">?</div>
+            <h3 id="userName">Loading…</h3>
+            <p id="userEmail"></p>
+            <span class="user-role" id="userRole">—</span>
+        </div>
+        <nav class="dash-nav" id="dashNav">
+            <!-- Populated by JS based on role -->
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main" id="dashMain">
+        <!-- Populated by JS -->
+        <div style="display:flex;align-items:center;justify-content:center;padding:80px;gap:14px;color:#6b7280;">
+            <span class="spinner spinner-dark"></span> Loading dashboard…
+        </div>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+// ── Guard: must be logged in ──────────────────────────────────────────────────
+Auth.redirectIfGuest();
+const user = Auth.getUser();
+
+// ── Populate sidebar user card ─────────────────────────────────────────────────
+if (user) {
+    const initials = user.full_name
+        ? user.full_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
+        : '?';
+    document.getElementById('userAvatar').textContent = initials;
+    document.getElementById('userName').textContent   = user.full_name || 'User';
+    document.getElementById('userEmail').textContent  = user.email || '';
+    document.getElementById('userRole').textContent   = (user.role || '').replace('_', ' ');
+}
+
+// ── Sidebar nav (role-aware) ──────────────────────────────────────────────────
+function buildSidebarNav(role) {
+    const isEmployer = role === 'employer' || role === 'admin';
+    const nav = document.getElementById('dashNav');
+    nav.innerHTML = `
+        <a href="dashboard.html" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        ${isEmployer ? `
+        <a href="post-job.html"><i class="fa-solid fa-plus-circle"></i> Post a Job</a>
+        ` : `
+        <a href="jobs.html"><i class="fa-solid fa-magnifying-glass"></i> Find Jobs</a>
+        `}
+        <a href="profile.html"><i class="fa-solid fa-user"></i> My Profile</a>
+        <div class="nav-divider"></div>
+        <a href="#" onclick="AuthAPI.logout();return false;" style="color:#dc2626;">
+            <i class="fa-solid fa-right-from-bracket" style="color:#dc2626;"></i> Logout
+        </a>`;
+}
+
+// ── Brand color ───────────────────────────────────────────────────────────────
+function brandColor(name) {
+    const p = [
+        {bg:'#eef2ff',text:'#4f46e5'},{bg:'#fef3c7',text:'#d97706'},
+        {bg:'#dcfce7',text:'#16a34a'},{bg:'#dbeafe',text:'#2563eb'},
+        {bg:'#ede9fe',text:'#7c3aed'},{bg:'#fce7f3',text:'#be185d'},
+    ];
+    if (!name) return p[0];
+    let h = 0;
+    for (let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h);
+    return p[Math.abs(h)%p.length];
+}
+
+// ── Status badge ──────────────────────────────────────────────────────────────
+function statusBadge(s) {
+    const map = {
+        pending:'#fef3c7:#92400e', reviewing:'#dbeafe:#1e40af',
+        shortlisted:'#d1fae5:#065f46', interview:'#ede9fe:#5b21b6',
+        offered:'#dcfce7:#14532d', rejected:'#fee2e2:#991b1b',
+        withdrawn:'#f3f4f6:#6b7280',
+    };
+    const [bg,color] = (map[s] || '#f3f4f6:#6b7280').split(':');
+    return `<span class="status-badge" style="background:${bg};color:${color};">${escHtml(s)}</span>`;
+}
+
+// ── Load dashboard data ────────────────────────────────────────────────────────
+async function loadDashboard() {
+    try {
+        const res  = await DashboardAPI.overview();
+        const data = res.data;
+        buildSidebarNav(data.role);
+        if (data.role === 'employer' || data.role === 'admin') {
+            renderEmployerDash(data);
+        } else {
+            renderSeekerDash(data);
+        }
+    } catch (err) {
+        document.getElementById('dashMain').innerHTML = `
+            <div style="text-align:center;padding:60px;color:#6b7280;">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size:40px;color:#fbbf24;margin-bottom:14px;display:block;"></i>
+                <h3 style="margin-bottom:8px;">Could not load dashboard</h3>
+                <p>${escHtml(err.message || 'Server error')}</p>
+                <button onclick="location.reload()" style="margin-top:16px;padding:10px 22px;border-radius:8px;border:none;background:#4f46e5;color:#fff;font-weight:700;cursor:pointer;">Retry</button>
+            </div>`;
+        buildSidebarNav(user?.role || 'job_seeker');
+    }
+}
+
+// ── Job Seeker Dashboard ──────────────────────────────────────────────────────
+function renderSeekerDash(data) {
+    const s = data.statistics;
+    const apps = data.recent_applications || [];
+    const saved = data.saved_jobs || [];
+
+    document.getElementById('dashMain').innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1>Welcome back, ${escHtml((user?.full_name || 'there').split(' ')[0])} 👋</h1>
+                <p>Here's what's happening with your job search.</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#eef2ff;color:#4f46e5;"><i class="fa-solid fa-paper-plane"></i></div>
+                <div class="st-val">${s.applications}</div>
+                <div class="st-label">Applications</div>
+            </div>
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#fef3c7;color:#d97706;"><i class="fa-solid fa-bookmark"></i></div>
+                <div class="st-val">${s.saved_jobs}</div>
+                <div class="st-label">Saved Jobs</div>
+            </div>
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#ede9fe;color:#7c3aed;"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="st-val">${s.interviews || 0}</div>
+                <div class="st-label">Interviews</div>
+            </div>
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#dcfce7;color:#16a34a;"><i class="fa-solid fa-briefcase"></i></div>
+                <div class="st-val">${s.total_jobs}+</div>
+                <div class="st-label">Active Jobs</div>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions">
+            <a href="jobs.html" class="qa-btn">
+                <i class="fa-solid fa-magnifying-glass" style="background:#eef2ff;color:#4f46e5;"></i>
+                <div><strong>Find Jobs</strong><br><small style="color:#6b7280;font-weight:400;">Browse new openings</small></div>
+            </a>
+            <a href="profile.html" class="qa-btn">
+                <i class="fa-solid fa-user-pen" style="background:#f0fdf4;color:#16a34a;"></i>
+                <div><strong>Update Profile</strong><br><small style="color:#6b7280;font-weight:400;">Improve your chances</small></div>
+            </a>
+        </div>
+
+        <!-- Recent Applications -->
+        <div class="section-card">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-clock-rotate-left" style="color:#4f46e5;margin-right:8px;"></i>Recent Applications</h2>
+                <a href="jobs.html">View all jobs</a>
+            </div>
+            ${apps.length ? apps.map(a => {
+                const c = brandColor(a.company_name);
+                return `
+                <div class="app-row">
+                    <div class="app-logo" style="background:${c.bg};color:${c.text};">${(a.company_name||'?')[0].toUpperCase()}</div>
+                    <div class="app-info">
+                        <h4>${escHtml(a.job_title)}</h4>
+                        <p>${escHtml(a.company_name)} · ${escHtml(a.location || '')} ${a.job_type ? '· ' + escHtml(a.job_type) : ''}</p>
+                    </div>
+                    ${statusBadge(a.status)}
+                    <div class="app-meta">${timeAgo(a.created_at)}</div>
+                </div>`;
+            }).join('') : `<div class="dash-empty"><i class="fa-solid fa-paper-plane"></i><p>No applications yet. <a href="jobs.html" style="color:#4f46e5;">Find jobs to apply</a></p></div>`}
+        </div>
+
+        <!-- Saved Jobs -->
+        ${saved.length ? `
+        <div class="section-card">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-bookmark" style="color:#4f46e5;margin-right:8px;"></i>Saved Jobs</h2>
+                <a href="jobs.html">Browse more</a>
+            </div>
+            ${saved.map(j => {
+                const c = brandColor(j.company_name);
+                return `
+                <div class="saved-row">
+                    <div class="app-logo" style="background:${c.bg};color:${c.text};">${(j.company_name||'?')[0].toUpperCase()}</div>
+                    <div class="saved-info">
+                        <h4>${escHtml(j.title)}</h4>
+                        <p>${escHtml(j.company_name)} · ${escHtml(j.location)}</p>
+                    </div>
+                    <span style="font-size:11px;color:#94a3b8;white-space:nowrap;">${escHtml(formatSalary(j.salary_min, j.salary_max))}</span>
+                    <a href="job-details.html?id=${j.job_id}" style="padding:8px 14px;border-radius:8px;background:#4f46e5;color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Apply</a>
+                </div>`;
+            }).join('')}
+        </div>` : ''}`;
+}
+
+// ── Employer Dashboard ────────────────────────────────────────────────────────
+function renderEmployerDash(data) {
+    const s    = data.statistics;
+    const apps = data.recent_applications || [];
+    const jobs = data.my_jobs || [];
+
+    document.getElementById('dashMain').innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1>Employer Dashboard 📋</h1>
+                <p>Manage your job listings and review applicants.</p>
+            </div>
+            <a href="post-job.html" class="btn-primary" style="white-space:nowrap;">
+                <i class="fa-solid fa-plus"></i> Post a Job
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#eef2ff;color:#4f46e5;"><i class="fa-solid fa-briefcase"></i></div>
+                <div class="st-val">${s.jobs_posted}</div>
+                <div class="st-label">Jobs Posted</div>
+            </div>
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#dcfce7;color:#16a34a;"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="st-val">${s.active_jobs}</div>
+                <div class="st-label">Active Jobs</div>
+            </div>
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#fef3c7;color:#d97706;"><i class="fa-solid fa-users"></i></div>
+                <div class="st-val">${s.total_applicants}</div>
+                <div class="st-label">Total Applicants</div>
+            </div>
+            <div class="stat-tile">
+                <div class="st-icon" style="background:#ede9fe;color:#7c3aed;"><i class="fa-solid fa-bell"></i></div>
+                <div class="st-val">${s.new_applicants}</div>
+                <div class="st-label">New This Week</div>
+            </div>
+        </div>
+
+        <!-- My Job Listings -->
+        <div class="section-card">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-list-ul" style="color:#4f46e5;margin-right:8px;"></i>My Job Listings</h2>
+                <a href="post-job.html">+ Post New</a>
+            </div>
+            ${jobs.length ? jobs.map(j => `
+            <div class="job-row">
+                <div class="jr-info">
+                    <h4>${escHtml(j.title)}</h4>
+                    <p>${escHtml(j.company_name)} · Posted ${timeAgo(j.created_at)}</p>
+                </div>
+                <div class="jr-stat">
+                    <strong>${j.application_count || 0}</strong>
+                    applicants
+                </div>
+                <div class="jr-stat" style="margin-left:8px;">
+                    <strong>${j.views || 0}</strong>
+                    views
+                </div>
+                <span class="status-badge" style="background:${j.status==='active'?'#dcfce7':'#f3f4f6'};color:${j.status==='active'?'#14532d':'#6b7280'};margin-left:8px;">${escHtml(j.status)}</span>
+            </div>`).join('')
+            : `<div class="dash-empty"><i class="fa-solid fa-briefcase"></i><p>No jobs posted yet. <a href="post-job.html" style="color:#4f46e5;">Post your first job</a></p></div>`}
+        </div>
+
+        <!-- Recent Applicants -->
+        <div class="section-card">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-user-group" style="color:#4f46e5;margin-right:8px;"></i>Recent Applicants</h2>
+            </div>
+            ${apps.length ? apps.map(a => {
+                const c = brandColor(a.applicant_name);
+                return `
+                <div class="app-row">
+                    <div class="app-logo" style="background:${c.bg};color:${c.text};">${(a.applicant_name||'?')[0].toUpperCase()}</div>
+                    <div class="app-info">
+                        <h4>${escHtml(a.applicant_name)}</h4>
+                        <p>Applied for: ${escHtml(a.job_title)}</p>
+                    </div>
+                    ${statusBadge(a.status)}
+                    <div class="app-meta">${timeAgo(a.created_at)}</div>
+                </div>`;
+            }).join('') : `<div class="dash-empty"><i class="fa-solid fa-inbox"></i><p>No applicants yet.</p></div>`}
+        </div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadDashboard();
+</script>
+</body>
+</html>

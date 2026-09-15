@@ -1,0 +1,650 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
+    perspective: 1200px;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    height: 70px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 8%;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08),
+        0 15px 35px rgba(37, 99, 235, 0.05);
+
+    position: relative;
+    z-index: 100;
+}
+
+
+/* 3D LOGO */
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+
+    transform: translateZ(20px);
+
+    transition: 0.3s ease;
+}
+
+.logo:hover {
+    transform:
+        translateY(-3px)
+        translateZ(30px);
+
+    text-shadow:
+        3px 3px 0 #dbeafe,
+        6px 6px 15px rgba(37, 99, 235, 0.25);
+}
+
+.logo span {
+    color: #2563eb;
+}
+
+
+/* NAV LINKS */
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    transform: translateY(-2px);
+}
+
+
+/* 3D REGISTER BUTTON */
+
+.register-btn {
+    background: linear-gradient(
+        145deg,
+        #3b82f6,
+        #1d4ed8
+    );
+
+    color: white !important;
+
+    padding: 10px 18px;
+    border-radius: 8px;
+
+    box-shadow:
+        0 5px 0 #1e40af,
+        0 10px 20px rgba(37, 99, 235, 0.25);
+
+    transform: translateY(0);
+
+    transition: all 0.2s ease;
+}
+
+.register-btn:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 8px 0 #1e40af,
+        0 15px 25px rgba(37, 99, 235, 0.3);
+}
+
+.register-btn:active {
+    transform: translateY(3px);
+
+    box-shadow:
+        0 2px 0 #1e40af;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 500px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #dbeafe,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #e0e7ff,
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #eef4ff,
+            #ffffff
+        );
+
+    padding: 50px 20px;
+
+    position: relative;
+    overflow: hidden;
+
+    transform-style: preserve-3d;
+}
+
+
+/* FLOATING LIGHT EFFECT */
+
+.hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    background: rgba(37, 99, 235, 0.08);
+
+    border-radius: 50%;
+
+    filter: blur(10px);
+
+    top: 40px;
+    left: 10%;
+
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    background: rgba(99, 102, 241, 0.08);
+
+    border-radius: 50%;
+
+    right: 10%;
+    bottom: 30px;
+
+    animation: float 5s ease-in-out infinite reverse;
+}
+
+
+/* HERO CONTENT */
+
+.hero-content {
+    max-width: 900px;
+
+    position: relative;
+    z-index: 2;
+
+    transform:
+        translateZ(50px);
+
+    animation: heroEnter 1s ease-out;
+}
+
+
+/* HERO TITLE */
+
+.hero h1 {
+    font-size: 58px;
+    line-height: 1.1;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.08);
+
+    transform:
+        translateZ(30px);
+}
+
+.hero h1 span {
+    color: #2563eb;
+
+    text-shadow:
+        3px 3px 0 #dbeafe,
+        0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+
+/* HERO TEXT */
+
+.hero p {
+    font-size: 19px;
+
+    color: #64748b;
+
+    margin-bottom: 35px;
+
+    transform: translateZ(20px);
+}
+
+
+/* =========================
+   SEARCH BOX 3D
+========================= */
+
+.search-box {
+    background: rgba(255, 255, 255, 0.85);
+
+    backdrop-filter: blur(15px);
+
+    padding: 12px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    gap: 10px;
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.08),
+        0 25px 50px rgba(37, 99, 235, 0.12);
+
+    transform:
+        translateZ(40px)
+        rotateX(2deg);
+
+    transition: all 0.4s ease;
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.search-box:hover {
+    transform:
+        translateY(-8px)
+        translateZ(60px)
+        rotateX(0deg);
+
+    box-shadow:
+        0 20px 30px rgba(0, 0, 0, 0.1),
+        0 30px 60px rgba(37, 99, 235, 0.15);
+}
+
+
+/* INPUT */
+
+.search-box input {
+    flex: 1;
+
+    padding: 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    transition: 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.1);
+
+    transform: translateZ(5px);
+}
+
+
+/* 3D SEARCH BUTTON */
+
+.search-box button {
+    background: linear-gradient(
+        145deg,
+        #3b82f6,
+        #1d4ed8
+    );
+
+    color: white;
+
+    border: none;
+
+    padding: 15px 25px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 5px 0 #1e40af,
+        0 10px 20px rgba(37, 99, 235, 0.25);
+
+    transition: all 0.2s ease;
+}
+
+.search-box button:hover {
+    transform:
+        translateY(-4px)
+        translateZ(10px);
+
+    box-shadow:
+        0 8px 0 #1e40af,
+        0 15px 25px rgba(37, 99, 235, 0.3);
+}
+
+.search-box button:active {
+    transform: translateY(3px);
+
+    box-shadow:
+        0 2px 0 #1e40af;
+}
+
+
+/* =========================
+   FEATURES
+========================= */
+
+.features {
+    padding: 70px 8%;
+
+    text-align: center;
+
+    perspective: 1200px;
+}
+
+.features h2 {
+    font-size: 32px;
+
+    margin-bottom: 40px;
+
+    text-shadow:
+        0 5px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+/* FEATURE CONTAINER */
+
+.feature-container {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    perspective: 1200px;
+}
+
+
+/* =========================
+   3D FEATURE CARD
+========================= */
+
+.feature-card {
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 18px;
+
+    width: 30%;
+
+    min-height: 220px;
+
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.06),
+        0 20px 40px rgba(37, 99, 235, 0.08);
+
+    transition:
+        transform 0.5s ease,
+        box-shadow 0.5s ease;
+
+    cursor: pointer;
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+
+/* 3D CARD HOVER */
+
+.feature-card:hover {
+    transform:
+        translateY(-15px)
+        rotateX(5deg)
+        rotateY(-5deg)
+        translateZ(30px);
+
+    box-shadow:
+        0 20px 30px rgba(0, 0, 0, 0.1),
+        0 35px 60px rgba(37, 99, 235, 0.15);
+}
+
+
+/* CARD TOP 3D LINE */
+
+.feature-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 10%;
+
+    width: 80%;
+    height: 4px;
+
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #60a5fa,
+        #2563eb
+    );
+
+    border-radius: 0 0 10px 10px;
+
+    transform:
+        translateZ(10px);
+}
+
+
+/* CARD ICON */
+
+.icon {
+    font-size: 40px;
+
+    margin-bottom: 15px;
+
+    display: inline-block;
+
+    transform:
+        translateZ(35px);
+
+    transition: 0.4s ease;
+}
+
+.feature-card:hover .icon {
+    transform:
+        translateZ(50px)
+        rotateY(360deg)
+        scale(1.15);
+}
+
+
+/* CARD TITLE */
+
+.feature-card h3 {
+    margin-bottom: 12px;
+
+    transform:
+        translateZ(25px);
+}
+
+
+/* CARD TEXT */
+
+.feature-card p {
+    color: #64748b;
+
+    line-height: 1.6;
+
+    transform:
+        translateZ(15px);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background:
+        linear-gradient(
+            145deg,
+            #111827,
+            #1e293b
+        );
+
+    color: white;
+
+    text-align: center;
+
+    padding: 30px;
+
+    box-shadow:
+        0 -10px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes float {
+
+    0% {
+        transform:
+            translateY(0)
+            translateX(0);
+    }
+
+    50% {
+        transform:
+            translateY(-30px)
+            translateX(20px);
+    }
+
+    100% {
+        transform:
+            translateY(0)
+            translateX(0);
+    }
+}
+
+
+@keyframes heroEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(30px)
+            translateZ(0);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            translateZ(50px);
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .hero {
+        min-height: 550px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .search-box {
+        flex-direction: column;
+
+        transform:
+            translateZ(20px);
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+
+    .feature-container {
+        flex-direction: column;
+    }
+
+    .feature-card {
+        width: 100%;
+    }
+
+    .feature-card:hover {
+        transform:
+            translateY(-10px)
+            translateZ(20px);
+    }
+}

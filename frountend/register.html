@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | JobPortal AI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #f59e0b;
+
+            --text: #172033;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --background: #f5f7fb;
+            --white: #ffffff;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 90%,
+                    rgba(124, 58, 237, 0.12),
+                    transparent 30%
+                ),
+                var(--background);
+
+            color: var(--text);
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 72px;
+
+            padding: 0 6%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background:
+                rgba(255, 255, 255, 0.92);
+
+            border-bottom:
+                1px solid var(--border);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            text-decoration: none;
+
+            color: var(--primary);
+
+            font-size: 23px;
+            font-weight: 900;
+        }
+
+        .logo span {
+            color: var(--text);
+        }
+
+        .login-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        .login-link a {
+            text-decoration: none;
+
+            color: var(--primary);
+
+            font-weight: 800;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .page {
+            min-height:
+                calc(100vh - 72px);
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 45px 30px;
+        }
+
+        /* =========================
+           LEFT PANEL
+        ========================= */
+
+        .intro {
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            padding: 35px;
+        }
+
+        .badge {
+            width: fit-content;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background: #eff6ff;
+
+            color: var(--primary);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            margin-bottom: 20px;
+        }
+
+        .intro h1 {
+            max-width: 500px;
+
+            font-size: 46px;
+
+            line-height: 1.1;
+
+            margin-bottom: 18px;
+        }
+
+        .gradient-text {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro > p {
+            max-width: 520px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+
+            line-height: 1.8;
+
+            margin-bottom: 28px;
+        }
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+        }
+
+        .feature {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            display: grid;
+            place-items: center;
+
+            box-shadow:
+                0 5px 15px
+                rgba(15, 23, 42, 0.05);
+        }
+
+        .feature strong {
+            display: block;
+
+            font-size: 13px;
+        }
+
+        .feature small {
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           REGISTER CARD
+        ========================= */
+
+        .register-wrapper {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .register-card {
+            width: 100%;
+
+            max-width: 500px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 22px;
+
+            padding: 32px;
+
+            box-shadow:
+                0 25px 60px
+                rgba(15, 23, 42, 0.1);
+        }
+
+        .register-header {
+            margin-bottom: 25px;
+        }
+
+        .register-header h2 {
+            font-size: 25px;
+
+            margin-bottom: 6px;
+        }
+
+        .register-header p {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 16px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        input,
+        select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            color: var(--text);
+
+            background: white;
+
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37, 99, 235, 0.1);
+        }
+
+        input.error,
+        select.error {
+            border-color: var(--danger);
+        }
+
+        .error-message {
+            display: none;
+
+            color: var(--danger);
+
+            font-size: 10px;
+
+            margin-top: 5px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+
+            right: 10px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            border: none;
+
+            background: none;
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+        /* =========================
+           PASSWORD STRENGTH
+        ========================= */
+
+        .strength {
+            margin-top: 8px;
+        }
+
+        .strength-bars {
+            display: flex;
+
+            gap: 4px;
+        }
+
+        .strength-bars span {
+            height: 4px;
+
+            flex: 1;
+
+            border-radius: 5px;
+
+            background: #e2e8f0;
+        }
+
+        .strength-label {
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 10px;
+
+            color: var(--muted);
+        }
+
+        /* =========================
+           PASSWORD REQUIREMENTS
+        ========================= */
+
+        .requirements {
+            margin-top: 9px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 5px;
+        }
+
+        .requirement {
+            font-size: 10px;
+
+            color: var(--muted);
+        }
+
+        .requirement.valid {
+            color: var(--success);
+        }
+
+        /* =========================
+           TERMS
+        ========================= */
+
+        .terms {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            margin-top: 20px;
+        }
+
+        .terms input {
+            width: auto;
+
+            margin-top: 3px;
+        }
+
+        .terms label {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 500;
+
+            line-height: 1.5;
+        }
+
+        .terms a {
+            color: var(--primary);
+
+            text-decoration: none;
+
+            font-weight: 700;
+        }
+
+        /* =========================
+           REGISTER BUTTON
+        ========================= */
+
+        .register-btn {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 14px;
+
+            margin-top: 20px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--secondary)
+                );
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px
+                rgba(37, 99, 235, 0.22);
+
+            transition: 0.25s;
+        }
+
+        .register-btn:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 14px 30px
+                rgba(37, 99, 235, 0.3);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        /* =========================
+           DIVIDER
+        ========================= */
+
+        .divider {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 22px 0;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            height: 1px;
+
+            background: var(--border);
+
+            flex: 1;
+        }
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        .login-bottom {
+            text-align: center;
+
+            font-size: 12px;
+
+            color: var(--muted);
+        }
+
+        .login-bottom a {
+            color: var(--primary);
+
+            text-decoration: none;
+
+            font-weight: 800;
+        }
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            background: #0f172a;
+
+            color: white;
+
+            padding: 14px 20px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.2);
+
+            transform:
+                translateY(100px);
+
+            opacity: 0;
+
+            transition: 0.3s;
+
+            z-index: 9999;
+
+            font-size: 13px;
+        }
+
+        .toast.show {
+            transform:
+                translateY(0);
+
+            opacity: 1;
+        }
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .spinner {
+            display: inline-block;
+
+            width: 16px;
+            height: 16px;
+
+            border:
+                2px solid
+                rgba(255,255,255,0.4);
+
+            border-top-color: white;
+
+            border-radius: 50%;
+
+            animation:
+                spin 0.7s linear infinite;
+
+            vertical-align: middle;
+
+            margin-right: 7px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width: 900px) {
+
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .intro {
+                padding: 15px 10px 35px;
+            }
+
+            .intro h1 {
+                font-size: 38px;
+            }
+
+            .register-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .login-link span {
+                display: none;
+            }
+
+            .page {
+                padding:
+                    25px 15px 40px;
+            }
+
+            .intro {
+                text-align: center;
+            }
+
+            .badge {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .intro h1 {
+                font-size: 32px;
+            }
+
+            .intro > p {
+                font-size: 13px;
+            }
+
+            .feature {
+                text-align: left;
+            }
+
+            .register-card {
+                padding: 22px;
+
+                border-radius: 17px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .requirements {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            Job<span>Portal</span> AI
+        </a>
+
+        <div class="login-link">
+
+            <span>
+                Already have an account?
+            </span>
+
+            <a href="login.html">
+                Sign In
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         MAIN PAGE
+    ========================= -->
+
+    <main class="page">
+
+        <!-- =========================
+             INTRO
+        ========================= -->
+
+        <section class="intro">
+
+            <div class="badge">
+                ✨ AI-Powered Career Platform
+            </div>
+
+            <h1>
+                Build your future with
+                <span class="gradient-text">
+                    smarter opportunities.
+                </span>
+            </h1>
+
+            <p>
+                Create your JobPortal AI account and
+                unlock personalized job recommendations,
+                AI-powered job matching and career insights.
+            </p>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🤖
+                    </div>
+
+                    <div>
+                        <strong>
+                            AI Job Matching
+                        </strong>
+
+                        <small>
+                            Discover jobs that match your skills.
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🎯
+                    </div>
+
+                    <div>
+                        <strong>
+                            Personalized Opportunities
+                        </strong>
+
+                        <small>
+                            Get recommendations based on your profile.
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        📈
+                    </div>
+
+                    <div>
+                        <strong>
+                            Career Insights
+                        </strong>
+
+                        <small>
+                            Improve your skills and profile strength.
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🔐
+                    </div>
+
+                    <div>
+                        <strong>
+                            Secure Account
+                        </strong>
+
+                        <small>
+                            Your account information stays protected.
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             REGISTER
+        ========================= -->
+
+        <section class="register-wrapper">
+
+            <div class="register-card">
+
+                <div class="register-header">
+
+                    <h2>
+                        Create your account
+                    </h2>
+
+                    <p>
+                        Fill in your details to get started.
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+                    <div class="form-grid">
+
+                        <!-- NAME -->
+
+                        <div class="form-group full">
+
+                            <label for="fullName">
+                                Full Name
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                name="fullName"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                            >
+
+                            <div
+                                class="error-message"
+                                id="nameError"
+                            >
+                                Please enter your full name.
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group full">
+
+                            <label for="email">
+                                Email Address
+                                <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                            <div
+                                class="error-message"
+                                id="emailError"
+                            >
+                                Please enter a valid email address.
+                            </div>
+
+                        </div>
+
+
+                        <!-- ROLE -->
+
+                        <div class="form-group full">
+
+                            <label for="role">
+                                Account Type
+                                <span class="required">*</span>
+                            </label>
+
+                            <select
+                                id="role"
+                                name="role"
+                                required
+                            >
+
+                                <option value="">
+                                    Select account type
+                                </option>
+
+                                <option value="job_seeker">
+                                    👤 Job Seeker
+                                </option>
+
+                                <option value="employer">
+                                    💼 Recruiter / Employer
+                                </option>
+
+                            </select>
+
+                            <div
+                                class="error-message"
+                                id="roleError"
+                            >
+                                Please select an account type.
+                            </div>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label for="password">
+                                Password
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="password-wrapper">
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Create password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    id="passwordToggle"
+                                    aria-label="Show password"
+                                >
+                                    👁
+                                </button>
+
+                            </div>
+
+
+                            <div class="strength">
+
+                                <div class="strength-bars">
+
+                                    <span id="bar1"></span>
+                                    <span id="bar2"></span>
+                                    <span id="bar3"></span>
+                                    <span id="bar4"></span>
+
+                                </div>
+
+                                <span
+                                    class="strength-label"
+                                    id="strengthLabel"
+                                >
+                                    Password strength
+                                </span>
+
+                            </div>
+
+
+                            <div class="requirements">
+
+                                <div
+                                    class="requirement"
+                                    id="lengthReq"
+                                >
+                                    ○ 8+ characters
+                                </div>
+
+                                <div
+                                    class="requirement"
+                                    id="upperReq"
+                                >
+                                    ○ Uppercase letter
+                                </div>
+
+                                <div
+                                    class="requirement"
+                                    id="numberReq"
+                                >
+                                    ○ Number
+                                </div>
+
+                                <div
+                                    class="requirement"
+                                    id="specialReq"
+                                >
+                                    ○ Special character
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CONFIRM PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label for="confirmPassword">
+                                Confirm Password
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="password-wrapper">
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    placeholder="Confirm password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    id="confirmToggle"
+                                    aria-label="Show password"
+                                >
+                                    👁
+                                </button>
+
+                            </div>
+
+                            <div
+                                class="error-message"
+                                id="passwordError"
+                            >
+                                Passwords do not match.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+
+                    <div class="terms">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                        >
+
+                        <label for="terms">
+
+                            I agree to the
+                            <a href="#">
+                                Terms of Service
+                            </a>
+                            and
+                            <a href="#">
+                                Privacy Policy
+                            </a>.
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- REGISTER -->
+
+                    <button
+                        type="submit"
+                        class="register-btn"
+                        id="registerBtn"
+                    >
+                        Create Account
+                    </button>
+
+
+                    <div class="divider">
+                        Secure registration
+                    </div>
+
+
+                    <div class="login-bottom">
+
+                        Already have an account?
+
+                        <a href="login.html">
+                            Sign in here
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- TOAST -->
+
+    <div class="toast" id="toast">Account created successfully!</div>
+
+    <!-- API helper -->
+    <script src="js/api.js"></script>
+
+    <script>
+
+        // Redirect if already logged in
+        Auth.redirectIfLoggedIn();
+
+        /* ── elements ── */
+        const registerForm    = document.getElementById("registerForm");
+        const password        = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const passwordToggle  = document.getElementById("passwordToggle");
+        const confirmToggle   = document.getElementById("confirmToggle");
+
+
+        /* =========================
+           PASSWORD VISIBILITY
+        ========================= */
+
+        passwordToggle.addEventListener(
+            "click",
+            function() {
+
+                togglePassword(
+                    password,
+                    passwordToggle
+                );
+
+            }
+        );
+
+
+        confirmToggle.addEventListener(
+            "click",
+            function() {
+
+                togglePassword(
+                    confirmPassword,
+                    confirmToggle
+                );
+
+            }
+        );
+
+
+        function togglePassword(
+            input,
+            button
+        ) {
+
+            if (
+                input.type ===
+                "password"
+            ) {
+
+                input.type = "text";
+
+                button.innerText = "🙈";
+
+            } else {
+
+                input.type = "password";
+
+                button.innerText = "👁";
+
+            }
+
+        }
+
+
+        /* =========================
+           PASSWORD STRENGTH
+        ========================= */
+
+        password.addEventListener(
+            "input",
+            function() {
+
+                checkPasswordStrength(
+                    password.value
+                );
+
+            }
+        );
+
+
+        function checkPasswordStrength(value) {
+
+            const hasLength =
+                value.length >= 8;
+
+            const hasUpper =
+                /[A-Z]/.test(value);
+
+            const hasNumber =
+                /[0-9]/.test(value);
+
+            const hasSpecial =
+                /[^A-Za-z0-9]/.test(value);
+
+
+            updateRequirement(
+                "lengthReq",
+                hasLength,
+                "8+ characters"
+            );
+
+            updateRequirement(
+                "upperReq",
+                hasUpper,
+                "Uppercase letter"
+            );
+
+            updateRequirement(
+                "numberReq",
+                hasNumber,
+                "Number"
+            );
+
+            updateRequirement(
+                "specialReq",
+                hasSpecial,
+                "Special character"
+            );
+
+
+            let score = 0;
+
+            if (hasLength) score++;
+            if (hasUpper) score++;
+            if (hasNumber) score++;
+            if (hasSpecial) score++;
+
+
+            const bars = [
+                document.getElementById("bar1"),
+                document.getElementById("bar2"),
+                document.getElementById("bar3"),
+                document.getElementById("bar4")
+            ];
+
+
+            bars.forEach(
+                bar => {
+
+                    bar.style.background =
+                        "#e2e8f0";
+
+                }
+            );
+
+
+            for (
+                let i = 0;
+                i < score;
+                i++
+            ) {
+
+                bars[i].style.background =
+                    score <= 1
+                        ? "#dc2626"
+                        : score === 2
+                            ? "#f59e0b"
+                            : "#16a34a";
+
+            }
+
+
+            const label =
+                document.getElementById(
+                    "strengthLabel"
+                );
+
+
+            if (!value) {
+
+                label.innerText =
+                    "Password strength";
+
+            } else if (score <= 1) {
+
+                label.innerText =
+                    "Weak password";
+
+            } else if (score === 2) {
+
+                label.innerText =
+                    "Medium password";
+
+            } else if (score === 3) {
+
+                label.innerText =
+                    "Strong password";
+
+            } else {
+
+                label.innerText =
+                    "Very strong password";
+
+            }
+
+        }
+
+
+        function updateRequirement(
+            id,
+            valid,
+            text
+        ) {
+
+            const element =
+                document.getElementById(id);
+
+
+            element.innerText =
+                valid
+                    ? "✓ " + text
+                    : "○ " + text;
+
+
+            element.classList.toggle(
+                "valid",
+                valid
+            );
+
+        }
+
+
+        /* =========================
+           LIVE PASSWORD MATCH
+        ========================= */
+
+        confirmPassword.addEventListener(
+            "input",
+            function() {
+
+                const error =
+                    document.getElementById(
+                        "passwordError"
+                    );
+
+
+                if (
+                    confirmPassword.value &&
+                    confirmPassword.value !==
+                    password.value
+                ) {
+
+                    confirmPassword.classList.add(
+                        "error"
+                    );
+
+                    error.classList.add(
+                        "show"
+                    );
+
+                } else {
+
+                    confirmPassword.classList.remove(
+                        "error"
+                    );
+
+                    error.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           FORM SUBMIT
+        ========================= */
+
+        registerForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                if (!validateForm()) {
+                    return;
+                }
+
+
+                const registerBtn =
+                    document.getElementById(
+                        "registerBtn"
+                    );
+
+
+                registerBtn.disabled =
+                    true;
+
+
+                registerBtn.innerHTML = `
+                    <span class="spinner"></span>
+                    Creating Account...
+                `;
+
+
+                /*
+                 * FRONTEND DEMO
+                 *
+                 * Later connect this request
+                 * to your backend:
+                 *
+                 * fetch("php/register.php", {
+                 *     method: "POST",
+                 *     headers: {
+                 *         "Content-Type":
+                 *             "application/json"
+                 *     },
+                 *     body: JSON.stringify(data)
+                 * });
+                 */
+
+
+                const userData = {
+                    full_name: document.getElementById("fullName").value.trim(),
+                    email:     document.getElementById("email").value.trim(),
+                    role:      document.getElementById("role").value,
+                    password:  password.value
+                };
+
+                try {
+                    const result = await AuthAPI.register(
+                        userData.full_name,
+                        userData.email,
+                        userData.password,
+                        userData.role
+                    );
+
+                    Auth.setSession(result.data);
+                    showToast("Account created successfully!");
+                    setTimeout(() => { window.location.href = "dashboard.html"; }, 900);
+
+                } catch (err) {
+                    registerBtn.disabled  = false;
+                    registerBtn.innerText = "Create Account";
+                    showToast(err.message || "Registration failed. Try again.", "error");
+                }
+
+            }
+        );
+
+
+        /* =========================
+           VALIDATION
+        ========================= */
+
+        function validateForm() {
+
+            let valid = true;
+
+
+            const name =
+                document.getElementById(
+                    "fullName"
+                );
+
+
+            const email =
+                document.getElementById(
+                    "email"
+                );
+
+
+            const role =
+                document.getElementById(
+                    "role"
+                );
+
+
+            const terms =
+                document.getElementById(
+                    "terms"
+                );
+
+
+            /* NAME */
+
+            if (
+                name.value.trim().length <
+                2
+            ) {
+
+                name.classList.add(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "nameError"
+                    )
+                    .classList.add(
+                        "show"
+                    );
+
+                valid = false;
+
+            } else {
+
+                name.classList.remove(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "nameError"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+
+
+            /* EMAIL */
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+            if (
+                !emailPattern.test(
+                    email.value.trim()
+                )
+            ) {
+
+                email.classList.add(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "emailError"
+                    )
+                    .classList.add(
+                        "show"
+                    );
+
+                valid = false;
+
+            } else {
+
+                email.classList.remove(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "emailError"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+
+
+            /* ROLE */
+
+            if (!role.value) {
+
+                role.classList.add(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "roleError"
+                    )
+                    .classList.add(
+                        "show"
+                    );
+
+                valid = false;
+
+            } else {
+
+                role.classList.remove(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "roleError"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+
+
+            /* PASSWORD */
+
+            const strongPassword =
+                password.value.length >= 8 &&
+                /[A-Z]/.test(password.value) &&
+                /[0-9]/.test(password.value) &&
+                /[^A-Za-z0-9]/.test(
+                    password.value
+                );
+
+
+            if (!strongPassword) {
+
+                password.classList.add(
+                    "error"
+                );
+
+                showToast(
+                    "Please create a stronger password."
+                );
+
+                valid = false;
+
+            } else {
+
+                password.classList.remove(
+                    "error"
+                );
+
+            }
+
+
+            /* CONFIRM PASSWORD */
+
+            if (
+                confirmPassword.value !==
+                password.value
+            ) {
+
+                confirmPassword.classList.add(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "passwordError"
+                    )
+                    .classList.add(
+                        "show"
+                    );
+
+                valid = false;
+
+            } else {
+
+                confirmPassword.classList.remove(
+                    "error"
+                );
+
+                document
+                    .getElementById(
+                        "passwordError"
+                    )
+                    .classList.remove(
+                        "show"
+                    );
+
+            }
+
+
+            /* TERMS */
+
+            if (!terms.checked) {
+
+                showToast(
+                    "Please accept the Terms of Service."
+                );
+
+                valid = false;
+
+            }
+
+
+            return valid;
+
+        }
+
+
+        /* =========================
+           TOAST
+        ========================= */
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById("toast");
+            const colors = { success: '#16a34a', error: '#dc2626', warning: '#d97706' };
+            toast.innerText = message;
+            toast.style.borderLeft = `4px solid ${colors[type] || colors.success}`;
+            toast.classList.add("show");
+            setTimeout(function() { toast.classList.remove("show"); }, 3500);
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,528 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search thousands of verified job listings. Filter by type, location, salary and experience.">
+    <title>Find Jobs | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #f6f8fc; }
+        .jobs-hero {
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg,#fff 0%,#f5f7ff 100%);
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        .jobs-hero h1 { font-size: clamp(28px,5vw,48px); font-weight: 900; margin-bottom: 10px; }
+        .jobs-hero h1 span { color: #4f46e5; }
+        .jobs-hero p { color: #6b7280; font-size: 15px; max-width: 550px; margin: 0 auto 28px; }
+        .search-bar {
+            max-width: 900px; margin: 0 auto;
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+            display: grid; grid-template-columns: 1.2fr 0.9fr auto;
+            padding: 8px; gap: 8px;
+            box-shadow: 0 15px 40px rgba(15,23,42,.08);
+        }
+        .sb-field {
+            display: flex; align-items: center; gap: 11px;
+            padding: 12px 16px; border-radius: 10px;
+        }
+        .sb-field + .sb-field { border-left: 1px solid #e5e7eb; }
+        .sb-field i { color: #4f46e5; font-size: 14px; }
+        .sb-field input {
+            flex: 1; border: none; outline: none; font-size: 14px;
+            color: #111827; background: transparent;
+        }
+        .sb-field input::placeholder { color: #9ca3af; }
+        .sb-btn {
+            border: none; border-radius: 11px; padding: 0 22px;
+            background: #4f46e5; color: #fff;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+            transition: .2s;
+        }
+        .sb-btn:hover { background: #4338ca; }
+        .jobs-layout {
+            max-width: 1240px; margin: 0 auto; padding: 40px 20px;
+            display: grid; grid-template-columns: 260px 1fr; gap: 28px;
+        }
+        /* Filters */
+        .filters-panel {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
+            padding: 22px; height: fit-content; position: sticky; top: 80px;
+        }
+        .fp-head {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+        .fp-head h3 { font-size: 15px; display: flex; align-items: center; gap: 8px; }
+        .fp-clear {
+            border: none; background: none; color: #4f46e5;
+            font-size: 12px; font-weight: 700; cursor: pointer;
+        }
+        .fp-group { padding: 18px 0; border-top: 1px solid #f3f4f6; }
+        .fp-group h4 { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 12px; }
+        .fp-opt {
+            display: flex; align-items: center; gap: 9px;
+            font-size: 13px; color: #6b7280; margin-bottom: 10px; cursor: pointer;
+        }
+        .fp-opt input { accent-color: #4f46e5; cursor: pointer; }
+        .fp-opt:hover { color: #111827; }
+        /* Results */
+        .results-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+        }
+        .rh-info h2 { font-size: 20px; font-weight: 800; }
+        .rh-info p  { color: #6b7280; font-size: 13px; margin-top: 4px; }
+        .sort-sel {
+            border: 1px solid #e5e7eb; border-radius: 9px; padding: 9px 12px;
+            font-size: 13px; outline: none; color: #374151; background: #fff;
+        }
+        /* Job list cards */
+        .job-list { display: grid; gap: 14px; }
+        .jl-card {
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+            padding: 22px; transition: .22s; cursor: pointer;
+        }
+        .jl-card:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(15,23,42,.07); border-color: #c7d2fe; }
+        .jl-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .jl-company { display: flex; gap: 14px; align-items: flex-start; }
+        .jl-logo {
+            width: 50px; height: 50px; border-radius: 13px;
+            display: grid; place-items: center;
+            font-size: 16px; font-weight: 800; flex-shrink: 0;
+        }
+        .jl-title h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #111827; }
+        .jl-title p  { font-size: 12px; color: #6b7280; }
+        .jl-save {
+            border: none; background: #f8fafc; width: 36px; height: 36px;
+            border-radius: 9px; cursor: pointer; color: #64748b; font-size: 14px;
+            transition: .2s; display: grid; place-items: center; flex-shrink: 0;
+        }
+        .jl-save:hover { background: #eef2ff; color: #4f46e5; }
+        .jl-save.saved { color: #4f46e5; background: #eef2ff; }
+        .jl-meta {
+            display: flex; flex-wrap: wrap; gap: 14px;
+            font-size: 12px; color: #64748b; margin: 14px 0;
+        }
+        .jl-meta span { display: flex; align-items: center; gap: 5px; }
+        .jl-meta i    { color: #4f46e5; }
+        .jl-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+        .jl-skills span {
+            padding: 5px 9px; border-radius: 6px; background: #f1f5f9;
+            color: #475569; font-size: 11px; font-weight: 600;
+        }
+        .jl-bottom {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #f3f4f6; padding-top: 14px;
+        }
+        .jl-type {
+            padding: 4px 9px; border-radius: 6px; background: #eef2ff;
+            color: #4f46e5; font-size: 11px; font-weight: 700; text-transform: capitalize;
+        }
+        .jl-posted { color: #94a3b8; font-size: 11px; }
+        .jl-apply {
+            padding: 9px 16px; border-radius: 9px; background: #4f46e5;
+            color: #fff; font-size: 12px; font-weight: 700;
+            text-decoration: none; display: flex; align-items: center; gap: 6px;
+            transition: .2s;
+        }
+        .jl-apply:hover { background: #4338ca; }
+        /* Empty / loading */
+        .empty-state {
+            text-align: center; padding: 70px 20px;
+            background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
+        }
+        .empty-state i { font-size: 44px; color: #c7d2fe; margin-bottom: 14px; display: block; }
+        .empty-state h3 { font-size: 18px; margin-bottom: 8px; }
+        .empty-state p  { color: #6b7280; font-size: 13px; }
+        /* Pagination */
+        .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 28px; }
+        .pg-btn {
+            min-width: 36px; height: 36px; padding: 0 10px;
+            border: 1px solid #e5e7eb; background: #fff;
+            border-radius: 8px; font-size: 13px; cursor: pointer;
+            transition: .18s; color: #374151;
+        }
+        .pg-btn:hover, .pg-btn.active { background: #4f46e5; color: #fff; border-color: #4f46e5; }
+        .pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+        /* Responsive */
+        @media (max-width: 860px) {
+            .jobs-layout { grid-template-columns: 1fr; }
+            .filters-panel { position: static; }
+            .search-bar { grid-template-columns: 1fr; }
+            .sb-field + .sb-field { border-left: none; border-top: 1px solid #e5e7eb; }
+        }
+        @media (max-width: 500px) {
+            .jl-bottom { flex-wrap: wrap; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html" class="active">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Get Started</a>
+        </div>
+        <button class="mobile-menu" id="mobileMenu" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- HERO SEARCH -->
+<section class="jobs-hero">
+    <h1>Find Your Next <span>Opportunity</span></h1>
+    <p>Search verified job listings and apply directly to top companies.</p>
+    <div class="search-bar">
+        <div class="sb-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchQ" placeholder="Job title, skills or keyword" autocomplete="off">
+        </div>
+        <div class="sb-field">
+            <i class="fa-solid fa-location-dot"></i>
+            <input type="text" id="searchLoc" placeholder="City or remote" autocomplete="off">
+        </div>
+        <button class="sb-btn" id="searchBtn">
+            <i class="fa-solid fa-search"></i> Search
+        </button>
+    </div>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="jobs-layout">
+
+    <!-- FILTERS -->
+    <aside class="filters-panel">
+        <div class="fp-head">
+            <h3><i class="fa-solid fa-sliders" style="color:#4f46e5"></i> Filters</h3>
+            <button class="fp-clear" id="clearFilters">Clear all</button>
+        </div>
+
+        <!-- Job Type -->
+        <div class="fp-group">
+            <h4>Job Type</h4>
+            <label class="fp-opt"><input type="checkbox" value="full-time"  class="type-filter"> Full Time</label>
+            <label class="fp-opt"><input type="checkbox" value="part-time"  class="type-filter"> Part Time</label>
+            <label class="fp-opt"><input type="checkbox" value="remote"     class="type-filter"> Remote</label>
+            <label class="fp-opt"><input type="checkbox" value="contract"   class="type-filter"> Contract</label>
+            <label class="fp-opt"><input type="checkbox" value="internship" class="type-filter"> Internship</label>
+        </div>
+
+        <!-- Category -->
+        <div class="fp-group">
+            <h4>Category</h4>
+            <label class="fp-opt"><input type="checkbox" value="frontend"   class="cat-filter"> Frontend</label>
+            <label class="fp-opt"><input type="checkbox" value="backend"    class="cat-filter"> Backend</label>
+            <label class="fp-opt"><input type="checkbox" value="fullstack"  class="cat-filter"> Full Stack</label>
+            <label class="fp-opt"><input type="checkbox" value="ai-ml"      class="cat-filter"> AI / ML</label>
+            <label class="fp-opt"><input type="checkbox" value="mobile"     class="cat-filter"> Mobile</label>
+            <label class="fp-opt"><input type="checkbox" value="design"     class="cat-filter"> Design</label>
+            <label class="fp-opt"><input type="checkbox" value="devops"     class="cat-filter"> DevOps</label>
+            <label class="fp-opt"><input type="checkbox" value="data"       class="cat-filter"> Data</label>
+        </div>
+
+        <!-- Experience -->
+        <div class="fp-group">
+            <h4>Experience Level</h4>
+            <label class="fp-opt"><input type="checkbox" value="entry"   class="exp-filter"> Entry Level</label>
+            <label class="fp-opt"><input type="checkbox" value="junior"  class="exp-filter"> Junior</label>
+            <label class="fp-opt"><input type="checkbox" value="mid"     class="exp-filter"> Mid Level</label>
+            <label class="fp-opt"><input type="checkbox" value="senior"  class="exp-filter"> Senior</label>
+            <label class="fp-opt"><input type="checkbox" value="lead"    class="exp-filter"> Lead</label>
+        </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <section>
+        <div class="results-header">
+            <div class="rh-info">
+                <h2>All Jobs</h2>
+                <p id="resultCount">Loading…</p>
+            </div>
+            <select class="sort-sel" id="sortSel">
+                <option value="">Most Recent</option>
+                <option value="featured">Featured First</option>
+            </select>
+        </div>
+
+        <div id="jobList" class="job-list">
+            <!-- Skeleton cards -->
+            ${[1,2,3].map(() => `
+            <div class="jl-card">
+                <div style="display:flex;gap:14px;margin-bottom:14px;">
+                    <div class="skeleton" style="width:50px;height:50px;border-radius:13px;flex-shrink:0;"></div>
+                    <div style="flex:1;">
+                        <div class="skeleton" style="height:16px;width:55%;margin-bottom:8px;"></div>
+                        <div class="skeleton" style="height:12px;width:35%;"></div>
+                    </div>
+                </div>
+                <div class="skeleton" style="height:12px;width:80%;margin-bottom:8px;"></div>
+                <div class="skeleton" style="height:12px;width:50%;"></div>
+            </div>`).join('')}
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display:none;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h3>No jobs found</h3>
+            <p>Try changing your search terms or clearing the filters.</p>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </section>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+const PER_PAGE = 15;
+let currentPage = 1;
+let currentParams = {};
+
+// ── Read URL params on load ────────────────────────────────────────────────────
+function readUrlParams() {
+    const p = new URLSearchParams(window.location.search);
+    if (p.get('q'))        document.getElementById('searchQ').value   = p.get('q');
+    if (p.get('search'))   document.getElementById('searchQ').value   = p.get('search');
+    if (p.get('location')) document.getElementById('searchLoc').value = p.get('location');
+    if (p.get('skill'))    document.getElementById('searchQ').value   = p.get('skill');
+
+    // Pre-check filters
+    if (p.get('job_type')) {
+        const cb = document.querySelector(`.type-filter[value="${p.get('job_type')}"]`);
+        if (cb) cb.checked = true;
+    }
+    if (p.get('category')) {
+        const cb = document.querySelector(`.cat-filter[value="${p.get('category')}"]`);
+        if (cb) cb.checked = true;
+    }
+}
+
+// ── Build params object from current UI state ──────────────────────────────────
+function buildParams(page = 1) {
+    const q        = document.getElementById('searchQ').value.trim();
+    const location = document.getElementById('searchLoc').value.trim();
+
+    const types    = [...document.querySelectorAll('.type-filter:checked')].map(e => e.value);
+    const cats     = [...document.querySelectorAll('.cat-filter:checked')].map(e => e.value);
+    const exps     = [...document.querySelectorAll('.exp-filter:checked')].map(e => e.value);
+
+    const params = { page, per_page: PER_PAGE };
+    if (q)            params.search           = q;
+    if (location)     params.location         = location;
+    if (types.length === 1)  params.job_type         = types[0];
+    if (cats.length  === 1)  params.category         = cats[0];
+    if (exps.length  === 1)  params.experience_level = exps[0];
+
+    return params;
+}
+
+// ── Fetch and render jobs ──────────────────────────────────────────────────────
+async function loadJobs(page = 1) {
+    currentPage  = page;
+    currentParams = buildParams(page);
+
+    const list  = document.getElementById('jobList');
+    const empty = document.getElementById('emptyState');
+    const count = document.getElementById('resultCount');
+
+    // Loading state
+    list.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;padding:60px;gap:14px;color:#6b7280;">
+        <span class="spinner spinner-dark"></span> Loading jobs…
+    </div>`;
+    empty.style.display = 'none';
+
+    try {
+        const res  = await JobsAPI.list(currentParams);
+        const jobs = res.data || [];
+        const pg   = res.pagination || {};
+
+        count.textContent = pg.total
+            ? `${pg.total.toLocaleString()} job${pg.total !== 1 ? 's' : ''} found`
+            : '0 jobs found';
+
+        if (!jobs.length) {
+            list.innerHTML = '';
+            empty.style.display = 'block';
+            renderPagination(0, 0);
+            return;
+        }
+
+        list.innerHTML = jobs.map(jlCardHTML).join('');
+        attachSaveHandlers(list);
+        renderPagination(pg.current_page, pg.total_pages);
+
+    } catch (err) {
+        list.innerHTML = `<div class="empty-state" style="display:block;">
+            <i class="fa-solid fa-triangle-exclamation" style="color:#fbbf24;"></i>
+            <h3>Could not load jobs</h3>
+            <p>${escHtml(err.message || 'Server error')}</p>
+        </div>`;
+    }
+}
+
+// ── Card HTML ─────────────────────────────────────────────────────────────────
+function jlCardHTML(job) {
+    const skills  = Array.isArray(job.skills) ? job.skills.slice(0, 5) : [];
+    const salary  = formatSalary(job.salary_min, job.salary_max);
+    const color   = brandColor(job.company_name);
+    const initial = job.company_name ? job.company_name[0].toUpperCase() : '?';
+    return `
+    <div class="jl-card">
+        <div class="jl-top">
+            <div class="jl-company">
+                <div class="jl-logo" style="background:${color.bg};color:${color.text};">${escHtml(initial)}</div>
+                <div class="jl-title">
+                    <h3>${escHtml(job.title)}</h3>
+                    <p>${escHtml(job.company_name)}</p>
+                </div>
+            </div>
+            <button class="jl-save" data-id="${job.id}" title="Save job">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+        </div>
+        <div class="jl-meta">
+            <span><i class="fa-solid fa-location-dot"></i>${escHtml(job.location)}</span>
+            <span><i class="fa-solid fa-indian-rupee-sign"></i>${escHtml(salary)}</span>
+            <span><i class="fa-solid fa-briefcase"></i>${escHtml(job.experience_level || 'Any level')}</span>
+            ${job.applications_count ? `<span><i class="fa-solid fa-users"></i>${job.applications_count} applied</span>` : ''}
+        </div>
+        ${skills.length ? `<div class="jl-skills">${skills.map(s => `<span>${escHtml(s)}</span>`).join('')}</div>` : ''}
+        <div class="jl-bottom">
+            <div style="display:flex;gap:10px;align-items:center;">
+                <span class="jl-type">${escHtml(job.job_type)}</span>
+                ${job.is_featured ? '<span style="padding:4px 9px;border-radius:6px;background:#fef9c3;color:#a16207;font-size:11px;font-weight:700;"><i class="fa-solid fa-star" style="margin-right:3px;"></i>Featured</span>' : ''}
+                <span class="jl-posted">${timeAgo(job.created_at)}</span>
+            </div>
+            <a href="job-details.html?id=${job.id}" class="jl-apply">
+                View & Apply <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>`;
+}
+
+// ── Brand color ───────────────────────────────────────────────────────────────
+function brandColor(name) {
+    const p = [
+        {bg:'#eef2ff',text:'#4f46e5'},{bg:'#fef3c7',text:'#d97706'},
+        {bg:'#dcfce7',text:'#16a34a'},{bg:'#dbeafe',text:'#2563eb'},
+        {bg:'#ede9fe',text:'#7c3aed'},{bg:'#fce7f3',text:'#be185d'},
+        {bg:'#f0fdf4',text:'#15803d'},{bg:'#fff7ed',text:'#c2410c'},
+    ];
+    if (!name) return p[0];
+    let h = 0;
+    for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+    return p[Math.abs(h) % p.length];
+}
+
+// ── Save buttons ──────────────────────────────────────────────────────────────
+function attachSaveHandlers(container) {
+    container.querySelectorAll('.jl-save').forEach(btn => {
+        btn.addEventListener('click', async e => {
+            e.stopPropagation();
+            if (!Auth.isLoggedIn()) {
+                window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+                return;
+            }
+            const id   = btn.dataset.id;
+            const icon = btn.querySelector('i');
+            const saving = icon.classList.contains('fa-regular');
+            try {
+                if (saving) {
+                    await SavedJobsAPI.save(id);
+                    icon.className = 'fa-solid fa-bookmark';
+                    btn.classList.add('saved');
+                    showToast('Job saved!', 'success');
+                } else {
+                    await SavedJobsAPI.remove(id);
+                    icon.className = 'fa-regular fa-bookmark';
+                    btn.classList.remove('saved');
+                    showToast('Removed from saved', 'info');
+                }
+            } catch (err) {
+                showToast(err.message || 'Failed', 'error');
+            }
+        });
+    });
+}
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+function renderPagination(current, total) {
+    const pg = document.getElementById('pagination');
+    if (total <= 1) { pg.innerHTML = ''; return; }
+
+    let html = `<button class="pg-btn" ${current <= 1 ? 'disabled' : ''} data-page="${current - 1}">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>`;
+
+    const range = pagRange(current, total);
+    range.forEach(p => {
+        if (p === '…') {
+            html += `<span style="padding:0 6px;color:#9ca3af;align-self:center;">…</span>`;
+        } else {
+            html += `<button class="pg-btn${p === current ? ' active' : ''}" data-page="${p}">${p}</button>`;
+        }
+    });
+
+    html += `<button class="pg-btn" ${current >= total ? 'disabled' : ''} data-page="${current + 1}">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>`;
+
+    pg.innerHTML = html;
+    pg.querySelectorAll('.pg-btn:not(:disabled)').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const p = parseInt(btn.dataset.page);
+            if (p && p !== current) { loadJobs(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        });
+    });
+}
+
+function pagRange(cur, total) {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    if (cur <= 4)   return [1,2,3,4,5,'…',total];
+    if (cur >= total - 3) return [1,'…',total-4,total-3,total-2,total-1,total];
+    return [1,'…',cur-1,cur,cur+1,'…',total];
+}
+
+// ── Event listeners ───────────────────────────────────────────────────────────
+document.getElementById('searchBtn').addEventListener('click', () => loadJobs(1));
+document.getElementById('searchQ').addEventListener('keydown',   e => { if (e.key === 'Enter') loadJobs(1); });
+document.getElementById('searchLoc').addEventListener('keydown', e => { if (e.key === 'Enter') loadJobs(1); });
+
+document.querySelectorAll('.type-filter, .cat-filter, .exp-filter').forEach(cb => {
+    cb.addEventListener('change', () => loadJobs(1));
+});
+
+document.getElementById('clearFilters').addEventListener('click', () => {
+    document.querySelectorAll('.type-filter, .cat-filter, .exp-filter').forEach(cb => cb.checked = false);
+    document.getElementById('searchQ').value   = '';
+    document.getElementById('searchLoc').value = '';
+    loadJobs(1);
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+readUrlParams();
+loadJobs(1);
+</script>
+</body>
+</html>
