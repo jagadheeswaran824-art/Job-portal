@@ -79,6 +79,7 @@ app.get('/api/openapi.json', (req, res) => {
 app.use('/api/auth',            require('./routes/auth'));
 app.use('/api/users',           require('./routes/users'));
 app.use('/api/profile',         require('./routes/profile'));
+app.use('/api/dashboard',       require('./routes/dashboard'));
 app.use('/api/jobs',            require('./routes/jobs'));
 app.use('/api/search',          require('./routes/search'));
 app.use('/api/recommendations', require('./routes/recommendations'));
@@ -126,18 +127,26 @@ if (!fs.existsSync(frontendPath)) {
 app.use(express.static(frontendPath));
 
 // HTML page routing
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
     const cleanPath = req.path.replace(/^\//, '').replace(/\/$/, '');
     if (cleanPath) {
         const directHtml = path.join(frontendPath, `${cleanPath}.html`);
         if (fs.existsSync(directHtml)) {
-            return res.sendFile(directHtml);
+            return res.sendFile(directHtml, err => {
+                if (err && !res.headersSent) next(err);
+            });
         }
     }
     if (req.path.includes('.')) {
         return res.status(404).send('Not found');
     }
-    res.sendFile(path.join(frontendPath, 'index.html'));
+    const indexPath = path.join(frontendPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        return res.sendFile(indexPath, err => {
+            if (err && !res.headersSent) next(err);
+        });
+    }
+    res.status(404).send('Not found');
 });
 
 // ─── Global error handler ─────────────────────────────────────────────────────
@@ -146,7 +155,17 @@ app.use((err, req, res, _next) => {
         return res.status(403).json({ success: false, status: 'error', error: { code: 'CORS_VIOLATION', message: 'CORS policy violation' } });
     }
     console.error('Unhandled server error:', err);
-    res.status(500).json({ success: false, status: 'error', error: { code: 'INTERNAL_SERVER_ERROR', message: 'Internal server error' } });
+    if (!res.headersSent) {
+        res.status(500).json({ success: false, status: 'error', error: { code: 'INTERNAL_SERVER_ERROR', message: 'Internal server error' } });
+    }
+});
+
+// Prevent unexpected process exits
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 module.exports = app;

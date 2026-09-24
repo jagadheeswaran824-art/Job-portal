@@ -98,6 +98,10 @@ async function runTests() {
         const me = await request('GET', '/api/auth/me', null, seekerToken);
         assert(me.status === 200 && me.data.data.email === 'jagad@jobportal.com', 'GET /api/auth/me (Protected seeker verification)');
 
+        // 8b. Dashboard: /api/dashboard/overview
+        const dash = await request('GET', '/api/dashboard/overview', null, seekerToken);
+        assert(dash.status === 200 && dash.data.data?.statistics !== undefined, 'GET /api/dashboard/overview (Candidate dashboard metrics)');
+
         // 9. Recommendations & Opportunity Radar
         const recs = await request('GET', '/api/recommendations', null, seekerToken);
         assert(recs.status === 200 && Array.isArray(recs.data.data), 'GET /api/recommendations (Personalized scoring)');
@@ -118,7 +122,7 @@ async function runTests() {
         assert(interviewPrep.status === 200 && Array.isArray(interviewPrep.data.data.questions), 'POST /api/ai/interview-prep (Role-specific talking points)');
 
         // 12. AI Match Score with Rationales
-        const firstJobId = jobs.data.data[0]?.id || 1;
+        const firstJobId = (Array.isArray(jobs.data?.data) ? jobs.data.data[0]?.id : null) || 1;
         const matchScore = await request('POST', '/api/ai/match-score', {
             job_id: firstJobId,
             skills: ['React', 'Node.js', 'MySQL', 'JavaScript']
