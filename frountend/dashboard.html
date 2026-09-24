@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | JobPortal</title>
+    <title>Dashboard | JobPortal AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
         body { background: #f6f8fc; }
 
-        /* ── Layout ── */
+        /* Layout */
         .dash-layout {
             max-width: 1240px; margin: 0 auto; padding: 36px 20px 70px;
             display: grid; grid-template-columns: 240px 1fr; gap: 28px;
         }
 
-        /* ── Sidebar ── */
-        .dash-sidebar {
-            height: fit-content; position: sticky; top: 80px;
-        }
+        /* Sidebar */
+        .dash-sidebar { height: fit-content; position: sticky; top: 80px; }
         .user-card {
             background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
             padding: 22px; text-align: center; margin-bottom: 16px;
@@ -56,16 +54,15 @@
         .dash-nav a.active i { color: #4f46e5; }
         .nav-divider { height: 1px; background: #f3f4f6; margin: 6px 0; }
 
-        /* ── Main ── */
-        .dash-main {}
+        /* Main */
         .page-header {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 26px;
+            margin-bottom: 26px; flex-wrap: wrap; gap: 12px;
         }
         .page-header h1 { font-size: 24px; font-weight: 800; }
         .page-header p  { color: #6b7280; font-size: 13px; margin-top: 4px; }
 
-        /* ── Stat cards ── */
+        /* Stat cards */
         .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 26px; }
         .stat-tile {
             background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
@@ -74,102 +71,78 @@
         .stat-tile:hover { box-shadow: 0 8px 24px rgba(15,23,42,.07); }
         .st-icon {
             width: 42px; height: 42px; border-radius: 11px;
-            display: grid; place-items: center; font-size: 18px;
-            margin-bottom: 14px;
+            display: grid; place-items: center; font-size: 18px; margin-bottom: 14px;
         }
         .st-val { font-size: 28px; font-weight: 800; color: #111827; line-height: 1; }
         .st-label { font-size: 12px; color: #6b7280; margin-top: 5px; }
 
-        /* ── Section card ── */
+        /* Section card */
         .section-card {
             background: #fff; border: 1px solid #e5e7eb; border-radius: 18px;
             padding: 24px; margin-bottom: 22px;
         }
-        .section-card:last-child { margin-bottom: 0; }
         .sc-head {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
         }
-        .sc-head h2 { font-size: 17px; font-weight: 700; }
+        .sc-head h2 { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
         .sc-head a  { font-size: 12px; color: #4f46e5; font-weight: 700; text-decoration: none; }
-        .sc-head a:hover { text-decoration: underline; }
 
-        /* ── Application rows ── */
+        /* Application rows & Pipeline */
         .app-row {
             display: flex; align-items: center; gap: 14px;
-            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
+            padding: 14px 0; border-bottom: 1px solid #f3f4f6; flex-wrap: wrap;
         }
         .app-row:last-child { border-bottom: none; padding-bottom: 0; }
         .app-logo {
             width: 42px; height: 42px; border-radius: 10px;
-            display: grid; place-items: center;
-            font-size: 13px; font-weight: 800; flex-shrink: 0;
+            display: grid; place-items: center; font-size: 13px; font-weight: 800; flex-shrink: 0;
         }
-        .app-info { flex: 1; min-width: 0; }
-        .app-info h4 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .app-info p  { font-size: 11px; color: #6b7280; margin-top: 2px; }
-        .app-meta { font-size: 11px; color: #94a3b8; white-space: nowrap; }
+        .app-info { flex: 1; min-width: 200px; }
+        .app-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+        .app-info p  { font-size: 12px; color: #6b7280; }
         .status-badge {
-            padding: 4px 9px; border-radius: 50px;
-            font-size: 11px; font-weight: 700; text-transform: capitalize;
-            white-space: nowrap;
+            padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; text-transform: capitalize; white-space: nowrap;
         }
 
-        /* ── Job rows (employer) ── */
-        .job-row {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
+        /* Pipeline Steps */
+        .pipeline-track {
+            display: flex; gap: 6px; align-items: center; margin-top: 8px; width: 100%; overflow-x: auto; padding-bottom: 4px;
         }
-        .job-row:last-child { border-bottom: none; }
-        .jr-info { flex: 1; min-width: 0; }
-        .jr-info h4 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .jr-info p  { font-size: 11px; color: #6b7280; margin-top: 2px; }
-        .jr-stat { font-size: 12px; color: #6b7280; text-align: right; }
-        .jr-stat strong { display: block; font-size: 16px; font-weight: 800; color: #111827; }
+        .pipe-step {
+            font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; background: #f1f5f9; color: #94a3b8; white-space: nowrap;
+        }
+        .pipe-step.active { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+        .pipe-step.current { background: #4f46e5; color: #fff; }
 
-        /* ── Saved job rows ── */
-        .saved-row {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 0; border-bottom: 1px solid #f3f4f6;
-        }
-        .saved-row:last-child { border-bottom: none; }
-        .saved-info { flex: 1; min-width: 0; }
-        .saved-info h4 { font-size: 13px; font-weight: 700; }
-        .saved-info p  { font-size: 11px; color: #6b7280; margin-top: 2px; }
-
-        /* ── Empty state ── */
-        .dash-empty {
-            text-align: center; padding: 40px 20px; color: #9ca3af;
-        }
-        .dash-empty i { font-size: 32px; margin-bottom: 10px; display: block; }
-        .dash-empty p { font-size: 13px; }
-
-        /* ── Quick actions ── */
-        .quick-actions {
-            display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-bottom: 22px;
-        }
+        /* Quick actions */
+        .quick-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 22px; }
         .qa-btn {
-            display: flex; align-items: center; gap: 12px;
-            padding: 16px; border-radius: 14px;
-            background: #fff; border: 1px solid #e5e7eb;
-            text-decoration: none; color: #374151;
+            display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 14px;
+            background: #fff; border: 1px solid #e5e7eb; text-decoration: none; color: #374151;
             font-size: 13px; font-weight: 600; transition: .2s;
         }
         .qa-btn i {
-            width: 36px; height: 36px; border-radius: 9px;
-            display: grid; place-items: center; font-size: 15px; flex-shrink: 0;
+            width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; font-size: 15px; flex-shrink: 0;
         }
         .qa-btn:hover { border-color: #c7d2fe; background: #fafbff; color: #4f46e5; }
-        .qa-btn:hover i { background: #eef2ff !important; }
 
-        /* ── Responsive ── */
+        /* Modals */
+        .modal-backdrop {
+            display: none; position: fixed; inset: 0; z-index: 200; background: rgba(15,23,42,.55);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-backdrop.open { display: flex; }
+        .modal {
+            background: #fff; border-radius: 20px; padding: 28px; max-width: 580px; width: 100%; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-close { border: none; background: none; font-size: 22px; cursor: pointer; color: #6b7280; }
+
+        /* Responsive */
         @media (max-width: 900px) {
             .dash-layout { grid-template-columns: 1fr; }
             .dash-sidebar { position: static; }
             .stats-row { grid-template-columns: repeat(2,1fr); }
-        }
-        @media (max-width: 500px) {
-            .stats-row { grid-template-columns: 1fr 1fr; }
             .quick-actions { grid-template-columns: 1fr; }
         }
     </style>
@@ -187,6 +160,8 @@
             <a href="index.html">Home</a>
             <a href="jobs.html">Find Jobs</a>
             <a href="companies.html">Companies</a>
+            <a href="career.html">AI Career</a>
+            <a href="security-check.html"><i class="fa-solid fa-shield-halved" style="color:#10b981;margin-right:4px;"></i>Safety Check</a>
             <a href="about.html">About</a>
         </nav>
         <div class="nav-actions">
@@ -210,28 +185,93 @@
             <span class="user-role" id="userRole">—</span>
         </div>
         <nav class="dash-nav" id="dashNav">
-            <!-- Populated by JS based on role -->
+            <!-- Populated by JS -->
         </nav>
     </aside>
 
     <!-- MAIN -->
     <main class="dash-main" id="dashMain">
-        <!-- Populated by JS -->
         <div style="display:flex;align-items:center;justify-content:center;padding:80px;gap:14px;color:#6b7280;">
             <span class="spinner spinner-dark"></span> Loading dashboard…
         </div>
     </main>
 </div>
 
+<!-- RESUME ANALYZER MODAL -->
+<div class="modal-backdrop" id="resumeModal">
+    <div class="modal">
+        <div class="modal-hd">
+            <h2><i class="fa-solid fa-file-invoice" style="color:#4f46e5; margin-right:8px;"></i> AI Resume Analyzer</h2>
+            <button class="modal-close" onclick="document.getElementById('resumeModal').classList.remove('open')">&times;</button>
+        </div>
+        <div style="margin-bottom:16px;">
+            <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Paste Resume Text (PDF/DOCX/TXT content):</label>
+            <textarea id="resumeTextInput" placeholder="Paste your complete resume text or project experience here…" style="width:100%; min-height:160px; padding:12px; border-radius:10px; border:1px solid #d1d5db; font-family:inherit; font-size:13px;"></textarea>
+        </div>
+        <button id="runResumeAnalysisBtn" style="width:100%; padding:12px; border-radius:10px; border:none; background:#4f46e5; color:#fff; font-weight:800; cursor:pointer;">
+            <i class="fa-solid fa-sparkles"></i> Run AI ATS Analysis
+        </button>
+        <div id="resumeAnalysisResult" style="margin-top:20px; display:none;"></div>
+    </div>
+</div>
+
+<!-- INTERVIEW SCHEDULING MODAL (EMPLOYER) -->
+<div class="modal-backdrop" id="scheduleModal">
+    <div class="modal">
+        <div class="modal-hd">
+            <h2><i class="fa-solid fa-calendar-plus" style="color:#4f46e5; margin-right:8px;"></i> Schedule Candidate Interview</h2>
+            <button class="modal-close" onclick="document.getElementById('scheduleModal').classList.remove('open')">&times;</button>
+        </div>
+        <form id="scheduleForm">
+            <input type="hidden" id="schCandidateId" />
+            <input type="hidden" id="schJobId" />
+            <input type="hidden" id="schAppId" />
+            <div style="margin-bottom:14px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Candidate</label>
+                <input type="text" id="schCandidateName" readonly style="width:100%; padding:10px; border-radius:8px; border:1px solid #e5e7eb; background:#f8fafc; font-size:13px;" />
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+                <div>
+                    <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Date</label>
+                    <input type="date" id="schDate" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db; font-size:13px;" />
+                </div>
+                <div>
+                    <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Time</label>
+                    <input type="time" id="schTime" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db; font-size:13px;" />
+                </div>
+            </div>
+            <div style="margin-bottom:14px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Interview Type</label>
+                <select id="schType" style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db; font-size:13px;">
+                    <option value="video">Online Video (Google Meet / Zoom)</option>
+                    <option value="technical_round">Technical Coding Round</option>
+                    <option value="hr_round">HR & Culture Round</option>
+                    <option value="phone">Phone Screening</option>
+                    <option value="in_person">In-Person Office</option>
+                </select>
+            </div>
+            <div style="margin-bottom:14px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Meeting Link / Location</label>
+                <input type="text" id="schMeetingLink" placeholder="https://meet.google.com/xxx-xxxx-xxx" style="width:100%; padding:10px; border-radius:8px; border:1px solid #d1d5db; font-size:13px;" />
+            </div>
+            <div style="margin-bottom:18px;">
+                <label style="display:block; font-size:12px; font-weight:700; color:#374151; margin-bottom:6px;">Instructions / Notes</label>
+                <textarea id="schNotes" placeholder="Preparation notes or agenda…" style="width:100%; min-height:70px; padding:10px; border-radius:8px; border:1px solid #d1d5db; font-size:13px; font-family:inherit;"></textarea>
+            </div>
+            <button type="submit" style="width:100%; padding:12px; border-radius:10px; border:none; background:#4f46e5; color:#fff; font-weight:800; cursor:pointer;">
+                Confirm & Schedule Interview
+            </button>
+        </form>
+    </div>
+</div>
+
 <script src="js/api.js"></script>
 <script>
 'use strict';
 
-// ── Guard: must be logged in ──────────────────────────────────────────────────
 Auth.redirectIfGuest();
 const user = Auth.getUser();
 
-// ── Populate sidebar user card ─────────────────────────────────────────────────
 if (user) {
     const initials = user.full_name
         ? user.full_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
@@ -242,12 +282,19 @@ if (user) {
     document.getElementById('userRole').textContent   = (user.role || '').replace('_', ' ');
 }
 
-// ── Sidebar nav (role-aware) ──────────────────────────────────────────────────
-function buildSidebarNav(role) {
+function buildSidebarNav(role, activeTab = 'dashboard') {
     const isEmployer = role === 'employer' || role === 'admin';
+    const isAdmin = role === 'admin';
     const nav = document.getElementById('dashNav');
     nav.innerHTML = `
-        <a href="dashboard.html" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="dashboard.html" class="${activeTab === 'dashboard' ? 'active' : ''}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="career.html"><i class="fa-solid fa-sparkles" style="color:#4f46e5;"></i> AI Career GPS</a>
+        <a href="security-check.html"><i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> URL Safety Check</a>
+        ${isAdmin ? `
+        <a href="javascript:void(0)" onclick="renderAdminSecurityCenter()" class="${activeTab === 'security' ? 'active' : ''}" style="color:#dc2626; font-weight:700;">
+            <i class="fa-solid fa-shield-virus" style="color:#dc2626;"></i> Security Center
+        </a>
+        ` : ''}
         ${isEmployer ? `
         <a href="post-job.html"><i class="fa-solid fa-plus-circle"></i> Post a Job</a>
         ` : `
@@ -260,7 +307,6 @@ function buildSidebarNav(role) {
         </a>`;
 }
 
-// ── Brand color ───────────────────────────────────────────────────────────────
 function brandColor(name) {
     const p = [
         {bg:'#eef2ff',text:'#4f46e5'},{bg:'#fef3c7',text:'#d97706'},
@@ -273,28 +319,31 @@ function brandColor(name) {
     return p[Math.abs(h)%p.length];
 }
 
-// ── Status badge ──────────────────────────────────────────────────────────────
 function statusBadge(s) {
     const map = {
         pending:'#fef3c7:#92400e', reviewing:'#dbeafe:#1e40af',
-        shortlisted:'#d1fae5:#065f46', interview:'#ede9fe:#5b21b6',
-        offered:'#dcfce7:#14532d', rejected:'#fee2e2:#991b1b',
-        withdrawn:'#f3f4f6:#6b7280',
+        shortlisted:'#d1fae5:#065f46', assessment:'#fef3c7:#b45309',
+        interview:'#ede9fe:#5b21b6', offered:'#dcfce7:#14532d',
+        rejected:'#fee2e2:#991b1b', withdrawn:'#f3f4f6:#6b7280',
     };
     const [bg,color] = (map[s] || '#f3f4f6:#6b7280').split(':');
     return `<span class="status-badge" style="background:${bg};color:${color};">${escHtml(s)}</span>`;
 }
 
-// ── Load dashboard data ────────────────────────────────────────────────────────
 async function loadDashboard() {
     try {
         const res  = await DashboardAPI.overview();
         const data = res.data;
         buildSidebarNav(data.role);
+
+        // Fetch interviews
+        const intRes = await InterviewsAPI.my().catch(() => ({ data: [] }));
+        const interviews = intRes.data || [];
+
         if (data.role === 'employer' || data.role === 'admin') {
-            renderEmployerDash(data);
+            renderEmployerDash(data, interviews);
         } else {
-            renderSeekerDash(data);
+            renderSeekerDash(data, interviews);
         }
     } catch (err) {
         document.getElementById('dashMain').innerHTML = `
@@ -309,17 +358,22 @@ async function loadDashboard() {
 }
 
 // ── Job Seeker Dashboard ──────────────────────────────────────────────────────
-function renderSeekerDash(data) {
+function renderSeekerDash(data, interviews = []) {
     const s = data.statistics;
     const apps = data.recent_applications || [];
     const saved = data.saved_jobs || [];
+
+    const pipelineStages = ['Applied', 'Reviewing', 'Shortlisted', 'Interview', 'Offered'];
 
     document.getElementById('dashMain').innerHTML = `
         <div class="page-header">
             <div>
                 <h1>Welcome back, ${escHtml((user?.full_name || 'there').split(' ')[0])} 👋</h1>
-                <p>Here's what's happening with your job search.</p>
+                <p>AI Career Intelligence & Application Management Dashboard</p>
             </div>
+            <a href="career.html" class="btn-primary" style="background:linear-gradient(135deg,#4f46e5,#7c3aed); text-decoration:none; padding:10px 18px; border-radius:10px; color:#fff; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-sparkles"></i> Open Career GPS
+            </a>
         </div>
 
         <!-- Stats -->
@@ -336,74 +390,112 @@ function renderSeekerDash(data) {
             </div>
             <div class="stat-tile">
                 <div class="st-icon" style="background:#ede9fe;color:#7c3aed;"><i class="fa-solid fa-calendar-check"></i></div>
-                <div class="st-val">${s.interviews || 0}</div>
-                <div class="st-label">Interviews</div>
+                <div class="st-val">${interviews.length}</div>
+                <div class="st-label">Scheduled Interviews</div>
             </div>
             <div class="stat-tile">
-                <div class="st-icon" style="background:#dcfce7;color:#16a34a;"><i class="fa-solid fa-briefcase"></i></div>
-                <div class="st-val">${s.total_jobs}+</div>
-                <div class="st-label">Active Jobs</div>
+                <div class="st-icon" style="background:#dcfce7;color:#16a34a;"><i class="fa-solid fa-trophy"></i></div>
+                <div class="st-val">85%</div>
+                <div class="st-label">Job Readiness Score</div>
             </div>
         </div>
 
         <!-- Quick actions -->
         <div class="quick-actions">
-            <a href="jobs.html" class="qa-btn">
-                <i class="fa-solid fa-magnifying-glass" style="background:#eef2ff;color:#4f46e5;"></i>
-                <div><strong>Find Jobs</strong><br><small style="color:#6b7280;font-weight:400;">Browse new openings</small></div>
+            <a href="javascript:void(0)" onclick="openResumeModal()" class="qa-btn">
+                <i class="fa-solid fa-file-invoice" style="background:#eef2ff;color:#4f46e5;"></i>
+                <div><strong>AI Resume Analyzer</strong><br><small style="color:#6b7280;font-weight:400;">Extract & check ATS score</small></div>
             </a>
-            <a href="profile.html" class="qa-btn">
-                <i class="fa-solid fa-user-pen" style="background:#f0fdf4;color:#16a34a;"></i>
-                <div><strong>Update Profile</strong><br><small style="color:#6b7280;font-weight:400;">Improve your chances</small></div>
+            <a href="career.html" class="qa-btn">
+                <i class="fa-solid fa-route" style="background:#faf5ff;color:#7c3aed;"></i>
+                <div><strong>Career GPS Roadmap</strong><br><small style="color:#6b7280;font-weight:400;">View skill milestones</small></div>
+            </a>
+            <a href="jobs.html" class="qa-btn">
+                <i class="fa-solid fa-magnifying-glass" style="background:#f0fdf4;color:#16a34a;"></i>
+                <div><strong>Natural Search Jobs</strong><br><small style="color:#6b7280;font-weight:400;">Browse AI-matched jobs</small></div>
             </a>
         </div>
 
-        <!-- Recent Applications -->
+        <!-- Scheduled Interviews Section -->
+        ${interviews.length ? `
+        <div class="section-card" style="border-left:4px solid #7c3aed;">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-calendar-check" style="color:#7c3aed;"></i> Upcoming Scheduled Interviews</h2>
+            </div>
+            <div style="display:grid; gap:12px;">
+                ${interviews.map(i => `
+                    <div style="background:#f8fafc; padding:16px; border-radius:12px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <h4 style="font-size:14px; font-weight:700; color:#0f172a;">${escHtml(i.job_title)} at ${escHtml(i.company_name)}</h4>
+                            <p style="font-size:12px; color:#64748b; margin-top:3px;">
+                                <i class="fa-solid fa-calendar"></i> ${i.interview_date} at ${i.interview_time} · <span style="text-transform:capitalize;">${escHtml(i.interview_type)}</span>
+                            </p>
+                            ${i.notes ? `<p style="font-size:12px; color:#475569; margin-top:4px;"><strong>Notes:</strong> ${escHtml(i.notes)}</p>` : ''}
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            ${i.meeting_link ? `<a href="${escHtml(i.meeting_link)}" target="_blank" style="padding:8px 14px; border-radius:8px; background:#4f46e5; color:#fff; font-size:12px; font-weight:700; text-decoration:none;"><i class="fa-solid fa-video"></i> Join Meeting</a>` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
+
+        <!-- Application Intelligence Tracker -->
         <div class="section-card">
             <div class="sc-head">
-                <h2><i class="fa-solid fa-clock-rotate-left" style="color:#4f46e5;margin-right:8px;"></i>Recent Applications</h2>
-                <a href="jobs.html">View all jobs</a>
+                <h2><i class="fa-solid fa-timeline" style="color:#4f46e5;"></i> Application Intelligence Pipeline</h2>
+                <a href="jobs.html">Browse more jobs</a>
             </div>
             ${apps.length ? apps.map(a => {
                 const c = brandColor(a.company_name);
+                const currentStatus = (a.status || 'pending').toLowerCase();
                 return `
                 <div class="app-row">
                     <div class="app-logo" style="background:${c.bg};color:${c.text};">${(a.company_name||'?')[0].toUpperCase()}</div>
                     <div class="app-info">
                         <h4>${escHtml(a.job_title)}</h4>
-                        <p>${escHtml(a.company_name)} · ${escHtml(a.location || '')} ${a.job_type ? '· ' + escHtml(a.job_type) : ''}</p>
+                        <p>${escHtml(a.company_name)} · ${escHtml(a.location || '')}</p>
+                        <!-- Pipeline visualization -->
+                        <div class="pipeline-track">
+                            <span class="pipe-step ${currentStatus === 'pending' ? 'current' : 'active'}">1. Applied</span>
+                            <span class="pipe-step ${['reviewing','shortlisted','interview','offered'].includes(currentStatus) ? (currentStatus==='reviewing'?'current':'active') : ''}">2. Review</span>
+                            <span class="pipe-step ${['shortlisted','interview','offered'].includes(currentStatus) ? (currentStatus==='shortlisted'?'current':'active') : ''}">3. Shortlist</span>
+                            <span class="pipe-step ${['interview','offered'].includes(currentStatus) ? (currentStatus==='interview'?'current':'active') : ''}">4. Interview</span>
+                            <span class="pipe-step ${currentStatus === 'offered' ? 'current' : ''}">5. Offered</span>
+                        </div>
                     </div>
                     ${statusBadge(a.status)}
-                    <div class="app-meta">${timeAgo(a.created_at)}</div>
+                    <div style="font-size:11px; color:#94a3b8;">${timeAgo(a.created_at)}</div>
                 </div>`;
-            }).join('') : `<div class="dash-empty"><i class="fa-solid fa-paper-plane"></i><p>No applications yet. <a href="jobs.html" style="color:#4f46e5;">Find jobs to apply</a></p></div>`}
+            }).join('') : `<div class="dash-empty"><i class="fa-solid fa-paper-plane"></i><p>No active applications. <a href="jobs.html" style="color:#4f46e5;">Find and apply for matching jobs</a></p></div>`}
         </div>
 
         <!-- Saved Jobs -->
         ${saved.length ? `
         <div class="section-card">
             <div class="sc-head">
-                <h2><i class="fa-solid fa-bookmark" style="color:#4f46e5;margin-right:8px;"></i>Saved Jobs</h2>
+                <h2><i class="fa-solid fa-bookmark" style="color:#4f46e5;"></i> Saved Jobs</h2>
                 <a href="jobs.html">Browse more</a>
             </div>
             ${saved.map(j => {
                 const c = brandColor(j.company_name);
                 return `
-                <div class="saved-row">
+                <div class="saved-row" style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #f1f5f9;">
                     <div class="app-logo" style="background:${c.bg};color:${c.text};">${(j.company_name||'?')[0].toUpperCase()}</div>
-                    <div class="saved-info">
-                        <h4>${escHtml(j.title)}</h4>
-                        <p>${escHtml(j.company_name)} · ${escHtml(j.location)}</p>
+                    <div style="flex:1;">
+                        <h4 style="font-size:13px; font-weight:700;">${escHtml(j.title)}</h4>
+                        <p style="font-size:11px; color:#6b7280;">${escHtml(j.company_name)} · ${escHtml(j.location)}</p>
                     </div>
-                    <span style="font-size:11px;color:#94a3b8;white-space:nowrap;">${escHtml(formatSalary(j.salary_min, j.salary_max))}</span>
-                    <a href="job-details.html?id=${j.job_id}" style="padding:8px 14px;border-radius:8px;background:#4f46e5;color:#fff;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">Apply</a>
+                    <span style="font-size:11px;color:#94a3b8;">${escHtml(formatSalary(j.salary_min, j.salary_max))}</span>
+                    <a href="job-details.html?id=${j.job_id}" style="padding:7px 14px;border-radius:8px;background:#4f46e5;color:#fff;font-size:12px;font-weight:700;text-decoration:none;">View & Apply</a>
                 </div>`;
             }).join('')}
-        </div>` : ''}`;
+        </div>` : ''}
+    `;
 }
 
 // ── Employer Dashboard ────────────────────────────────────────────────────────
-function renderEmployerDash(data) {
+function renderEmployerDash(data, interviews = []) {
     const s    = data.statistics;
     const apps = data.recent_applications || [];
     const jobs = data.my_jobs || [];
@@ -411,10 +503,10 @@ function renderEmployerDash(data) {
     document.getElementById('dashMain').innerHTML = `
         <div class="page-header">
             <div>
-                <h1>Employer Dashboard 📋</h1>
-                <p>Manage your job listings and review applicants.</p>
+                <h1>Recruiter Intelligence Dashboard 📋</h1>
+                <p>Manage job listings, review applicant pipelines, and schedule interviews.</p>
             </div>
-            <a href="post-job.html" class="btn-primary" style="white-space:nowrap;">
+            <a href="post-job.html" class="btn-primary" style="white-space:nowrap; background:#4f46e5; color:#fff; padding:10px 18px; border-radius:10px; font-weight:700; text-decoration:none;">
                 <i class="fa-solid fa-plus"></i> Post a Job
             </a>
         </div>
@@ -437,41 +529,37 @@ function renderEmployerDash(data) {
                 <div class="st-label">Total Applicants</div>
             </div>
             <div class="stat-tile">
-                <div class="st-icon" style="background:#ede9fe;color:#7c3aed;"><i class="fa-solid fa-bell"></i></div>
-                <div class="st-val">${s.new_applicants}</div>
-                <div class="st-label">New This Week</div>
+                <div class="st-icon" style="background:#ede9fe;color:#7c3aed;"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="st-val">${interviews.length}</div>
+                <div class="st-label">Interviews Scheduled</div>
             </div>
         </div>
 
-        <!-- My Job Listings -->
-        <div class="section-card">
+        <!-- Scheduled Interviews -->
+        ${interviews.length ? `
+        <div class="section-card" style="border-left:4px solid #4f46e5;">
             <div class="sc-head">
-                <h2><i class="fa-solid fa-list-ul" style="color:#4f46e5;margin-right:8px;"></i>My Job Listings</h2>
-                <a href="post-job.html">+ Post New</a>
+                <h2><i class="fa-solid fa-calendar-check" style="color:#4f46e5;"></i> Scheduled Interviews (${interviews.length})</h2>
             </div>
-            ${jobs.length ? jobs.map(j => `
-            <div class="job-row">
-                <div class="jr-info">
-                    <h4>${escHtml(j.title)}</h4>
-                    <p>${escHtml(j.company_name)} · Posted ${timeAgo(j.created_at)}</p>
-                </div>
-                <div class="jr-stat">
-                    <strong>${j.application_count || 0}</strong>
-                    applicants
-                </div>
-                <div class="jr-stat" style="margin-left:8px;">
-                    <strong>${j.views || 0}</strong>
-                    views
-                </div>
-                <span class="status-badge" style="background:${j.status==='active'?'#dcfce7':'#f3f4f6'};color:${j.status==='active'?'#14532d':'#6b7280'};margin-left:8px;">${escHtml(j.status)}</span>
-            </div>`).join('')
-            : `<div class="dash-empty"><i class="fa-solid fa-briefcase"></i><p>No jobs posted yet. <a href="post-job.html" style="color:#4f46e5;">Post your first job</a></p></div>`}
-        </div>
+            <div style="display:grid; gap:12px;">
+                ${interviews.map(i => `
+                    <div style="background:#f8fafc; padding:14px; border-radius:12px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h4 style="font-size:14px; font-weight:700;">${escHtml(i.candidate_name)} (${escHtml(i.candidate_email)})</h4>
+                            <p style="font-size:12px; color:#64748b;">For: ${escHtml(i.job_title)} · ${i.interview_date} at ${i.interview_time}</p>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            ${i.meeting_link ? `<a href="${escHtml(i.meeting_link)}" target="_blank" style="padding:6px 12px; border-radius:8px; background:#4f46e5; color:#fff; font-size:12px; font-weight:700; text-decoration:none;"><i class="fa-solid fa-video"></i> Start Meeting</a>` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
 
-        <!-- Recent Applicants -->
+        <!-- Recent Applicants & Pipeline Actions -->
         <div class="section-card">
             <div class="sc-head">
-                <h2><i class="fa-solid fa-user-group" style="color:#4f46e5;margin-right:8px;"></i>Recent Applicants</h2>
+                <h2><i class="fa-solid fa-user-group" style="color:#4f46e5;"></i> Candidate Pipeline & Actions</h2>
             </div>
             ${apps.length ? apps.map(a => {
                 const c = brandColor(a.applicant_name);
@@ -480,14 +568,332 @@ function renderEmployerDash(data) {
                     <div class="app-logo" style="background:${c.bg};color:${c.text};">${(a.applicant_name||'?')[0].toUpperCase()}</div>
                     <div class="app-info">
                         <h4>${escHtml(a.applicant_name)}</h4>
-                        <p>Applied for: ${escHtml(a.job_title)}</p>
+                        <p>Applied for: <strong>${escHtml(a.job_title)}</strong> · ${timeAgo(a.created_at)}</p>
                     </div>
                     ${statusBadge(a.status)}
-                    <div class="app-meta">${timeAgo(a.created_at)}</div>
+                    <button onclick="openScheduleModal(${a.user_id}, ${a.job_id}, ${a.id}, '${escHtml(a.applicant_name)}')" style="padding:6px 12px; border-radius:8px; border:1px solid #c7d2fe; background:#eef2ff; color:#4f46e5; font-size:12px; font-weight:700; cursor:pointer;">
+                        <i class="fa-solid fa-calendar-plus"></i> Schedule Interview
+                    </button>
                 </div>`;
             }).join('') : `<div class="dash-empty"><i class="fa-solid fa-inbox"></i><p>No applicants yet.</p></div>`}
+        </div>
+
+        <!-- My Job Listings -->
+        <div class="section-card">
+            <div class="sc-head">
+                <h2><i class="fa-solid fa-list-ul" style="color:#4f46e5;"></i> My Job Listings</h2>
+                <a href="post-job.html">+ Post New</a>
+            </div>
+            ${jobs.length ? jobs.map(j => `
+            <div class="job-row" style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #f1f5f9;">
+                <div style="flex:1;">
+                    <h4 style="font-size:14px; font-weight:700;">${escHtml(j.title)}</h4>
+                    <p style="font-size:12px; color:#6b7280;">${escHtml(j.company_name)} · Posted ${timeAgo(j.created_at)}</p>
+                </div>
+                <div style="font-size:12px; text-align:right;">
+                    <strong style="font-size:16px; color:#111827;">${j.application_count || 0}</strong> applicants
+                </div>
+                <span class="status-badge" style="background:${j.status==='active'?'#dcfce7':'#f3f4f6'};color:${j.status==='active'?'#14532d':'#6b7280'};margin-left:8px;">${escHtml(j.status)}</span>
+            </div>`).join('')
+            : `<div class="dash-empty"><i class="fa-solid fa-briefcase"></i><p>No jobs posted yet.</p></div>`}
         </div>`;
 }
+
+// ── Admin Security Center View ────────────────────────────────────────────────
+async function renderAdminSecurityCenter(filterStatus = 'all') {
+    const main = document.getElementById('dashMain');
+    buildSidebarNav(user?.role, 'security');
+
+    main.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;padding:80px;gap:14px;color:#6b7280;">
+            <span class="spinner spinner-dark"></span> Loading Security Center data…
+        </div>
+    `;
+
+    try {
+        const [overviewRes, reportsRes, checksRes] = await Promise.all([
+            AdminAPI.securityOverview().catch(() => ({ data: {} })),
+            AdminAPI.securityReports({ status: filterStatus !== 'all' ? filterStatus : '' }).catch(() => ({ data: [] })),
+            AdminAPI.securityChecks(15).catch(() => ({ data: [] })),
+        ]);
+
+        const o = overviewRes.data || {};
+        const reports = reportsRes.data || [];
+        const checks  = checksRes.data || [];
+
+        main.innerHTML = `
+            <div class="page-header">
+                <div>
+                    <h1 style="display:flex; align-items:center; gap:10px;">
+                        <i class="fa-solid fa-shield-virus" style="color:#dc2626;"></i> Security Center & Scam Defense
+                    </h1>
+                    <p>Monitor reported job postings, evaluate suspicious URLs, and enforce recruiter trust & safety policies.</p>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <a href="security-check.html" target="_blank" style="padding:10px 16px; border-radius:10px; background:#4f46e5; color:#fff; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Launch URL Scanner
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-tile">
+                    <div class="st-icon" style="background:#eef2ff;color:#4f46e5;"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="st-val">${o.total_checks || 0}</div>
+                    <div class="st-label">Total Security Checks</div>
+                </div>
+                <div class="stat-tile">
+                    <div class="st-icon" style="background:#fef2f2;color:#dc2626;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="st-val">${o.high_risk_checks || 0}</div>
+                    <div class="st-label">High Risk URLs Flagged</div>
+                </div>
+                <div class="stat-tile">
+                    <div class="st-icon" style="background:#fffbeb;color:#d97706;"><i class="fa-solid fa-flag"></i></div>
+                    <div class="st-val">${o.total_reports || 0}</div>
+                    <div class="st-label">User Scam Reports</div>
+                </div>
+                <div class="stat-tile">
+                    <div class="st-icon" style="background:#f0fdf4;color:#16a34a;"><i class="fa-solid fa-gavel"></i></div>
+                    <div class="st-val">${o.action_taken_reports || 0}</div>
+                    <div class="st-label">Actions Enforced</div>
+                </div>
+            </div>
+
+            <!-- User Reports Section -->
+            <div class="section-card">
+                <div class="sc-head">
+                    <h2><i class="fa-solid fa-flag" style="color:#dc2626;"></i> Job Security Reports (${reports.length})</h2>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <button onclick="renderAdminSecurityCenter('all')" style="padding:5px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; font-weight:700; cursor:pointer; background:${filterStatus==='all'?'#4f46e5':'#fff'}; color:${filterStatus==='all'?'#fff':'#374151'};">All</button>
+                        <button onclick="renderAdminSecurityCenter('pending')" style="padding:5px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; font-weight:700; cursor:pointer; background:${filterStatus==='pending'?'#4f46e5':'#fff'}; color:${filterStatus==='pending'?'#fff':'#374151'};">Pending</button>
+                        <button onclick="renderAdminSecurityCenter('investigating')" style="padding:5px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; font-weight:700; cursor:pointer; background:${filterStatus==='investigating'?'#4f46e5':'#fff'}; color:${filterStatus==='investigating'?'#fff':'#374151'};">Investigating</button>
+                        <button onclick="renderAdminSecurityCenter('action_taken')" style="padding:5px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; font-weight:700; cursor:pointer; background:${filterStatus==='action_taken'?'#4f46e5':'#fff'}; color:${filterStatus==='action_taken'?'#fff':'#374151'};">Action Taken</button>
+                        <button onclick="renderAdminSecurityCenter('dismissed')" style="padding:5px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; font-weight:700; cursor:pointer; background:${filterStatus==='dismissed'?'#4f46e5':'#fff'}; color:${filterStatus==='dismissed'?'#fff':'#374151'};">Dismissed</button>
+                    </div>
+                </div>
+
+                ${reports.length ? `
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e2e8f0; color:#64748b; font-size:11px; text-transform:uppercase;">
+                                <th style="padding:10px 8px;">Job Listing</th>
+                                <th style="padding:10px 8px;">Reason</th>
+                                <th style="padding:10px 8px;">Reporter</th>
+                                <th style="padding:10px 8px;">Status</th>
+                                <th style="padding:10px 8px; text-align:right;">Admin Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${reports.map(r => `
+                                <tr style="border-bottom:1px solid #f1f5f9;">
+                                    <td style="padding:12px 8px;">
+                                        <strong><a href="job-details.html?id=${r.job_id}" target="_blank" style="color:#4f46e5; text-decoration:none;">${escHtml(r.job_title || 'Job #' + r.job_id)}</a></strong>
+                                        <div style="font-size:11px; color:#64748b;">${escHtml(r.company_name || 'Unspecified Company')}</div>
+                                    </td>
+                                    <td style="padding:12px 8px;">
+                                        <span style="font-size:11px; font-weight:700; color:#b91c1c; background:#fee2e2; padding:3px 8px; border-radius:6px; text-transform:capitalize;">
+                                            ${escHtml((r.reason||'').replace('_', ' '))}
+                                        </span>
+                                        ${r.details ? `<div style="font-size:11px; color:#64748b; margin-top:4px; max-width:260px;">${escHtml(r.details)}</div>` : ''}
+                                    </td>
+                                    <td style="padding:12px 8px; font-size:12px; color:#475569;">
+                                        ${escHtml(r.reporter_name || 'Anonymous')}
+                                        ${r.reporter_email ? `<div style="font-size:10px; color:#94a3b8;">${escHtml(r.reporter_email)}</div>` : ''}
+                                    </td>
+                                    <td style="padding:12px 8px;">
+                                        <span style="font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; text-transform:capitalize; ${
+                                            r.admin_review_status === 'pending' ? 'background:#fef3c7; color:#92400e;' :
+                                            r.admin_review_status === 'investigating' ? 'background:#e0e7ff; color:#4338ca;' :
+                                            r.admin_review_status === 'action_taken' ? 'background:#dcfce7; color:#15803d;' :
+                                            'background:#f1f5f9; color:#64748b;'
+                                        }">
+                                            ${escHtml(r.admin_review_status)}
+                                        </span>
+                                    </td>
+                                    <td style="padding:12px 8px; text-align:right;">
+                                        <div style="display:inline-flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+                                            ${r.admin_review_status === 'pending' ? `
+                                            <button onclick="handleReportStatusUpdate(${r.id}, 'investigating')" style="padding:4px 8px; border-radius:6px; border:1px solid #c7d2fe; background:#eef2ff; color:#4f46e5; font-size:11px; font-weight:700; cursor:pointer;" title="Mark as investigating">
+                                                <i class="fa-solid fa-magnifying-glass"></i> Investigate
+                                            </button>` : ''}
+                                            <button onclick="handleJobModeration(${r.job_id}, 'suspend_job', ${r.id})" style="padding:4px 8px; border-radius:6px; border:1px solid #fecaca; background:#fff1f2; color:#b91c1c; font-size:11px; font-weight:700; cursor:pointer;" title="Suspend this job listing">
+                                                <i class="fa-solid fa-ban"></i> Suspend Job
+                                            </button>
+                                            <button onclick="handleJobModeration(${r.job_id}, 'suspend_recruiter', ${r.id})" style="padding:4px 8px; border-radius:6px; border:1px solid #fca5a5; background:#fee2e2; color:#991b1b; font-size:11px; font-weight:700; cursor:pointer;" title="Suspend recruiter account">
+                                                <i class="fa-solid fa-user-slash"></i> Ban Recruiter
+                                            </button>
+                                            <button onclick="handleReportStatusUpdate(${r.id}, 'dismissed')" style="padding:4px 8px; border-radius:6px; border:1px solid #e2e8f0; background:#fff; color:#64748b; font-size:11px; font-weight:700; cursor:pointer;" title="Dismiss report">
+                                                <i class="fa-solid fa-xmark"></i> Dismiss
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>` : `
+                <div class="dash-empty">
+                    <i class="fa-solid fa-shield-check" style="color:#10b981;"></i>
+                    <p>No reports currently under filter '${escHtml(filterStatus)}'.</p>
+                </div>`}
+            </div>
+
+            <!-- Recent Security URL Checks -->
+            <div class="section-card">
+                <div class="sc-head">
+                    <h2><i class="fa-solid fa-globe" style="color:#4f46e5;"></i> Recent URL Security Checks (${checks.length})</h2>
+                </div>
+                ${checks.length ? `
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e2e8f0; color:#64748b; font-size:11px; text-transform:uppercase;">
+                                <th style="padding:8px;">Target URL / Domain</th>
+                                <th style="padding:8px;">Risk Level</th>
+                                <th style="padding:8px;">Safety Score</th>
+                                <th style="padding:8px;">Checked At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${checks.map(c => `
+                                <tr style="border-bottom:1px solid #f1f5f9;">
+                                    <td style="padding:10px 8px;">
+                                        <strong>${escHtml(c.domain || 'Direct URL')}</strong>
+                                        <div style="font-size:11px; color:#64748b; word-break:break-all;">${escHtml(c.url)}</div>
+                                    </td>
+                                    <td style="padding:10px 8px;">
+                                        <span style="font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; ${
+                                            c.risk_level === 'LOW_RISK' ? 'background:#dcfce7; color:#15803d;' :
+                                            c.risk_level === 'CAUTION' ? 'background:#fef3c7; color:#92400e;' :
+                                            c.risk_level === 'HIGH_RISK' ? 'background:#fee2e2; color:#991b1b;' :
+                                            'background:#f1f5f9; color:#64748b;'
+                                        }">
+                                            ${escHtml(c.risk_level)}
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 8px; font-weight:700;">${c.score || 0}/100</td>
+                                    <td style="padding:10px 8px; font-size:11px; color:#94a3b8;">${timeAgo(c.checked_at)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>` : '<div class="dash-empty"><p>No URL security checks logged yet.</p></div>'}
+            </div>
+        `;
+    } catch (err) {
+        main.innerHTML = `<div style="padding:40px; text-align:center; color:#dc2626;"><h3>Failed to load Security Center</h3><p>${escHtml(err.message)}</p></div>`;
+    }
+}
+
+async function handleReportStatusUpdate(reportId, status) {
+    try {
+        await AdminAPI.updateReportStatus(reportId, status);
+        showToast(`Report updated to '${status}'`, 'success');
+        renderAdminSecurityCenter();
+    } catch (err) {
+        showToast(err.message || 'Failed to update report status', 'error');
+    }
+}
+
+async function handleJobModeration(jobId, action, reportId) {
+    const confirmMsg = action === 'suspend_job'
+        ? 'Are you sure you want to suspend this job listing?'
+        : action === 'suspend_recruiter'
+        ? 'Are you sure you want to ban this recruiter and suspend all their job postings?'
+        : 'Confirm moderation action?';
+
+    if (!confirm(confirmMsg)) return;
+
+    try {
+        await AdminAPI.takeJobSecurityAction(jobId, action, reportId);
+        showToast(`Security action '${action}' applied successfully!`, 'success');
+        renderAdminSecurityCenter();
+    } catch (err) {
+        showToast(err.message || 'Failed to enforce security action', 'error');
+    }
+}
+function openResumeModal() {
+    document.getElementById('resumeModal').classList.add('open');
+    document.getElementById('resumeTextInput').focus();
+}
+
+document.getElementById('runResumeAnalysisBtn').addEventListener('click', async () => {
+    const text = document.getElementById('resumeTextInput').value.trim();
+    const btn = document.getElementById('runResumeAnalysisBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Analyzing resume with AI…';
+
+    try {
+        const res = await AiAPI.analyzeResume(text);
+        const data = res.data;
+
+        const box = document.getElementById('resumeAnalysisResult');
+        box.style.display = 'block';
+        box.innerHTML = `
+            <div style="padding:16px; background:#f0fdf4; border-radius:12px; border:1px solid #bbf7d0; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="font-size:15px; font-weight:800; color:#166534;">ATS Score: ${data.ats_score}%</h3>
+                    <span style="font-size:11px; font-weight:700; color:#166534; background:#dcfce7; padding:3px 8px; border-radius:6px;">${escHtml(data.seniority_level)}</span>
+                </div>
+                <p style="font-size:12px; color:#15803d; margin-top:4px;">${escHtml(data.summary)}</p>
+            </div>
+            <h4 style="font-size:13px; font-weight:700; color:#374151; margin-bottom:6px;">Extracted Skills (${data.extracted_skills.length}):</h4>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;">
+                ${data.extracted_skills.map(s => `<span style="padding:4px 8px; background:#eef2ff; color:#4f46e5; border-radius:6px; font-size:11px; font-weight:700;">${escHtml(s)}</span>`).join('')}
+            </div>
+            ${data.missing_skills?.length ? `
+            <h4 style="font-size:13px; font-weight:700; color:#92400e; margin-bottom:6px;">Missing Recommended Skills:</h4>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;">
+                ${data.missing_skills.map(s => `<span style="padding:4px 8px; background:#fef3c7; color:#92400e; border-radius:6px; font-size:11px; font-weight:700;">⚠ ${escHtml(s)}</span>`).join('')}
+            </div>` : ''}
+            <h4 style="font-size:13px; font-weight:700; color:#374151; margin-bottom:6px;">ATS Suggestions:</h4>
+            <ul style="padding-left:18px; font-size:12px; color:#64748b; line-height:1.6;">
+                ${data.improvement_suggestions.map(s => `<li>${escHtml(s)}</li>`).join('')}
+            </ul>
+        `;
+
+        showToast('Resume analysis complete!', 'success');
+    } catch (err) {
+        showToast('Analysis failed', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-sparkles"></i> Run AI ATS Analysis';
+    }
+});
+
+// ── Open Schedule Interview Modal ─────────────────────────────────────────────
+function openScheduleModal(candId, jobId, appId, candName) {
+    document.getElementById('schCandidateId').value = candId;
+    document.getElementById('schJobId').value = jobId;
+    document.getElementById('schAppId').value = appId;
+    document.getElementById('schCandidateName').value = candName;
+    document.getElementById('scheduleModal').classList.add('open');
+}
+
+document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+        const payload = {
+            candidate_id: parseInt(document.getElementById('schCandidateId').value, 10),
+            job_id: parseInt(document.getElementById('schJobId').value, 10),
+            application_id: parseInt(document.getElementById('schAppId').value, 10),
+            interview_date: document.getElementById('schDate').value,
+            interview_time: document.getElementById('schTime').value,
+            interview_type: document.getElementById('schType').value,
+            meeting_link: document.getElementById('schMeetingLink').value,
+            notes: document.getElementById('schNotes').value,
+        };
+
+        await InterviewsAPI.schedule(payload);
+        document.getElementById('scheduleModal').classList.remove('open');
+        showToast('Interview successfully scheduled with candidate! 📅', 'success');
+        loadDashboard();
+    } catch (err) {
+        showToast(err.message || 'Scheduling failed', 'error');
+    }
+});
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadDashboard();

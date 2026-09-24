@@ -1,32 +1,34 @@
-const express        = require('express');
-const db             = require('../db');
-const authMiddleware = require('../middleware/auth');
-const router         = express.Router();
+const express  = require('express');
+const db       = require('../db');
+const { authMiddleware } = require('../middleware/auth');
+const { success, error } = require('../utils/response');
 
-// GET /api/dashboard/overview
+const router = express.Router();
+
+// ── GET /api/dashboard/overview ───────────────────────────────────────────────
 router.get('/overview', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
         const role   = req.user.role;
 
         if (role === 'employer' || role === 'admin') {
-            // ── Employer / Admin dashboard ─────────────────────────────────
-            const [[jobsPosted]]     = await db.query(
+            // Employer / Admin dashboard overview
+            const [[jobsPosted]] = await db.query(
                 "SELECT COUNT(*) AS c FROM jobs WHERE user_id = ?", [userId]
             );
-            const [[activeJobs]]     = await db.query(
+            const [[activeJobs]] = await db.query(
                 "SELECT COUNT(*) AS c FROM jobs WHERE user_id = ? AND status = 'active'", [userId]
             );
-            const [[totalApps]]      = await db.query(
+            const [[totalApps]] = await db.query(
                 `SELECT COUNT(*) AS c FROM applications a
                  JOIN jobs j ON a.job_id = j.id WHERE j.user_id = ?`, [userId]
             );
-            const [[newApps]]        = await db.query(
+            const [[newApps]] = await db.query(
                 `SELECT COUNT(*) AS c FROM applications a
                  JOIN jobs j ON a.job_id = j.id
                  WHERE j.user_id = ? AND a.status = 'pending'`, [userId]
             );
-            const [[totalJobCount]]  = await db.query(
+            const [[totalJobCount]] = await db.query(
                 "SELECT COUNT(*) AS c FROM jobs WHERE status = 'active'"
             );
 
@@ -49,32 +51,36 @@ router.get('/overview', authMiddleware, async (req, res) => {
                  ORDER BY created_at DESC LIMIT 6`, [userId]
             );
 
-            return res.json({
-                status: 'success',
-                data: {
-                    role,
-                    statistics: {
-                        jobs_posted:    jobsPosted.c,
-                        active_jobs:    activeJobs.c,
-                        total_applicants: totalApps.c,
-                        new_applicants:   newApps.c,
-                        total_jobs:       totalJobCount.c,
-                    },
-                    recent_applications: recentApps,
-                    my_jobs: myJobs,
-                    notifications: [],
-                }
-            });
+            // Fetch unread notifications
+            const [recentNotifs] = await db.query(
+                `SELECT id, type, title, message, is_read, created_at
+                 FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 5`,
+                [userId]
+            );
+
+            return success(res, {
+                role,
+                statistics: {
+                    jobs_posted:      jobsPosted.c,
+                    active_jobs:      activeJobs.c,
+                    total_applicants: totalApps.c,
+                    new_applicants:   newApps.c,
+                    total_jobs:       totalJobCount.c,
+                },
+                recent_applications: recentApps,
+                my_jobs: myJobs,
+                notifications: recentNotifs,
+            }, 'Employer dashboard overview');
         }
 
-        // ── Job Seeker dashboard ───────────────────────────────────────────
-        const [[appCount]]   = await db.query(
+        // Job Seeker dashboard overview
+        const [[appCount]] = await db.query(
             'SELECT COUNT(*) AS c FROM applications WHERE user_id = ?', [userId]
         );
         const [[savedCount]] = await db.query(
             'SELECT COUNT(*) AS c FROM saved_jobs WHERE user_id = ?', [userId]
         );
-        const [[jobCount]]   = await db.query(
+        const [[jobCount]] = await db.query(
             "SELECT COUNT(*) AS c FROM jobs WHERE status = 'active'"
         );
         const [[interviewCount]] = await db.query(
@@ -96,25 +102,28 @@ router.get('/overview', authMiddleware, async (req, res) => {
              WHERE sj.user_id = ? ORDER BY sj.created_at DESC LIMIT 5`, [userId]
         );
 
-        return res.json({
-            status: 'success',
-            data: {
-                role,
-                statistics: {
-                    applications:    appCount.c,
-                    saved_jobs:      savedCount.c,
-                    total_jobs:      jobCount.c,
-                    interviews:      interviewCount.c,
-                },
-                recent_applications: recentApps,
-                saved_jobs:  savedJobs,
-                notifications: [],
-            }
-        });
+        const [recentNotifs] = await db.query(
+            `SELECT id, type, title, message, is_read, created_at
+             FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 5`,
+            [userId]
+        );
+
+        return success(res, {
+            role,
+            statistics: {
+                applications: appCount.c,
+                saved_jobs:   savedCount.c,
+                total_jobs:   jobCount.c,
+                interviews:   interviewCount.c,
+            },
+            recent_applications: recentApps,
+            saved_jobs: savedJobs,
+            notifications: recentNotifs,
+        }, 'Seeker dashboard overview');
 
     } catch (err) {
-        console.error('Dashboard error:', err);
-        return res.status(500).json({ status: 'error', message: 'Server error' });
+        console.error('Dashboard overview error:', err);
+        return error(res, 'Server error loading dashboard', 500);
     }
 });
 

@@ -3,7 +3,13 @@
   "builds": [
     {
       "src": "backend/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "frountend/**",
+          "backend/storage/**"
+        ]
+      }
     }
   ],
   "routes": [
@@ -14,14 +20,6 @@
     {
       "src": "/uploads/(.*)",
       "dest": "backend/server.js"
-    },
-    {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|map))",
-      "dest": "frountend/$1"
-    },
-    {
-      "src": "/(.*\\.html)",
-      "dest": "frountend/$1"
     },
     {
       "src": "/(.*)",

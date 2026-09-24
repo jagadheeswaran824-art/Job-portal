@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Job Safety & Web Protection — Verify job application links, external employer websites, and scam indicators in real-time before applying.">
+    <title>Job Safety & Web Protection | JobPortal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #f8fafc; }
+        .sec-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            color: #fff;
+            padding: 60px 20px 70px;
+            position: relative;
+            overflow: hidden;
+        }
+        .sec-hero::before {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, rgba(99,102,241,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .sec-hero-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .sec-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #a5b4fc;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .sec-hero h1 {
+            font-size: clamp(28px, 4.5vw, 44px);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        .sec-hero h1 span {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sec-hero p {
+            font-size: clamp(14px, 2vw, 17px);
+            color: #cbd5e1;
+            max-width: 680px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+
+        /* Checker Box */
+        .sec-checker-card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(15,23,42,0.25);
+            padding: 28px;
+            max-width: 880px;
+            margin: -40px auto 40px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid #e2e8f0;
+        }
+        .sec-input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .sec-input-wrap {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+        .sec-input-wrap i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+        }
+        .sec-url-input {
+            width: 100%;
+            height: 52px;
+            padding: 0 16px 0 46px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #0f172a;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .sec-url-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+        }
+        .sec-company-input {
+            width: 220px;
+            height: 52px;
+            padding: 0 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #0f172a;
+            outline: none;
+            transition: 0.2s;
+        }
+        .sec-company-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+        }
+        .sec-check-btn {
+            height: 52px;
+            padding: 0 28px;
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .sec-check-btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+        }
+
+        /* Demo chips */
+        .sec-demo-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding-top: 14px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .sec-demo-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .demo-chip {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .demo-chip.safe { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+        .demo-chip.safe:hover { background: #d1fae5; }
+        .demo-chip.caution { background: #fffbeb; color: #b45309; border-color: #fde68a; }
+        .demo-chip.caution:hover { background: #fef3c7; }
+        .demo-chip.danger { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+        .demo-chip.danger:hover { background: #fee2e2; }
+
+        /* Results Area */
+        .sec-results-wrapper {
+            max-width: 880px;
+            margin: 0 auto 50px;
+        }
+        .sec-result-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Status Banners */
+        .status-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+        .status-header.LOW_RISK {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+        .status-header.CAUTION {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+        .status-header.HIGH_RISK {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+        .status-header.UNKNOWN {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334151;
+        }
+        .status-icon-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        .status-header.LOW_RISK .status-icon-box { background: #d1fae5; color: #059669; }
+        .status-header.CAUTION .status-icon-box { background: #fef3c7; color: #d97706; }
+        .status-header.HIGH_RISK .status-icon-box { background: #fee2e2; color: #dc2626; }
+        .status-header.UNKNOWN .status-icon-box { background: #e2e8f0; color: #475569; }
+
+        .status-info h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .status-info p {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* Signal Matrix Grid */
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .signal-item {
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .signal-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .signal-indicator.pass { background: #dcfce7; color: #16a34a; }
+        .signal-indicator.warn { background: #fef3c7; color: #d97706; }
+        .signal-indicator.fail { background: #fee2e2; color: #dc2626; }
+        .signal-indicator.info { background: #e0e7ff; color: #4f46e5; }
+        .signal-meta small { display: block; font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .signal-meta strong { font-size: 13px; color: #1e293b; font-weight: 700; }
+
+        /* Indicators and Recommendations */
+        .sec-section-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .indicator-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .indicator-row {
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border-left: 4px solid #94a3b8;
+        }
+        .indicator-row.high { background: #fff1f2; border-left-color: #e11d48; }
+        .indicator-row.medium { background: #fffbeb; border-left-color: #f59e0b; }
+        .indicator-row.low { background: #f0fdf4; border-left-color: #22c55e; }
+        .indicator-row.info { background: #f5f3ff; border-left-color: #8b5cf6; }
+        .indicator-row strong { display: block; font-size: 14px; color: #1e293b; margin-bottom: 4px; }
+        .indicator-row p { font-size: 13px; color: #475569; margin: 0; line-height: 1.5; }
+
+        .rec-box {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+        .rec-box ul {
+            padding-left: 20px;
+            color: #334151;
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .ai-audit-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0e7ff 100%);
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid #c7d2fe;
+            font-size: 13px;
+            color: #1e1b4b;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Telemetry Banner */
+        .telemetry-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            max-width: 880px;
+            margin: 0 auto 50px;
+        }
+        .tel-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+        .tel-val {
+            font-size: 28px;
+            font-weight: 900;
+            color: #4f46e5;
+            margin-bottom: 4px;
+        }
+        .tel-lbl {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        /* Scam Knowledge Base */
+        .knowledge-section {
+            max-width: 960px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+        .kb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .kb-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .kb-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        }
+        .kb-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .kb-card h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .kb-card p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        @media(max-width: 640px) {
+            .sec-input-row { flex-direction: column; }
+            .sec-company-input { width: 100%; }
+            .sec-check-btn { width: 100%; justify-content: center; }
+            .status-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-icon"><i class="fa-solid fa-briefcase"></i></span>
+            Job<span>Portal</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="jobs.html">Find Jobs</a>
+            <a href="companies.html">Companies</a>
+            <a href="career.html">AI Career</a>
+            <a href="security-check.html" class="active"><i class="fa-solid fa-shield-halved" style="color:#10b981;margin-right:4px;"></i>Safety Check</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div class="nav-actions">
+            <a href="login.html" class="login-btn">Login</a>
+            <a href="register.html" class="register-btn">Get Started</a>
+        </div>
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="sec-hero">
+    <div class="sec-hero-inner">
+        <div class="sec-badge">
+            <i class="fa-solid fa-shield-halved"></i> AI Job Safety & Web Protection Engine
+        </div>
+        <h1>Verify Job Links & <span>Detect Scams</span></h1>
+        <p>Analyze recruiter websites, application URLs, and job postings before applying. Protect yourself against upfront payment scams, credential harvesting, and suspicious external redirects.</p>
+    </div>
+</section>
+
+<!-- MAIN CHECKER CARD -->
+<main class="container">
+    <section class="sec-checker-card">
+        <form id="urlCheckForm">
+            <div class="sec-input-row">
+                <div class="sec-input-wrap">
+                    <i class="fa-solid fa-link"></i>
+                    <input type="text" id="urlInput" class="sec-url-input" placeholder="Enter a website or job application URL (e.g., https://example.com/apply)" autocomplete="off" required>
+                </div>
+                <input type="text" id="companyInput" class="sec-company-input" placeholder="Claimed company (optional)" autocomplete="off">
+                <button type="submit" id="checkBtn" class="sec-check-btn">
+                    <i class="fa-solid fa-shield-halved"></i> Check Safety
+                </button>
+            </div>
+        </form>
+
+        <div class="sec-demo-bar">
+            <span class="sec-demo-label">Quick Test Presets:</span>
+            <button type="button" class="demo-chip safe" onclick="loadDemoPreset('safe')">
+                <i class="fa-solid fa-circle-check"></i> Safe Corporate Link
+            </button>
+            <button type="button" class="demo-chip caution" onclick="loadDemoPreset('caution')">
+                <i class="fa-solid fa-triangle-exclamation"></i> Shortened Link
+            </button>
+            <button type="button" class="demo-chip danger" onclick="loadDemoPreset('fee-scam')">
+                <i class="fa-solid fa-hand-holding-dollar"></i> Upfront Fee Scam
+            </button>
+            <button type="button" class="demo-chip danger" onclick="loadDemoPreset('ip-phish')">
+                <i class="fa-solid fa-bug"></i> IP Host & Download
+            </button>
+        </div>
+    </section>
+
+    <!-- LIVE TELEMETRY STATS -->
+    <div class="telemetry-bar" id="telemetryBar">
+        <div class="tel-card">
+            <div class="tel-val" id="scannedCount">400+</div>
+            <div class="tel-lbl">Application URLs Scanned</div>
+        </div>
+        <div class="tel-card">
+            <div class="tel-val" id="threatCount">50+</div>
+            <div class="tel-lbl">Scam Signals Intercepted</div>
+        </div>
+        <div class="tel-card">
+            <div class="tel-val" style="color:#16a34a;"><i class="fa-solid fa-shield-check"></i> Active</div>
+            <div class="tel-lbl">Multi-Signal Protection v2.4</div>
+        </div>
+    </div>
+
+    <!-- RESULTS CONTAINER -->
+    <section class="sec-results-wrapper" id="resultsArea" style="display:none;"></section>
+
+    <!-- SCAM PREVENTION KNOWLEDGE BASE -->
+    <section class="knowledge-section">
+        <div style="text-align:center; margin-bottom:36px;">
+            <h2 style="font-size:24px; font-weight:800; color:#0f172a; margin-bottom:8px;">Candidate Protection Guide</h2>
+            <p style="font-size:14px; color:#64748b;">Essential rules to safeguard your career journey, personal documents, and financial safety.</p>
+        </div>
+
+        <div class="kb-grid">
+            <div class="kb-card">
+                <div class="kb-icon"><i class="fa-solid fa-ban"></i></div>
+                <h3>1. Never Pay Upfront Fees</h3>
+                <p>Legitimate employers never charge candidates for application processing, background checks, training kits, or mandatory equipment purchases.</p>
+            </div>
+            <div class="kb-card">
+                <div class="kb-icon"><i class="fa-solid fa-key"></i></div>
+                <h3>2. Protect Banking & OTPs</h3>
+                <p>Never share net banking credentials, OTP codes, credit card details, or UPI PINs during an interview or hiring process.</p>
+            </div>
+            <div class="kb-card">
+                <div class="kb-icon"><i class="fa-solid fa-building-circle-check"></i></div>
+                <h3>3. Verify Official Domains</h3>
+                <p>Cross-check recruiter email addresses against official corporate websites. Watch out for free webmail accounts claiming to represent Fortune 500s.</p>
+            </div>
+            <div class="kb-card">
+                <div class="kb-icon"><i class="fa-solid fa-file-shield"></i></div>
+                <h3>4. Beware Direct Executable Downloads</h3>
+                <p>Never download or open <code>.exe</code>, <code>.bat</code>, or script files masquerading as job application forms or assessment tests.</p>
+            </div>
+            <div class="kb-card">
+                <div class="kb-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                <h3>5. Interview via Verified Channels</h3>
+                <p>Be cautious if interviews take place exclusively over anonymous messaging apps (Telegram / WhatsApp) without a corporate email or video call.</p>
+            </div>
+            <div class="kb-card">
+                <div class="kb-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                <h3>6. Realistic Compensation</h3>
+                <p>Offers advertising astronomical salaries for entry-level tasks with zero qualifications are almost always deceptive schemes.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="js/api.js"></script>
+<script>
+'use strict';
+
+const urlForm = document.getElementById('urlCheckForm');
+const urlInput = document.getElementById('urlInput');
+const companyInput = document.getElementById('companyInput');
+const checkBtn = document.getElementById('checkBtn');
+const resultsArea = document.getElementById('resultsArea');
+
+// Preset samples
+const PRESETS = {
+    'safe': {
+        url: 'https://careers.technovasolutions.com/jobs/senior-frontend-architect',
+        company: 'TechNova Solutions'
+    },
+    'caution': {
+        url: 'https://bit.ly/startup-engineer-apply-2026',
+        company: 'Apex Digital'
+    },
+    'fee-scam': {
+        url: 'http://fast-track-jobs-portal.xyz/apply?registration-fee=500&pay-now=1',
+        company: 'Global Enterprises'
+    },
+    'ip-phish': {
+        url: 'http://198.51.100.42/careers/verify-otp?download=job-form.exe',
+        company: 'Cloud Corp'
+    }
+};
+
+function loadDemoPreset(type) {
+    const preset = PRESETS[type];
+    if (!preset) return;
+    urlInput.value = preset.url;
+    companyInput.value = preset.company;
+    performCheck(preset.url, preset.company);
+}
+
+// Check on submit
+urlForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const url = urlInput.value.trim();
+    const company = companyInput.value.trim();
+    if (!url) return;
+    performCheck(url, company);
+});
+
+async function performCheck(url, company = '') {
+    checkBtn.disabled = true;
+    checkBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;"></span> Analyzing signals…';
+    resultsArea.style.display = 'block';
+    resultsArea.innerHTML = `
+        <div class="sec-result-card" style="text-align:center; padding:50px 20px;">
+            <i class="fa-solid fa-shield-halved fa-spin" style="font-size:36px; color:#4f46e5; margin-bottom:16px;"></i>
+            <h3 style="font-size:18px; font-weight:700;">Evaluating Multi-Signal Security Heuristics…</h3>
+            <p style="color:#64748b; font-size:13px; margin-top:6px;">Inspecting protocol encryption, domain reputation, TLD risk, and payload parameters.</p>
+        </div>
+    `;
+
+    try {
+        const res = await SecurityAPI.checkUrl(url, { company_name: company });
+        renderResults(res.data);
+    } catch (err) {
+        resultsArea.innerHTML = `
+            <div class="sec-result-card" style="border-color:#fca5a5; background:#fff1f2;">
+                <h3 style="color:#991b1b; font-size:16px; font-weight:800; margin-bottom:6px;">Safety Verification Notice</h3>
+                <p style="color:#7f1d1d; font-size:13px;">${escHtml(err.message || 'Could not verify URL safety.')}</p>
+            </div>
+        `;
+    } finally {
+        checkBtn.disabled = false;
+        checkBtn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Check Safety';
+    }
+}
+
+function renderResults(data) {
+    const risk = data.risk_level || 'UNKNOWN';
+    let statusIcon = 'fa-circle-check';
+    let statusTitle = '🟢 SAFE INDICATORS';
+    let bannerSub = data.status_text || 'No major warning indicators detected.';
+
+    if (risk === 'HIGH_RISK') {
+        statusIcon = 'fa-triangle-exclamation';
+        statusTitle = '🔴 DANGEROUS / HIGH RISK INDICATORS';
+    } else if (risk === 'CAUTION') {
+        statusIcon = 'fa-triangle-exclamation';
+        statusTitle = '🟡 CAUTION';
+    } else if (risk === 'UNKNOWN') {
+        statusIcon = 'fa-circle-question';
+        statusTitle = '⚪ UNVERIFIED DESTINATION';
+    }
+
+    const signals = data.signals || {};
+
+    resultsArea.innerHTML = `
+        <div class="sec-result-card">
+            <!-- STATUS HEADER -->
+            <div class="status-header ${risk}">
+                <div class="status-icon-box">
+                    <i class="fa-solid ${statusIcon}"></i>
+                </div>
+                <div class="status-info">
+                    <h2>${statusTitle}</h2>
+                    <p>${escHtml(bannerSub)}</p>
+                    <div style="margin-top:8px; font-size:12px; font-weight:600; opacity:0.85;">
+                        <span>Target: <strong>${escHtml(data.domain || data.url)}</strong></span>
+                        <span style="margin-left:14px;">Safety Score: <strong>${data.score || 0}/100</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIGNAL MATRIX -->
+            <h3 class="sec-section-title"><i class="fa-solid fa-network-wired" style="color:#4f46e5;"></i> Analyzed Signal Matrix</h3>
+            <div class="signal-grid">
+                <div class="signal-item">
+                    <div class="signal-indicator ${signals.https ? 'pass' : 'fail'}">
+                        <i class="fa-solid ${signals.https ? 'fa-lock' : 'fa-lock-open'}"></i>
+                    </div>
+                    <div class="signal-meta">
+                        <small>Encryption</small>
+                        <strong>${signals.https ? 'HTTPS Verified' : 'Unencrypted (HTTP)'}</strong>
+                    </div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-indicator ${signals.is_ip_host ? 'fail' : 'pass'}">
+                        <i class="fa-solid ${signals.is_ip_host ? 'fa-server' : 'fa-globe'}"></i>
+                    </div>
+                    <div class="signal-meta">
+                        <small>Domain Type</small>
+                        <strong>${signals.is_ip_host ? 'Raw Numeric IP' : 'Standard Hostname'}</strong>
+                    </div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-indicator ${signals.is_shortener ? 'warn' : 'pass'}">
+                        <i class="fa-solid ${signals.is_shortener ? 'fa-scissors' : 'fa-link'}"></i>
+                    </div>
+                    <div class="signal-meta">
+                        <small>URL Structure</small>
+                        <strong>${signals.is_shortener ? 'Masked / Shortener' : 'Direct Address'}</strong>
+                    </div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-indicator ${signals.dangerous_download ? 'fail' : 'pass'}">
+                        <i class="fa-solid ${signals.dangerous_download ? 'fa-file-zipper' : 'fa-file-lines'}"></i>
+                    </div>
+                    <div class="signal-meta">
+                        <small>Payload Safety</small>
+                        <strong>${signals.dangerous_download ? 'Executable Download' : 'Web Page'}</strong>
+                    </div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-indicator ${signals.company_match === false ? 'warn' : signals.company_match === true ? 'pass' : 'info'}">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <div class="signal-meta">
+                        <small>Company Consistency</small>
+                        <strong>${signals.company_match === false ? 'Domain Mismatch' : signals.company_match === true ? 'Matched Official Domain' : 'External Recruiter'}</strong>
+                    </div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-indicator ${signals.is_external ? 'info' : 'pass'}">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </div>
+                    <div class="signal-meta">
+                        <small>Destination</small>
+                        <strong>${signals.is_external ? 'External Application' : 'Internal JobPortal'}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WARNING INDICATORS -->
+            ${(data.indicators && data.indicators.length > 0) ? `
+                <h3 class="sec-section-title"><i class="fa-solid fa-triangle-exclamation" style="color:#eab308;"></i> Identified Security Indicators</h3>
+                <div class="indicator-list">
+                    ${data.indicators.map(ind => `
+                        <div class="indicator-row ${ind.severity}">
+                            <strong>${escHtml(ind.title)}</strong>
+                            <p>${escHtml(ind.description)}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : ''}
+
+            <!-- ACTIONABLE RECOMMENDATIONS -->
+            ${(data.recommendations && data.recommendations.length > 0) ? `
+                <h3 class="sec-section-title"><i class="fa-solid fa-lightbulb" style="color:#059669;"></i> Recommended Actions</h3>
+                <div class="rec-box">
+                    <ul>
+                        ${data.recommendations.map(r => `<li>${escHtml(r)}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
+
+            <!-- AI EXPLANATION -->
+            ${data.ai_analysis ? `
+                <div class="ai-audit-box">
+                    <strong><i class="fa-solid fa-sparkles" style="color:#4f46e5; margin-right:6px;"></i> Automated AI Security Assessment:</strong>
+                    <p style="margin-top:6px; margin-bottom:0;">${escHtml(data.ai_analysis)}</p>
+                </div>
+            ` : ''}
+
+            <!-- ACTION BUTTONS -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:24px; padding-top:18px; border-top:1px solid #f1f5f9;">
+                <button type="button" onclick="copyAnalysisSummary()" style="padding:10px 18px; border-radius:10px; border:1px solid #c7d2fe; background:#eef2ff; color:#4f46e5; font-size:13px; font-weight:700; cursor:pointer;">
+                    <i class="fa-solid fa-copy"></i> Copy Security Report
+                </button>
+                <div style="display:flex; gap:10px;">
+                    <a href="jobs.html" style="padding:10px 18px; border-radius:10px; border:1px solid #e2e8f0; background:#fff; color:#374151; font-size:13px; font-weight:700; text-decoration:none;">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Jobs
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+
+    resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyAnalysisSummary() {
+    const text = document.getElementById('resultsArea').innerText;
+    navigator.clipboard.writeText(text)
+        .then(() => showToast('Security analysis report copied!', 'success'))
+        .catch(() => showToast('Failed to copy text', 'error'));
+}
+
+// Load Telemetry Stats on startup
+async function loadStats() {
+    try {
+        const res = await SecurityAPI.getStats();
+        if (res.data) {
+            document.getElementById('scannedCount').textContent = `${res.data.total_urls_scanned}+`;
+            document.getElementById('threatCount').textContent = `${res.data.threats_intercepted}+`;
+        }
+    } catch { /* silent */ }
+}
+
+loadStats();
+
+// Check if URL parameter was passed in querystring (e.g. ?url=https://...)
+const queryUrl = new URLSearchParams(window.location.search).get('url');
+const queryCompany = new URLSearchParams(window.location.search).get('company');
+if (queryUrl) {
+    urlInput.value = queryUrl;
+    if (queryCompany) companyInput.value = queryCompany;
+    performCheck(queryUrl, queryCompany || '');
+}
+</script>
+<style>
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+</body>
+</html>

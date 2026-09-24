@@ -8,18 +8,21 @@ require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const mysql  = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 
+const databaseUser = process.env.DB_USER || process.env.DB_USERNAME;
+const databaseName = process.env.DB_NAME || process.env.DB_DATABASE;
+
 async function setup() {
     console.log('\n🔌 Connecting to database...');
     console.log(`   Host: ${process.env.DB_HOST}:${process.env.DB_PORT || 3306}`);
-    console.log(`   DB  : ${process.env.DB_DATABASE}\n`);
+    console.log(`   DB  : ${databaseName}\n`);
 
     const db = await mysql.createConnection({
-        host:               process.env.DB_HOST,
-        port:               parseInt(process.env.DB_PORT) || 3306,
-        user:               process.env.DB_USERNAME,
-        password:           process.env.DB_PASSWORD,
-        database:           process.env.DB_DATABASE,
-        ssl:                process.env.DB_SSL_MODE === 'REQUIRED' ? { rejectUnauthorized: false } : false,
+        host: process.env.DB_HOST,
+        port: Number(process.env.DB_PORT) || 3306,
+        user: databaseUser,
+        password: process.env.DB_PASSWORD,
+        database: databaseName,
+        ssl: { rejectUnauthorized: false },
         multipleStatements: true,
     });
 
@@ -209,6 +212,95 @@ async function setup() {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
     console.log('   ✔ token_blacklist');
+
+    // ── Security Checks ────────────────────────────────────────────────────────
+    await db.query(`
+        CREATE TABLE IF NOT EXISTS security_checks (
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+            user_id         INT NULL,
+            job_id          INT NULL,
+            url             VARCHAR(2048) NOT NULL,
+            domain          VARCHAR(255),
+            risk_level      ENUM('LOW_RISK','CAUTION','HIGH_RISK','UNKNOWN') DEFAULT 'UNKNOWN',
+            score           INT DEFAULT 100,
+            indicators      JSON,
+            recommendations JSON,
+            signals         JSON,
+            is_external     TINYINT(1) DEFAULT 1,
+            is_demo         TINYINT(1) DEFAULT 0,
+            checked_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+            FOREIGN KEY (job_id)  REFERENCES jobs(id)  ON DELETE SET NULL,
+            INDEX idx_risk_level  (risk_level),
+            INDEX idx_url_domain  (domain),
+            INDEX idx_checked_at  (checked_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    console.log('   ✔ security_checks');
+
+    // ── Job Security Reports ───────────────────────────────────────────────────
+    await db.query(`
+        CREATE TABLE IF NOT EXISTS job_security_reports (
+            id                  INT AUTO_INCREMENT PRIMARY KEY,
+            job_id              INT NOT NULL,
+            user_id             INT NULL,
+            reporter_name       VARCHAR(150) DEFAULT 'Anonymous',
+            reporter_email      VARCHAR(150),
+            reason              ENUM('scam','payment_request','fake_company','suspicious_link','fake_recruiter','misleading_information','other') NOT NULL,
+            details             TEXT,
+            url                 VARCHAR(2048),
+            risk_level          ENUM('LOW_RISK','CAUTION','HIGH_RISK','UNKNOWN') DEFAULT 'HIGH_RISK',
+            admin_review_status ENUM('pending','investigating','dismissed','action_taken','resolved') DEFAULT 'pending',
+            admin_notes         TEXT,
+            reviewed_by         INT NULL,
+            reviewed_at         DATETIME NULL,
+            created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at          DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (job_id)      REFERENCES jobs(id)  ON DELETE CASCADE,
+            FOREIGN KEY (user_id)     REFERENCES users(id) ON DELETE SET NULL,
+            FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL,
+            INDEX idx_report_status   (admin_review_status),
+            INDEX idx_report_job      (job_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    console.log('   ✔ job_security_reports');
+
+    // ── URL Security Results Cache ─────────────────────────────────────────────
+    await db.query(`
+        CREATE TABLE IF NOT EXISTS url_security_results (
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+            url_hash        VARCHAR(64) NOT NULL UNIQUE,
+            url             VARCHAR(2048) NOT NULL,
+            domain          VARCHAR(255) NOT NULL,
+            risk_level      ENUM('LOW_RISK','CAUTION','HIGH_RISK','UNKNOWN') DEFAULT 'UNKNOWN',
+            indicators      JSON,
+            threat_types    JSON,
+            last_scanned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
+            INDEX idx_url_cache_dom (domain),
+            INDEX idx_url_cache_risk(risk_level)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    console.log('   ✔ url_security_results');
+
+    // ── Security Events ────────────────────────────────────────────────────────
+    await db.query(`
+        CREATE TABLE IF NOT EXISTS security_events (
+            id         INT AUTO_INCREMENT PRIMARY KEY,
+            user_id    INT NULL,
+            event_type VARCHAR(100) NOT NULL,
+            severity   ENUM('low','medium','high','critical') DEFAULT 'low',
+            details    JSON,
+            ip_address VARCHAR(45),
+            user_agent VARCHAR(255),
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+            INDEX idx_event_type (event_type),
+            INDEX idx_event_sev  (severity)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    console.log('   ✔ security_events');
 
     // ═══════════════════════════════════════════════════════════════════════════
     // SEED DATA

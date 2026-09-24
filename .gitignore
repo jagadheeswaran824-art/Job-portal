@@ -1,14 +1,25 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+
 # Environment files - never commit these
 backend/.env
+backend/.env.*
 .env
+.env.*
+!.env.example
+!backend/.env.example
 
 # Logs
 backend/logs/*.log
+*.log
 
 # Storage uploads
 backend/storage/resumes/*
 backend/storage/profile-images/*
 backend/storage/job-images/*
+backend/storage/avatars/*
+uploads/*
 
 # Composer
 backend/vendor/
@@ -20,5 +31,8 @@ Thumbs.db
 # IDE
 .vscode/settings.json
 .idea/
-# Cache
+
+# Cache & Vercel
 backend/storage/cache/*
+.vercel/
+.vercel

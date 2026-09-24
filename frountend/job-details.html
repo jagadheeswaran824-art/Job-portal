@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Details | JobPortal</title>
+    <title>Job Details | JobPortal AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
@@ -52,7 +52,7 @@
         /* Layout */
         .jd-layout {
             max-width: 1200px; margin: 0 auto; padding: 36px 20px 70px;
-            display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 26px;
+            display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 26px;
         }
         /* Cards */
         .card {
@@ -60,8 +60,9 @@
             padding: 26px; margin-bottom: 20px;
         }
         .card:last-child { margin-bottom: 0; }
-        .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: #111827; }
+        .card h2 { font-size: 18px; font-weight: 800; margin-bottom: 18px; color: #111827; }
         .card p  { font-size: 14px; line-height: 1.8; color: #6b7280; }
+
         /* Overview grid */
         .ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .ov-item {
@@ -75,12 +76,14 @@
         }
         .ov-item small { display: block; color: #94a3b8; font-size: 10px; }
         .ov-item strong { color: #334155; font-size: 13px; font-weight: 600; }
+
         /* Skills */
         .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
         .skill-chip {
             padding: 8px 13px; border-radius: 8px; background: #eef2ff;
             color: #4f46e5; font-size: 12px; font-weight: 700;
         }
+
         /* Sidebar */
         .sidebar { position: sticky; top: 80px; height: fit-content; display: grid; gap: 18px; }
         .apply-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 18px; padding: 24px; }
@@ -95,35 +98,21 @@
         .apply-now:hover { background: #4338ca; transform: translateY(-1px); }
         .apply-now:disabled { opacity: .7; cursor: not-allowed; transform: none; }
         .apply-hint { text-align: center; color: #10b981; font-size: 11px; margin-top: 10px; }
-        /* Similar jobs */
-        .similar-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-        .sim-card {
-            background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
-            padding: 18px; transition: .22s;
+
+        /* AI Match Card */
+        .match-card {
+            background: linear-gradient(135deg,#f0fdf4,#ecfdf5); border: 1px solid #bbf7d0; border-radius: 18px; padding: 22px;
         }
-        .sim-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(15,23,42,.07); border-color: #c7d2fe; }
-        .sim-logo {
-            width: 40px; height: 40px; border-radius: 10px;
-            display: grid; place-items: center;
-            font-size: 13px; font-weight: 800; margin-bottom: 12px;
-        }
-        .sim-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-        .sim-card p  { font-size: 11px; color: #6b7280; margin-bottom: 10px; }
-        .sim-meta { font-size: 11px; color: #94a3b8; margin-bottom: 12px; }
-        .sim-card a {
-            font-size: 12px; color: #4f46e5; font-weight: 700;
-            text-decoration: none; display: flex; align-items: center; gap: 5px;
-        }
-        /* Modal */
+
+        /* Modals */
         .modal-backdrop {
             display: none; position: fixed; inset: 0; z-index: 200;
-            background: rgba(15,23,42,.55);
-            align-items: center; justify-content: center; padding: 20px;
+            background: rgba(15,23,42,.55); align-items: center; justify-content: center; padding: 20px;
         }
         .modal-backdrop.open { display: flex; }
         .modal {
             background: #fff; border-radius: 20px; padding: 30px;
-            max-width: 540px; width: 100%; max-height: 90vh; overflow-y: auto;
+            max-width: 580px; width: 100%; max-height: 90vh; overflow-y: auto;
         }
         .modal-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
         .modal-hd h2 { font-size: 20px; }
@@ -143,18 +132,12 @@
             justify-content: center; gap: 8px;
         }
         .modal-submit:hover { background: #4338ca; }
-        .modal-submit:disabled { opacity: .7; cursor: not-allowed; }
+
         /* Responsive */
         @media (max-width: 900px) {
             .jd-layout { grid-template-columns: 1fr; }
             .sidebar { position: static; }
-            .similar-grid { grid-template-columns: 1fr 1fr; }
             .job-hero-inner { flex-direction: column; }
-        }
-        @media (max-width: 600px) {
-            .job-co-section { flex-direction: column; }
-            .ov-grid { grid-template-columns: 1fr; }
-            .similar-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -171,6 +154,8 @@
             <a href="index.html">Home</a>
             <a href="jobs.html" class="active">Find Jobs</a>
             <a href="companies.html">Companies</a>
+            <a href="career.html">AI Career</a>
+            <a href="security-check.html"><i class="fa-solid fa-shield-halved" style="color:#10b981;margin-right:4px;"></i>Safety Check</a>
             <a href="about.html">About</a>
         </nav>
         <div class="nav-actions">
@@ -191,7 +176,6 @@
             <i class="fa-solid fa-chevron-right"></i>
             <span id="breadcrumbTitle">Job Details</span>
         </div>
-        <!-- Populated by JS -->
         <div class="job-hero-inner" id="heroContent">
             <div class="job-co-section">
                 <div class="skeleton" style="width:78px;height:78px;border-radius:18px;flex-shrink:0;"></div>
@@ -226,7 +210,7 @@
         <h2 style="font-size:22px;font-weight:800;">Similar Jobs</h2>
         <a href="jobs.html" style="color:#4f46e5;font-size:12px;font-weight:700;">View all</a>
     </div>
-    <div class="similar-grid" id="similarGrid"></div>
+    <div class="similar-grid" id="similarGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;"></div>
 </section>
 
 <!-- APPLY MODAL -->
@@ -238,12 +222,146 @@
         </div>
         <form id="applyForm">
             <div class="form-group">
-                <label for="coverLetter">Cover Letter <span style="color:#9ca3af;font-weight:400;">(optional)</span></label>
-                <textarea id="coverLetter" placeholder="Briefly describe why you're a great fit for this role…" maxlength="2000"></textarea>
-                <small style="color:#9ca3af;font-size:11px;" id="charCount">0 / 2000</small>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <label for="coverLetter" style="margin:0;">Cover Letter <span style="color:#9ca3af;font-weight:400;">(optional)</span></label>
+                    <button type="button" id="openCoverLetterGenBtn" style="border:none; background:none; color:#4f46e5; font-size:12px; font-weight:700; cursor:pointer;">
+                        <i class="fa-solid fa-sparkles"></i> Generate with AI
+                    </button>
+                </div>
+                <textarea id="coverLetter" placeholder="Briefly describe why you're a great fit for this role…" maxlength="2500"></textarea>
+                <small style="color:#9ca3af;font-size:11px;" id="charCount">0 / 2500</small>
             </div>
             <button type="submit" class="modal-submit" id="submitApp">
                 <i class="fa-solid fa-paper-plane"></i> Submit Application
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- AI COVER LETTER GENERATOR MODAL -->
+<div class="modal-backdrop" id="coverLetterModal">
+    <div class="modal" style="max-width:640px;">
+        <div class="modal-hd">
+            <h2><i class="fa-solid fa-file-pen" style="color:#4f46e5; margin-right:8px;"></i> AI Cover Letter Generator</h2>
+            <button class="modal-close" onclick="document.getElementById('coverLetterModal').classList.remove('open')">&times;</button>
+        </div>
+        <div style="margin-bottom:14px; display:flex; gap:10px; align-items:center;">
+            <label style="font-size:12px; font-weight:700; color:#374151;">Tone:</label>
+            <select id="clToneSelect" style="padding:6px 12px; border-radius:8px; border:1px solid #d1d5db; font-size:12px;">
+                <option value="professional">Professional & Direct</option>
+                <option value="enthusiastic">Enthusiastic & High Energy</option>
+                <option value="executive">Executive & Leadership</option>
+            </select>
+            <button id="regenClBtn" style="padding:6px 14px; border-radius:8px; border:none; background:#4f46e5; color:#fff; font-size:12px; font-weight:700; cursor:pointer;">
+                <i class="fa-solid fa-sparkles"></i> Generate
+            </button>
+        </div>
+        <textarea id="generatedClText" style="width:100%; min-height:220px; padding:12px; border-radius:10px; border:1px solid #d1d5db; font-family:inherit; font-size:13px; line-height:1.6; margin-bottom:14px;"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; gap:8px;">
+                <button id="copyClBtn" style="padding:8px 14px; border-radius:8px; border:1px solid #c7d2fe; background:#eef2ff; color:#4f46e5; font-size:12px; font-weight:700; cursor:pointer;">
+                    <i class="fa-solid fa-copy"></i> Copy
+                </button>
+                <button id="downloadClBtn" style="padding:8px 14px; border-radius:8px; border:1px solid #e5e7eb; background:#fff; color:#374151; font-size:12px; font-weight:700; cursor:pointer;">
+                    <i class="fa-solid fa-download"></i> Download .txt
+                </button>
+            </div>
+            <button id="useClInAppBtn" style="padding:8px 18px; border-radius:8px; border:none; background:#16a34a; color:#fff; font-size:12px; font-weight:700; cursor:pointer;">
+                <i class="fa-solid fa-check"></i> Use in Application
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- JOB SAFETY AUDIT MODAL -->
+<div class="modal-backdrop" id="jobSafetyModal" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:620px;">
+        <div class="modal-hd">
+            <h2><i class="fa-solid fa-shield-halved" style="color:#4f46e5; margin-right:8px;"></i> Application Safety Audit</h2>
+            <button class="modal-close" onclick="document.getElementById('jobSafetyModal').classList.remove('open')">&times;</button>
+        </div>
+        <div id="safetyModalBody" style="padding:10px 0;">
+            <div style="text-align:center; padding:30px 10px;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:28px; color:#4f46e5;"></i>
+                <p style="margin-top:10px; font-size:13px; color:#64748b;">Inspecting application destination and scam indicators…</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DANGEROUS ACTION WARNING MODAL -->
+<div class="modal-backdrop" id="dangerousActionModal" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:540px; border-top: 5px solid #dc2626;">
+        <div class="modal-hd" style="border-bottom:1px solid #fee2e2; padding-bottom:12px;">
+            <h2 style="color:#991b1b; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> SECURITY WARNING
+            </h2>
+            <button class="modal-close" onclick="document.getElementById('dangerousActionModal').classList.remove('open')">&times;</button>
+        </div>
+        <div style="padding:16px 0;">
+            <p style="font-size:14px; font-weight:600; color:#1e293b; margin-bottom:12px;">
+                This application link has warning indicators.
+            </p>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 14px; margin-bottom:14px;">
+                <span style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase;">Destination Website:</span>
+                <p style="font-size:14px; font-weight:700; color:#0f172a; margin-top:2px; word-break:break-all;" id="warnSiteDomain">external-site.com</p>
+            </div>
+            <div style="margin-bottom:18px;">
+                <span style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:6px;">Potential Concerns:</span>
+                <ul id="warnConcernsList" style="padding-left:20px; font-size:13px; color:#b91c1c; line-height:1.7;">
+                    <li>Domain does not match the stated company.</li>
+                    <li>External application destination detected.</li>
+                </ul>
+            </div>
+            <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:10px; padding:12px; font-size:12px; color:#991b1b; margin-bottom:20px;">
+                <i class="fa-solid fa-circle-info" style="margin-right:4px;"></i>
+                <strong>Recommendation:</strong> Verify the employer through an official company channel before submitting passwords, banking info, or sensitive documents.
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button type="button" id="warnGoBackBtn" style="padding:10px 20px; border-radius:10px; border:1px solid #d1d5db; background:#fff; color:#374151; font-size:13px; font-weight:700; cursor:pointer;">
+                    Go Back
+                </button>
+                <a id="warnContinueBtn" href="#" target="_blank" rel="noopener noreferrer" style="padding:10px 20px; border-radius:10px; border:none; background:#dc2626; color:#fff; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    Continue Anyway <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- REPORT JOB MODAL -->
+<div class="modal-backdrop" id="reportJobModal" role="dialog" aria-modal="true">
+    <div class="modal" style="max-width:540px;">
+        <div class="modal-hd">
+            <h2><i class="fa-solid fa-flag" style="color:#dc2626; margin-right:8px;"></i> Report Job Listing</h2>
+            <button class="modal-close" onclick="document.getElementById('reportJobModal').classList.remove('open')">&times;</button>
+        </div>
+        <form id="reportJobForm" style="padding:10px 0;">
+            <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+                Help protect our community. If this listing asks for payment, seems fraudulent, or violates security policies, report it below.
+            </p>
+            <div class="form-group">
+                <label for="reportReasonSelect">Reason for Report *</label>
+                <select id="reportReasonSelect" required style="width:100%; padding:10px 12px; border-radius:10px; border:1.5px solid #e5e7eb; font-size:13px; outline:none;">
+                    <option value="scam">Scam / Fraudulent Job</option>
+                    <option value="payment_request">Requests Payment / Registration Fee</option>
+                    <option value="fake_company">Fake or Impersonated Company</option>
+                    <option value="suspicious_link">Suspicious / Phishing Application Link</option>
+                    <option value="fake_recruiter">Fake Recruiter / Unverified Contact</option>
+                    <option value="misleading_information">Misleading / Inaccurate Information</option>
+                    <option value="other">Other Concern</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="reportDetails">Additional Details / Evidence (optional)</label>
+                <textarea id="reportDetails" placeholder="Provide any details (e.g., recruiter asked for upfront fees or contact on Telegram)…" style="min-height:90px;"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="reporterEmail">Your Email (for status updates)</label>
+                <input type="email" id="reporterEmail" placeholder="your.email@example.com" style="width:100%; padding:10px 12px; border-radius:10px; border:1.5px solid #e5e7eb; font-size:13px; outline:none;">
+            </div>
+            <button type="submit" id="submitReportBtn" class="modal-submit" style="background:#dc2626;">
+                <i class="fa-solid fa-paper-plane"></i> Submit Security Report
             </button>
         </form>
     </div>
@@ -255,8 +373,8 @@
 
 const jobId   = new URLSearchParams(window.location.search).get('id');
 let   jobData = null;
+let   matchData = null;
 
-// ── Brand color ───────────────────────────────────────────────────────────────
 function brandColor(name) {
     const p = [
         {bg:'#eef2ff',text:'#4f46e5'},{bg:'#fef3c7',text:'#d97706'},
@@ -269,7 +387,6 @@ function brandColor(name) {
     return p[Math.abs(h)%p.length];
 }
 
-// ── Load job ──────────────────────────────────────────────────────────────────
 async function loadJob() {
     if (!jobId) {
         showError('No job ID provided. <a href="jobs.html" style="color:#4f46e5">Back to jobs</a>');
@@ -280,15 +397,19 @@ async function loadJob() {
         const res = await JobsAPI.get(jobId);
         jobData   = res.data;
 
-        document.title = `${jobData.title} at ${jobData.company_name} | JobPortal`;
+        // Fetch AI Match Score if logged in
+        if (Auth.isLoggedIn()) {
+            matchData = await AiAPI.matchScore(jobId).then(r => r.data).catch(() => null);
+        }
+
+        document.title = `${jobData.title} at ${jobData.company_name} | JobPortal AI`;
         document.getElementById('breadcrumbTitle').textContent = jobData.title;
 
         renderHero(jobData);
-        renderMain(jobData);
+        renderMain(jobData, matchData);
         renderSidebar(jobData);
         loadSimilar(jobData.category, jobData.id);
 
-        // Check if already saved
         if (Auth.isLoggedIn()) {
             const saved = await SavedJobsAPI.check(jobId).catch(() => ({ data: { is_saved: false } }));
             if (saved.data?.is_saved) {
@@ -310,7 +431,6 @@ function showError(msg) {
     document.getElementById('sidebarContent').innerHTML = '';
 }
 
-// ── Hero ──────────────────────────────────────────────────────────────────────
 function renderHero(job) {
     const color   = brandColor(job.company_name);
     const initial = job.company_name ? job.company_name[0].toUpperCase() : '?';
@@ -342,8 +462,7 @@ function renderHero(job) {
     document.getElementById('shareBtn').addEventListener('click', shareJob);
 }
 
-// ── Main content ──────────────────────────────────────────────────────────────
-function renderMain(job) {
+function renderMain(job, match) {
     const skills = Array.isArray(job.skills) ? job.skills : [];
 
     const requirements = job.requirements
@@ -354,7 +473,30 @@ function renderMain(job) {
         ? job.benefits.split('\n').filter(Boolean).map(l => `<li>${escHtml(l)}</li>`).join('')
         : '';
 
+    const safety = job.safety_indicator || {
+        status_badge: '🟢 No major indicators detected',
+        explanation: 'Standard verified listing.'
+    };
+
     document.getElementById('mainContent').innerHTML = `
+        <!-- AI Match Score Banner (if logged in) -->
+        ${match ? `
+        <div class="match-card" style="margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:16px; font-weight:800; color:#166534;"><i class="fa-solid fa-sparkles" style="color:#16a34a; margin-right:6px;"></i> AI Profile Match: ${match.match_score}%</h3>
+                <span style="font-size:11px; font-weight:800; color:#166534; background:#dcfce7; padding:4px 10px; border-radius:50px;">${escHtml(match.fit_level)}</span>
+            </div>
+            <p style="font-size:13px; color:#15803d; margin-bottom:12px;">${escHtml(match.summary)}</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                ${match.matched_skills.map(s => `<span style="font-size:11px; font-weight:700; color:#166534; background:#dcfce7; padding:4px 8px; border-radius:6px;">✓ ${escHtml(s)}</span>`).join('')}
+                ${match.missing_skills.map(s => `<span style="font-size:11px; font-weight:700; color:#92400e; background:#fef3c7; padding:4px 8px; border-radius:6px;">⚠ ${escHtml(s)}</span>`).join('')}
+            </div>
+            ${(match.why_match || []).length ? `
+                <ul style="padding-left:18px; font-size:12px; color:#166534; line-height:1.6; margin-top:8px;">
+                    ${match.why_match.map(w => `<li>${escHtml(w)}</li>`).join('')}
+                </ul>` : ''}
+        </div>` : ''}
+
         <!-- Overview -->
         <div class="card">
             <h2><i class="fa-solid fa-clipboard-list" style="color:#4f46e5;margin-right:8px;"></i>Job Overview</h2>
@@ -375,14 +517,13 @@ function renderMain(job) {
                     <div class="ov-icon"><i class="fa-solid fa-tag"></i></div>
                     <div><small>Category</small><strong style="text-transform:capitalize;">${escHtml(job.category || 'General')}</strong></div>
                 </div>
-                ${job.application_deadline ? `
-                <div class="ov-item">
-                    <div class="ov-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
-                    <div><small>Apply By</small><strong>${new Date(job.application_deadline).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</strong></div>
-                </div>` : ''}
                 <div class="ov-item">
                     <div class="ov-icon"><i class="fa-solid fa-building"></i></div>
                     <div><small>Company</small><strong>${escHtml(job.company_name)}</strong></div>
+                </div>
+                <div class="ov-item">
+                    <div class="ov-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div><small>Safety Audit</small><strong>${escHtml(safety.status_badge)}</strong></div>
                 </div>
             </div>
         </div>
@@ -417,24 +558,61 @@ function renderMain(job) {
             <div class="skill-chips">
                 ${skills.map(s => `<span class="skill-chip">${escHtml(s)}</span>`).join('')}
             </div>
-        </div>` : ''}`;
+        </div>` : ''}
+
+        <!-- Transparent Job Safety Indicator -->
+        <div class="card" style="background:#f8fafc; border-color:#e2e8f0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <h2 style="font-size:16px; margin:0;"><i class="fa-solid fa-shield-halved" style="color:#4f46e5;margin-right:8px;"></i>Job Safety & Web Protection</h2>
+                <button type="button" id="mainRunSafetyBtn" style="padding:6px 12px; border-radius:8px; border:1px solid #c7d2fe; background:#eef2ff; color:#4f46e5; font-size:12px; font-weight:700; cursor:pointer;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Full Safety Audit
+                </button>
+            </div>
+            <p style="font-size:13px; color:#334151; margin-bottom:8px;"><strong>Status:</strong> ${escHtml(safety.status_badge || '🟢 No major indicators detected')}</p>
+            <p style="font-size:13px; color:#475569; margin-bottom:12px; line-height:1.6;">${escHtml(safety.explanation || 'Standard verified listing.')}</p>
+
+            ${(safety.warning_flags && safety.warning_flags.length > 0) ? `
+                <div style="background:#fff1f2; border:1px solid #fecaca; border-radius:10px; padding:12px 14px; margin-bottom:12px;">
+                    <strong style="color:#991b1b; font-size:12px; display:block; margin-bottom:4px;">⚠ Warning Indicators Identified:</strong>
+                    <ul style="padding-left:18px; font-size:12px; color:#991b1b; line-height:1.6; margin:0;">
+                        ${safety.warning_flags.map(f => `<li>${escHtml(typeof f === 'string' ? f : f.message || f.title)}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
+
+            <p style="font-size:12px; color:#059669; margin:0;">
+                <i class="fa-solid fa-circle-check" style="margin-right:4px;"></i>
+                <strong>Recommendation:</strong> Verify the employer through an official company channel before proceeding. Never pay any registration fees.
+            </p>
+        </div>
+    `;
+
+    document.getElementById('mainRunSafetyBtn')?.addEventListener('click', openJobSafetyModal);
 }
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
 function renderSidebar(job) {
     const salary = formatSalary(job.salary_min, job.salary_max);
+    const hasExternalLink = !!job.application_url;
+
     document.getElementById('sidebarContent').innerHTML = `
-        <!-- Apply card -->
         <div class="apply-card">
             <p class="salary-label">Salary Package</p>
             <p class="salary-val">${escHtml(salary)}</p>
             <button class="apply-now" id="applyNowBtn">
-                <i class="fa-solid fa-paper-plane"></i> Apply Now
+                <i class="fa-solid fa-paper-plane"></i> ${hasExternalLink ? 'Apply on Company Site' : 'Apply Now'}
+            </button>
+            <button id="openCoverLetterQuickBtn" style="width:100%; margin-top:8px; border:1px solid #c7d2fe; border-radius:11px; padding:12px; background:#eef2ff; color:#4f46e5; font-size:13px; font-weight:700; cursor:pointer;">
+                <i class="fa-solid fa-sparkles"></i> Generate AI Cover Letter
+            </button>
+            <button id="checkSafetySidebarBtn" style="width:100%; margin-top:8px; border:1px solid #e2e8f0; border-radius:11px; padding:11px; background:#fff; color:#0f172a; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Check Application Safety
+            </button>
+            <button id="reportJobSidebarBtn" style="width:100%; margin-top:8px; border:none; background:none; color:#94a3b8; font-size:12px; font-weight:600; cursor:pointer; padding:6px; display:flex; align-items:center; justify-content:center; gap:6px;">
+                <i class="fa-solid fa-flag"></i> Report this Job
             </button>
             <p class="apply-hint"><i class="fa-solid fa-bolt" style="margin-right:4px;"></i>Quick apply with your profile</p>
         </div>
 
-        <!-- Company mini card -->
         <div class="card" style="margin-bottom:0;">
             <h2 style="font-size:15px;"><i class="fa-solid fa-building" style="color:#4f46e5;margin-right:8px;"></i>About the Company</h2>
             <p style="font-size:13px;margin-bottom:12px;">${escHtml(job.company_name)} is actively hiring for this position.</p>
@@ -442,19 +620,14 @@ function renderSidebar(job) {
                 View all jobs from ${escHtml(job.company_name)} <i class="fa-solid fa-arrow-right" style="margin-left:4px;"></i>
             </a>
         </div>
+    `;
 
-        <!-- Safety notice -->
-        <div class="card" style="margin-bottom:0;background:#f8fafc;">
-            <p style="font-size:12px;color:#94a3b8;line-height:1.7;">
-                <i class="fa-solid fa-shield-halved" style="color:#4f46e5;margin-right:6px;"></i>
-                <strong style="color:#374151;">Safety tip:</strong> Never pay to apply for a job. Legitimate employers will never ask for money.
-            </p>
-        </div>`;
-
-    document.getElementById('applyNowBtn').addEventListener('click', openApplyModal);
+    document.getElementById('applyNowBtn').addEventListener('click', handleApplyClick);
+    document.getElementById('openCoverLetterQuickBtn').addEventListener('click', openCoverLetterModal);
+    document.getElementById('checkSafetySidebarBtn').addEventListener('click', openJobSafetyModal);
+    document.getElementById('reportJobSidebarBtn').addEventListener('click', openReportModal);
 }
 
-// ── Similar jobs ──────────────────────────────────────────────────────────────
 async function loadSimilar(category, excludeId) {
     try {
         const res  = await JobsAPI.list({ category, per_page: 4 });
@@ -466,19 +639,18 @@ async function loadSimilar(category, excludeId) {
         grid.innerHTML = jobs.map(j => {
             const c = brandColor(j.company_name);
             return `
-            <div class="sim-card">
-                <div class="sim-logo" style="background:${c.bg};color:${c.text};">${j.company_name[0].toUpperCase()}</div>
-                <h3>${escHtml(j.title)}</h3>
-                <p>${escHtml(j.company_name)}</p>
-                <div class="sim-meta">${escHtml(j.location)} · ${escHtml(j.job_type)}</div>
-                <a href="job-details.html?id=${j.id}">View Job <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="sim-card" style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:18px;">
+                <div class="sim-logo" style="background:${c.bg};color:${c.text}; width:40px; height:40px; border-radius:10px; display:grid; place-items:center; font-weight:800; margin-bottom:10px;">${j.company_name[0].toUpperCase()}</div>
+                <h3 style="font-size:14px; font-weight:700;">${escHtml(j.title)}</h3>
+                <p style="font-size:12px; color:#6b7280; margin-bottom:8px;">${escHtml(j.company_name)}</p>
+                <div style="font-size:11px; color:#94a3b8; margin-bottom:10px;">${escHtml(j.location)} · ${escHtml(j.job_type)}</div>
+                <a href="job-details.html?id=${j.id}" style="color:#4f46e5; font-weight:700; font-size:12px; text-decoration:none;">View Job →</a>
             </div>`;
         }).join('');
         section.hidden = false;
     } catch { /* silent */ }
 }
 
-// ── Save toggle ───────────────────────────────────────────────────────────────
 async function toggleSave() {
     if (!Auth.isLoggedIn()) {
         window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
@@ -502,7 +674,6 @@ async function toggleSave() {
     } catch (err) { showToast(err.message || 'Action failed', 'error'); }
 }
 
-// ── Share ─────────────────────────────────────────────────────────────────────
 function shareJob() {
     if (navigator.share && jobData) {
         navigator.share({ title: jobData.title, text: `${jobData.title} at ${jobData.company_name}`, url: window.location.href }).catch(() => {});
@@ -513,7 +684,54 @@ function shareJob() {
     }
 }
 
-// ── Apply modal ───────────────────────────────────────────────────────────────
+// ── Application & Dangerous Action Interceptor ───────────────────────────────
+async function handleApplyClick() {
+    if (!Auth.isLoggedIn()) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+        return;
+    }
+
+    // Check if job has an external application URL
+    const appUrl = jobData?.application_url;
+    if (appUrl) {
+        // Run safety check on the external link
+        try {
+            const scan = await SecurityAPI.checkUrl(appUrl, {
+                company_name: jobData.company_name,
+                company_website: jobData.company_website,
+                job_id: jobId
+            });
+
+            const data = scan.data || {};
+            // If high risk or caution, intercept with Dangerous Action Warning Modal
+            if (data.risk_level === 'HIGH_RISK' || data.risk_level === 'CAUTION') {
+                document.getElementById('warnSiteDomain').textContent = data.domain || appUrl;
+                const concernsList = document.getElementById('warnConcernsList');
+                concernsList.innerHTML = (data.indicators || []).map(ind => `<li>${escHtml(ind.title)}: ${escHtml(ind.description)}</li>`).join('') || '<li>External destination not affiliated with JobPortal.</li>';
+                const contBtn = document.getElementById('warnContinueBtn');
+                contBtn.href = appUrl;
+                document.getElementById('dangerousActionModal').classList.add('open');
+                return;
+            } else {
+                // Safe link -> open directly
+                window.open(appUrl, '_blank', 'noopener,noreferrer');
+                return;
+            }
+        } catch (e) {
+            window.open(appUrl, '_blank', 'noopener,noreferrer');
+            return;
+        }
+    }
+
+    // Otherwise standard internal application modal
+    openApplyModal();
+}
+
+document.getElementById('warnGoBackBtn')?.addEventListener('click', () => {
+    document.getElementById('dangerousActionModal').classList.remove('open');
+});
+
+// ── Application Modal ─────────────────────────────────────────────────────────
 function openApplyModal() {
     if (!Auth.isLoggedIn()) {
         window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
@@ -523,14 +741,12 @@ function openApplyModal() {
     document.getElementById('applyModal').classList.add('open');
     document.getElementById('coverLetter').focus();
 }
+
 document.getElementById('closeModal').addEventListener('click', () => {
     document.getElementById('applyModal').classList.remove('open');
 });
-document.getElementById('applyModal').addEventListener('click', e => {
-    if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
-});
 document.getElementById('coverLetter').addEventListener('input', function() {
-    document.getElementById('charCount').textContent = `${this.value.length} / 2000`;
+    document.getElementById('charCount').textContent = `${this.value.length} / 2500`;
 });
 
 document.getElementById('applyForm').addEventListener('submit', async e => {
@@ -544,9 +760,8 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
     try {
         await ApplicationsAPI.apply(jobId, cl);
         document.getElementById('applyModal').classList.remove('open');
-        showToast('Application submitted! Good luck! 🎉', 'success');
+        showToast('Application submitted successfully! 🎉', 'success');
 
-        // Update apply button to show applied
         const applyBtn = document.getElementById('applyNowBtn');
         if (applyBtn) {
             applyBtn.disabled = true;
@@ -560,8 +775,179 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
     }
 });
 
+// ── Job Safety Audit Modal ───────────────────────────────────────────────────
+async function openJobSafetyModal() {
+    const modal = document.getElementById('jobSafetyModal');
+    const body  = document.getElementById('safetyModalBody');
+    modal.classList.add('open');
+
+    body.innerHTML = `
+        <div style="text-align:center; padding:30px 10px;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:28px; color:#4f46e5;"></i>
+            <p style="margin-top:10px; font-size:13px; color:#64748b;">Inspecting application destination and scam indicators…</p>
+        </div>
+    `;
+
+    try {
+        const res = await SecurityAPI.checkJob(jobId);
+        const data = res.data || {};
+        const urlScan = data.url_scan || null;
+        const signals = urlScan?.signals || {};
+
+        let badgeColor = '#059669';
+        let badgeBg = '#ecfdf5';
+        if (data.risk_level === 'HIGH_RISK') { badgeColor = '#dc2626'; badgeBg = '#fef2f2'; }
+        else if (data.risk_level === 'CAUTION') { badgeColor = '#d97706'; badgeBg = '#fffbeb'; }
+
+        body.innerHTML = `
+            <div style="background:${badgeBg}; border:1px solid ${badgeColor}33; border-radius:12px; padding:16px; margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:${badgeColor}; font-size:15px;"><i class="fa-solid fa-shield-halved"></i> ${escHtml(data.risk_level)}</strong>
+                    <span style="font-size:12px; font-weight:700; color:${badgeColor};">Safety Score: ${data.score}/100</span>
+                </div>
+                <p style="font-size:13px; color:#334151; margin:8px 0 0;">${escHtml(data.status_text)}</p>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <span style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:8px;">Security Indicators Checklist:</span>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="padding:10px; border-radius:8px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; font-weight:600; color:#1e293b;">
+                        <i class="fa-solid ${signals.https !== false ? 'fa-check' : 'fa-xmark'}" style="color:${signals.https !== false ? '#16a34a' : '#dc2626'}; margin-right:6px;"></i> HTTPS Encryption
+                    </div>
+                    <div style="padding:10px; border-radius:8px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; font-weight:600; color:#1e293b;">
+                        <i class="fa-solid ${signals.valid_domain !== false ? 'fa-check' : 'fa-xmark'}" style="color:#16a34a; margin-right:6px;"></i> Valid Domain Format
+                    </div>
+                    <div style="padding:10px; border-radius:8px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; font-weight:600; color:#1e293b;">
+                        <i class="fa-solid ${data.has_application_link ? 'fa-arrow-up-right-from-square' : 'fa-house'}" style="color:#4f46e5; margin-right:6px;"></i> ${data.has_application_link ? 'External Application' : 'Direct Portal Application'}
+                    </div>
+                    <div style="padding:10px; border-radius:8px; background:#f8fafc; border:1px solid #e2e8f0; font-size:12px; font-weight:600; color:#1e293b;">
+                        <i class="fa-solid ${signals.company_match === false ? 'fa-triangle-exclamation' : 'fa-check'}" style="color:${signals.company_match === false ? '#d97706' : '#16a34a'}; margin-right:6px;"></i> ${signals.company_match === false ? 'Domain Differs from Company' : 'Consistent Employer Info'}
+                    </div>
+                </div>
+            </div>
+
+            ${(data.indicators && data.indicators.length > 0) ? `
+                <div style="margin-bottom:16px;">
+                    <span style="font-size:12px; font-weight:700; color:#b91c1c; display:block; margin-bottom:6px;">Warning Indicators:</span>
+                    <ul style="padding-left:18px; font-size:12px; color:#b91c1c; line-height:1.6; margin:0;">
+                        ${data.indicators.map(i => `<li><strong>${escHtml(i.title)}:</strong> ${escHtml(i.description)}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
+
+            <div style="background:#f8fafc; border-radius:10px; padding:12px; font-size:12px; color:#475569; margin-bottom:16px;">
+                <strong>Recommendation:</strong> Verify the employer through an official company channel before proceeding. Never pay any registration fees.
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                <a href="security-check.html?url=${encodeURIComponent(jobData?.application_url || window.location.href)}&company=${encodeURIComponent(jobData?.company_name || '')}" style="font-size:12px; color:#4f46e5; font-weight:700; text-decoration:none;">
+                    Open in URL Safety Scanner →
+                </a>
+                <button type="button" onclick="document.getElementById('jobSafetyModal').classList.remove('open')" style="padding:8px 16px; border-radius:8px; border:1px solid #e2e8f0; background:#fff; font-size:12px; font-weight:700; cursor:pointer;">
+                    Close
+                </button>
+            </div>
+        `;
+    } catch (err) {
+        body.innerHTML = `<p style="color:#dc2626; font-size:13px;">Failed to load safety audit: ${escHtml(err.message || 'Error')}</p>`;
+    }
+}
+
+// ── Report Job Modal ─────────────────────────────────────────────────────────
+function openReportModal() {
+    const modal = document.getElementById('reportJobModal');
+    const emailField = document.getElementById('reporterEmail');
+    const user = Auth.getUser();
+    if (user && user.email) emailField.value = user.email;
+    modal.classList.add('open');
+}
+
+document.getElementById('reportJobForm')?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn     = document.getElementById('submitReportBtn');
+    const reason  = document.getElementById('reportReasonSelect').value;
+    const details = document.getElementById('reportDetails').value.trim();
+    const email   = document.getElementById('reporterEmail').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Submitting report…';
+
+    try {
+        await SecurityAPI.reportJob({
+            job_id: jobId,
+            reason,
+            details,
+            reporter_email: email,
+            url: window.location.href
+        });
+
+        document.getElementById('reportJobModal').classList.remove('open');
+        showToast('Report submitted! Our security team will review this job listing.', 'success');
+        document.getElementById('reportJobForm').reset();
+    } catch (err) {
+        showToast(err.message || 'Failed to submit report', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Security Report';
+    }
+});
+
+// ── AI Cover Letter Generator ─────────────────────────────────────────────────
+async function openCoverLetterModal() {
+    if (!Auth.isLoggedIn()) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+        return;
+    }
+    document.getElementById('coverLetterModal').classList.add('open');
+    generateCoverLetterAction();
+}
+
+async function generateCoverLetterAction() {
+    const tone = document.getElementById('clToneSelect').value;
+    const textarea = document.getElementById('generatedClText');
+    textarea.value = 'Generating tailored cover letter with AI…';
+
+    try {
+        const res = await AiAPI.generateCoverLetter(jobId, tone);
+        textarea.value = res.data.cover_letter;
+    } catch (err) {
+        textarea.value = 'Could not generate cover letter. Please try again.';
+    }
+}
+
+document.getElementById('openCoverLetterGenBtn').addEventListener('click', () => {
+    document.getElementById('applyModal').classList.remove('open');
+    openCoverLetterModal();
+});
+
+document.getElementById('regenClBtn').addEventListener('click', generateCoverLetterAction);
+
+document.getElementById('copyClBtn').addEventListener('click', () => {
+    const text = document.getElementById('generatedClText').value;
+    navigator.clipboard.writeText(text);
+    showToast('Cover letter copied to clipboard!', 'success');
+});
+
+document.getElementById('downloadClBtn').addEventListener('click', () => {
+    const text = document.getElementById('generatedClText').value;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `Cover_Letter_${(jobData?.title || 'Job').replace(/\s+/g, '_')}.txt`;
+    a.click();
+});
+
+document.getElementById('useClInAppBtn').addEventListener('click', () => {
+    const text = document.getElementById('generatedClText').value;
+    document.getElementById('coverLetter').value = text;
+    document.getElementById('charCount').textContent = `${text.length} / 2500`;
+    document.getElementById('coverLetterModal').classList.remove('open');
+    openApplyModal();
+});
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadJob();
 </script>
 </body>
 </html>
+

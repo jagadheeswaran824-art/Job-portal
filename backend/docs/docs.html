@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal API — Interactive Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --code-bg: #090d16;
+            --method-get: #0ea5e9;
+            --method-post: #10b981;
+            --method-put: #f59e0b;
+            --method-patch: #8b5cf6;
+            --method-delete: #ef4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        header { background: #1e293b; border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .brand { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 800; }
+        .brand i { color: #818cf8; font-size: 24px; }
+        .tag { font-size: 11px; background: rgba(99,102,241,0.2); color: #a5b4fc; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(99,102,241,0.3); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+        .hero { margin-bottom: 40px; }
+        .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+        .hero p { color: var(--text-muted); font-size: 15px; }
+        .spec-actions { margin-top: 16px; display: flex; gap: 12px; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: #334155; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: 0.2s; }
+        .btn:hover { background: #475569; }
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .section-title { font-size: 20px; font-weight: 700; margin: 36px 0 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .endpoint-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s; }
+        .endpoint-card:hover { border-color: #64748b; }
+        .endpoint-header { padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none; }
+        .method { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .method.get { background: rgba(14,165,233,0.15); color: var(--method-get); }
+        .method.post { background: rgba(16,185,129,0.15); color: var(--method-post); }
+        .method.put { background: rgba(245,158,11,0.15); color: var(--method-put); }
+        .method.patch { background: rgba(139,92,246,0.15); color: var(--method-patch); }
+        .method.delete { background: rgba(239,68,68,0.15); color: var(--method-delete); }
+        .path { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #e2e8f0; }
+        .summary { color: var(--text-muted); font-size: 13px; margin-left: auto; }
+        .auth-badge { font-size: 11px; background: rgba(239,68,68,0.15); color: #f87171; padding: 2px 8px; border-radius: 12px; display: flex; align-items: center; gap: 4px; }
+        .auth-badge.optional { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .endpoint-body { padding: 20px; border-top: 1px solid var(--border); background: #162032; display: none; }
+        .endpoint-body.open { display: block; }
+        .desc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+        .code-block { background: var(--code-bg); border: 1px solid #1e293b; border-radius: 8px; padding: 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #38bdf8; overflow-x: auto; margin-top: 8px; }
+        pre { margin: 0; }
+        .table-mini { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        .table-mini th, .table-mini td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        .table-mini th { color: var(--text-muted); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand">
+        <i class="fa-solid fa-code"></i>
+        <span>JobPortal API</span>
+        <span class="tag">v1.0.0 Production</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <a href="/" class="btn"><i class="fa-solid fa-arrow-left"></i> Back to App</a>
+        <a href="/api/openapi.json" target="_blank" class="btn btn-primary"><i class="fa-solid fa-file-code"></i> OpenAPI JSON</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="hero">
+        <h1>REST API Documentation</h1>
+        <p>Complete reference for all authentication, job listings, application management, notifications, analytics, and AI endpoints.</p>
+        <div class="spec-actions">
+            <span class="btn"><i class="fa-solid fa-server"></i> Base URL: /api</span>
+            <span class="btn"><i class="fa-solid fa-shield-halved"></i> JWT Bearer Token Supported</span>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION -->
+    <div class="section-title"><i class="fa-solid fa-lock" style="color:#818cf8;"></i> Authentication (/api/auth)</div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/auth/register</span>
+            <span class="summary">Create a new user account</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Registers a candidate or employer, creates initial profile records, and returns JWT session token.</p>
+            <strong>Request Body:</strong>
+            <div class="code-block"><pre>{
+  "full_name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "StrongPassword123!",
+  "role": "job_seeker" // or "employer"
+}</pre></div>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/auth/login</span>
+            <span class="summary">Sign in with email and password</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Authenticates credentials, returns user profile details and signed JWT Bearer token.</p>
+            <strong>Request Body:</strong>
+            <div class="code-block"><pre>{
+  "email": "jane@example.com",
+  "password": "StrongPassword123!"
+}</pre></div>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/auth/me</span>
+            <span class="auth-badge"><i class="fa-solid fa-key"></i> Auth</span>
+            <span class="summary">Get authenticated user information</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Returns profile information for the token holder.</p>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/auth/logout</span>
+            <span class="auth-badge"><i class="fa-solid fa-key"></i> Auth</span>
+            <span class="summary">Invalidate session and blacklist token</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Inserts the bearer token into the MySQL token blacklist, instantly invalidating it.</p>
+        </div>
+    </div>
+
+    <!-- JOBS -->
+    <div class="section-title"><i class="fa-solid fa-briefcase" style="color:#38bdf8;"></i> Job Listings (/api/jobs)</div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/jobs</span>
+            <span class="summary">List jobs with filters and pagination</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Supports search, category, location, job type, salary range, and sorting.</p>
+            <table class="table-mini">
+                <tr><th>Query Parameter</th><th>Type</th><th>Description</th></tr>
+                <tr><td>search / q</td><td>string</td><td>Keyword matching title, company, description</td></tr>
+                <tr><td>category</td><td>string</td><td>Filter by domain (frontend, backend, ai-ml, etc.)</td></tr>
+                <tr><td>location</td><td>string</td><td>City or remote location</td></tr>
+                <tr><td>job_type</td><td>string</td><td>full-time, part-time, remote, internship</td></tr>
+                <tr><td>sort</td><td>string</td><td>newest, salary_high, salary_low, views</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/jobs</span>
+            <span class="auth-badge"><i class="fa-solid fa-key"></i> Employer</span>
+            <span class="summary">Create a new job posting</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Publish a new job opportunity. Restricted to verified employers and administrators.</p>
+        </div>
+    </div>
+
+    <!-- AI ENDPOINTS -->
+    <div class="section-title"><i class="fa-solid fa-bolt" style="color:#a855f7;"></i> AI & Intelligence Service (/api/ai)</div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/ai/resume-analyzer</span>
+            <span class="summary">AI resume parsing & profile strength scoring</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Extracts industry technical skills, assesses profile completeness (0-100), and provides actionable suggestions.</p>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/ai/match-score</span>
+            <span class="summary">Calculate candidate match percentage for a job</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Computes skill alignment, returns matched vs missing skills and fit assessment.</p>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/ai/cover-letter</span>
+            <span class="summary">Generate tailored, professional cover letter</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Generates a high-converting cover letter based on user skills and targeted company position.</p>
+        </div>
+    </div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method post">POST</span>
+            <span class="path">/api/ai/interview-prep</span>
+            <span class="summary">Generate role-specific interview questions & answer tips</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Provides technical, behavioral, and architectural questions with recommended STAR answer talking points.</p>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="section-title"><i class="fa-solid fa-bell" style="color:#f59e0b;"></i> Notifications (/api/notifications)</div>
+
+    <div class="endpoint-card">
+        <div class="endpoint-header" onclick="toggleEndpoint(this)">
+            <span class="method get">GET</span>
+            <span class="path">/api/notifications/unread/count</span>
+            <span class="auth-badge"><i class="fa-solid fa-key"></i> Auth</span>
+            <span class="summary">Get live unread notification count</span>
+        </div>
+        <div class="endpoint-body">
+            <p class="desc">Used by the frontend navbar to show real-time notification badge.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleEndpoint(el) {
+    const body = el.nextElementSibling;
+    body.classList.toggle('open');
+}
+</script>
+</body>
+</html>

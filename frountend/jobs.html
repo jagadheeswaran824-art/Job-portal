@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -177,6 +177,8 @@
             <a href="index.html">Home</a>
             <a href="jobs.html" class="active">Find Jobs</a>
             <a href="companies.html">Companies</a>
+            <a href="career.html">AI Career</a>
+            <a href="security-check.html"><i class="fa-solid fa-shield-halved" style="color:#10b981;margin-right:4px;"></i>Safety Check</a>
             <a href="about.html">About</a>
         </nav>
         <div class="nav-actions">
@@ -353,13 +355,24 @@ async function loadJobs(page = 1) {
     empty.style.display = 'none';
 
     try {
-        const res  = await JobsAPI.list(currentParams);
-        const jobs = res.data || [];
-        const pg   = res.pagination || {};
+        const qVal = document.getElementById('searchQ').value.trim();
+        let jobs = [];
+        let pg = {};
+        let nlpExplanation = '';
 
-        count.textContent = pg.total
-            ? `${pg.total.toLocaleString()} job${pg.total !== 1 ? 's' : ''} found`
-            : '0 jobs found';
+        if (qVal && qVal.includes(' ')) {
+            // Use NLP search endpoint
+            const res = await SearchAPI.search({ q: qVal, natural: 1, limit: PER_PAGE });
+            jobs = res.data?.jobs || [];
+            pg = { total: res.data?.total_matches || jobs.length, current_page: 1, total_pages: 1 };
+            nlpExplanation = res.data?.natural_filters?.interpreted_filter || '';
+        } else {
+            const res = await JobsAPI.list(currentParams);
+            jobs = res.data || [];
+            pg = res.pagination || {};
+        }
+
+        count.innerHTML = `${pg.total ? pg.total.toLocaleString() : 0} jobs found ${nlpExplanation ? `<span style="display:inline-block; margin-left:8px; padding:3px 8px; border-radius:6px; background:#eef2ff; color:#4f46e5; font-size:11px; font-weight:700;"><i class="fa-solid fa-sparkles"></i> ${escHtml(nlpExplanation)}</span>` : ''}`;
 
         if (!jobs.length) {
             list.innerHTML = '';
@@ -370,7 +383,7 @@ async function loadJobs(page = 1) {
 
         list.innerHTML = jobs.map(jlCardHTML).join('');
         attachSaveHandlers(list);
-        renderPagination(pg.current_page, pg.total_pages);
+        renderPagination(pg.current_page || 1, pg.total_pages || 1);
 
     } catch (err) {
         list.innerHTML = `<div class="empty-state" style="display:block;">
@@ -405,11 +418,11 @@ function jlCardHTML(job) {
             <span><i class="fa-solid fa-location-dot"></i>${escHtml(job.location)}</span>
             <span><i class="fa-solid fa-indian-rupee-sign"></i>${escHtml(salary)}</span>
             <span><i class="fa-solid fa-briefcase"></i>${escHtml(job.experience_level || 'Any level')}</span>
-            ${job.applications_count ? `<span><i class="fa-solid fa-users"></i>${job.applications_count} applied</span>` : ''}
+            ${job.views ? `<span><i class="fa-solid fa-eye"></i>${job.views} views</span>` : ''}
         </div>
         ${skills.length ? `<div class="jl-skills">${skills.map(s => `<span>${escHtml(s)}</span>`).join('')}</div>` : ''}
         <div class="jl-bottom">
-            <div style="display:flex;gap:10px;align-items:center;">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
                 <span class="jl-type">${escHtml(job.job_type)}</span>
                 ${job.is_featured ? '<span style="padding:4px 9px;border-radius:6px;background:#fef9c3;color:#a16207;font-size:11px;font-weight:700;"><i class="fa-solid fa-star" style="margin-right:3px;"></i>Featured</span>' : ''}
                 <span class="jl-posted">${timeAgo(job.created_at)}</span>
